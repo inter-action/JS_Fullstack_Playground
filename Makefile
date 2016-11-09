@@ -9,3 +9,15 @@ SHELL := /bin/bash
 
 test:
 	echo "test makefile"
+
+run:
+	node server/index.js
+
+tsc:
+	tsc
+
+tscw:
+	tsc -w
+
+tsct:
+	tsc -w --traceResolution

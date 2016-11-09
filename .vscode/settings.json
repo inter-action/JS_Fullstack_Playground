@@ -1,0 +1,12 @@
+{
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "files.autoSave": "onFocusChange",
+    "editor.formatOnSave": true,
+    "files.exclude": {
+        "server/**/*.js": true,
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/.DS_Store": true
+    }
+}

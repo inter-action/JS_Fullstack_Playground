@@ -18,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/inter-action/JS_Fullstack_Playground/issues"
   },
-  "homepage": "https://github.com/inter-action/JS_Fullstack_Playground#readme"
+  "homepage": "https://github.com/inter-action/JS_Fullstack_Playground#readme",
+  "dependencies": {
+    "@types/koa": "^2.0.33",
+    "koa": "^2.0.0-alpha.7"
+  },
+  "devDependencies": {
+    "typescript": "^2.1.1"
+  }
 }
