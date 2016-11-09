@@ -1,0 +1,22 @@
+{
+  "name": "js_fullstack_playground",
+  "version": "1.0.0",
+  "description": "play with js fullstack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/inter-action/JS_Fullstack_Playground.git"
+  },
+  "keywords": [
+    "fullstack"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/inter-action/JS_Fullstack_Playground/issues"
+  },
+  "homepage": "https://github.com/inter-action/JS_Fullstack_Playground#readme"
+}
