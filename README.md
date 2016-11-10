@@ -8,10 +8,9 @@ dev:
 * mysql with knex
 * unit test all the way
 * functional test (some)
-* docker from all the way (from dev to production)
+* docker all the way (from dev to production)
 * redis cache
-* reactjs server rendering with nextjs
-* RxJS, react-router
+* angular2 (move it to delicated github repo ?)
 * logging
 * i18n
 
@@ -22,6 +21,7 @@ production checkpoints:
 * error notification via emails
 * nodejs memory dump
 * online monitor
+* https
 
 security:
 
@@ -39,6 +39,13 @@ you're surprised by some wired stuff, assume you're using vscode ofc, I suggest 
 
 # compatiblitiy
 * node > 4.x ,  typescript async support requires it
+
+
+# decisions
+* reactjs vs angular2:
+    I initially planed to use react eco libs as front-end bricks to build univeral app. Then I thought
+    I have learned/exercised enough from my daily work. I want to understand & learn what the angular2 team
+    thought and the choices they made. And It's chanlenging.
 
 
 # Credits

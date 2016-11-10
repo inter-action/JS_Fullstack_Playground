@@ -2,4 +2,11 @@
 
 * npm or yarn?
 
+* how to debug with docker
 
+docker-compose run api npm install cors
+
+add docker proxy
+
+# blogs:
+http://mherman.org/
