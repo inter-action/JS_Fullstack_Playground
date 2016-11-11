@@ -1,4 +1,5 @@
 import * as Koa from 'koa'
+import * as http from 'http'
 
 const app = new Koa()
 
@@ -14,4 +15,6 @@ app.use((ctx) => {
     ctx.body = 'Hello Koa';
 });
 
-app.listen(9000);
+// app.listen(9000);
+const server = http.createServer(app.callback()).listen(9000)
+export { app, server };

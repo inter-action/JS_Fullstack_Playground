@@ -10,3 +10,12 @@ add docker proxy
 
 # blogs:
 http://mherman.org/
+
+
+todos:
+
+    done:
+
+    pending:
+        http://mochajs.org/
+        https://www.tutorialspoint.com/makefile/makefile_dependencies.htm

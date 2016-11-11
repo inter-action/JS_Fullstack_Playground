@@ -4,7 +4,7 @@
     docker run -p 9000:9000 -v $(pwd):/code:shared interaction/js_fullstack_playground
     ```
     if I dont add shared or slave tag to it. it cant reflect changes made on host machine
-    but after i try to added it, it just failed to start. after digged a little bit, it 
+    but after i try to add it, it just failed to start. after digged a little bit, it 
     maybe a issue specifically related to `docker for mac` :
     https://docs.docker.com/docker-for-mac/osxfs/
 

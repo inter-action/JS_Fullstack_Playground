@@ -10,7 +10,7 @@ dev:
 * functional test (some)
 * docker all the way (from dev to production)
 * redis cache
-* angular2 (move it to delicated github repo ?)
+* angular2 (move it to delicated github repo or submoudle ?)
 * logging
 * i18n
 
