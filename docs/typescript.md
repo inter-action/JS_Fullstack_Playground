@@ -37,3 +37,7 @@
 
 ## checkpoints:
 * tslint
+
+
+# Links:
+* [typescript deep dive](https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)

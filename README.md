@@ -13,6 +13,7 @@ dev:
 * angular2 (move it to delicated github repo or submoudle ?)
 * logging
 * i18n
+* travis ci
 
 production checkpoints:
 * health checking point

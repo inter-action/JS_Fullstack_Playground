@@ -4,3 +4,4 @@ node_modules/
 server/**/*.js
 test/**/*.js
 npm-shrinkwrap.json
+blob/

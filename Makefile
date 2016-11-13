@@ -4,11 +4,15 @@
 # for more info on Makefile
 PATH  := node_modules/.bin:$(PATH)
 SHELL := /bin/bash
+
 DOCKER_APP_NAME := interaction/js_fullstack_playground
 DOCKER_NODE_PORT := 9000
+DOCKER_MYSQL_CONTAINER_NAME := some_mysql 
 
-SRC_SERVER = server/**/*.ts
-SRC_TEST = test/**/*spec.ts
+SRC_SERVER := server/**/*.ts
+SRC_TEST := test/**/*spec.ts
+
+MYSQL_ROOT_PASSWORD := jkliop
 
 .PHONY: test
 
@@ -37,6 +41,15 @@ docker_build: tsc
 
 docker_run:
 	docker run -p 9000:$(DOCKER_NODE_PORT) --detach $(DOCKER_APP_NAME)
+
+docker_mysql_init:
+	docker run -p 3306:3306 --name $(DOCKER_MYSQL_CONTAINER_NAME) -v $$(pwd)/blob/mysql_data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=$(MYSQL_ROOT_PASSWORD) -d mysql:5.7
+
+docker_mysql_start:
+	docker start $(DOCKER_MYSQL_CONTAINER_NAME)
+
+docker_mysql_stop:
+	docker stop $(DOCKER_MYSQL_CONTAINER_NAME)
 
 # `$$(pwd)` escape to $(pwd)
 # http://stackoverflow.com/questions/7654386/how-do-i-properly-escape-data-for-a-makefile
