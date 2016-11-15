@@ -12,10 +12,38 @@ add docker proxy
 http://mherman.org/
 
 
+# links:
+https://github.com/alexmingoia/koa-router/tree/master/
+
+
+http://www.ruanyifeng.com/blog/2016/11/javascript.html
+
+
+
 todos:
 
     done:
+  
 
     pending:
         http://mochajs.org/
         https://www.tutorialspoint.com/makefile/makefile_dependencies.htm
+        handle nodejs exception, no leak to user 
+        json api versioning
+        add bookshelf orm, refactor tests run on sqlite3
+        
+        integrate koa-route with https://github.com/hapijs/boom
+
+        /node_modules/@types/koa-router/index.d.ts
+        add logger
+
+        how this `res.body[0].explicit.should.not.be.ok;` is writed
+
+        https://www.smashingmagazine.com/2016/08/getting-started-koa-2-async-functions/
+          import bodyParser from 'koa-bodyparser';
+          import cors from 'kcors';
+
+        
+
+
+        

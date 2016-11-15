@@ -45,9 +45,9 @@ you're surprised by some wired stuff, assume you're using vscode ofc, I suggest 
 # decisions
 * reactjs vs angular2:
     I initially planed to use react eco libs as front-end bricks to build univeral app. Then I thought
-    I have learned/exercised enough from my daily work. I want to understand & learn what the angular2 team
-    thought and the choices they made. And It's chanlenging.
+    I have learned/exercised enough from my daily work. I want to understand & learn why the angular2 team
+    made the choices they made. And it has more chanllenge.
 
 
 # Credits
-
+* [Michael Herman's blog](http://mherman.org/)

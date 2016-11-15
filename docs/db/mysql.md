@@ -5,6 +5,9 @@
 
 
 # Mysql
+my gui app is Sequel Pro
+
+## set up env
 Docker mysql: https://hub.docker.com/_/mysql/
 
     # pull mysql image
@@ -18,6 +21,7 @@ Docker mysql: https://hub.docker.com/_/mysql/
 
     # stop
     make docker_msyql_stop
+
 
 
 

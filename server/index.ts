@@ -1,5 +1,6 @@
 import * as Koa from 'koa'
 import * as http from 'http'
+import routes from './routes'
 
 const app = new Koa()
 
@@ -10,9 +11,13 @@ app.use(async (ctx, next) => {
     console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
-// response
-app.use((ctx) => {
-    ctx.body = 'Hello Koa';
+
+app.use(routes.routes());
+
+// handle uncaught error. replace console with logger 
+// todo: add NodeJS uncaughtError event handler
+app.on('error', function (err: any) {
+    console.log('server error', err);
 });
 
 // app.listen(9000);

@@ -9,22 +9,29 @@ DOCKER_APP_NAME := interaction/js_fullstack_playground
 DOCKER_NODE_PORT := 9000
 DOCKER_MYSQL_CONTAINER_NAME := some_mysql 
 
-SRC_SERVER := server/**/*.ts
-SRC_TEST := test/**/*spec.ts
+SRC_SERVER := server/**/*/*.ts
+SRC_TEST := test
 
 MYSQL_ROOT_PASSWORD := jkliop
 
 .PHONY: test
 
+clean:
+	rm -rf server/**/*.js
+	rm -rf test/**/*.js
+	
 run:
 	node server/index.js
 
+test:
+	NODE_ENV=test mocha --recursive $(SRC_TEST)	
+
 # add tsc as a dependency
-test: tsc
-	mocha --compilers ts:ts-node/register --recursive $(SRC_TEST)
+test-with-dep: tsc
+	mocha --recursive $(SRC_TEST)	
 
 testw: tsc
-	mocha --compilers ts:ts-node/register --recursive --watch $(SRC_TEST)
+	NODE_ENV=test mmocha --compilers ts:ts-node/register --recursive --watch $(SRC_TEST)
 
 tsc:
 	tsc

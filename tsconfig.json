@@ -1,18 +1,19 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es2015",
-        "moduleResolution": "node",
-        "noImplicitAny": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "allowJs": false,
-        "strictNullChecks": true
-    },
-    "include": [
-        "server/**/*"
-    ],
-    "exclude": [
-        "node_modules/**/*"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es2015",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "allowJs": false,
+    "strictNullChecks": true
+  },
+  "include": [
+    "server/**/*",
+    "test/**/*"
+  ],
+  "exclude": [
+    "node_modules/**/*"
+  ]
 }

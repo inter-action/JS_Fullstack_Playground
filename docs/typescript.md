@@ -1,8 +1,8 @@
-# init
+# Typescript
 
 
-# Typescript compiler
-## Compiler Options
+## Typescript compiler
+### Compiler Options
 * "module": "commonjs",
     this controls how generated code using what kind of module pattern 
     ```js
@@ -18,7 +18,14 @@
     this controls what runtime to include when generating js codes.
     higher target requires higher version of runtime support
 
-# Quirks:
+## Lang
+
+* import vs require
+  require doesnt force typescript check while import enforce type check.
+  that means you have to install that module/package types from npm.
+
+
+## Quirks:
 *  error TS1192: Module '"./node_modules/@types/koa/index"' has no default export.
 
     ```js
@@ -28,11 +35,12 @@
     ```
 
 
-# Notes
+## Notes
 
 * typescript async support:
     typescript support async es6 runtime, but since 2.1rc es5&es3 is also supported:
     https://blogs.msdn.microsoft.com/typescript/2016/11/08/typescript-2-1-rc-better-inference-async-functions-and-more/
+
 
 
 ## checkpoints:
