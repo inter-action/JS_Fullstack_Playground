@@ -23,6 +23,9 @@ clean:
 run:
 	node server/index.js
 
+run-debug:
+	node --inspect server/index.js
+
 test:
 	NODE_ENV=test mocha --recursive $(SRC_TEST)	
 

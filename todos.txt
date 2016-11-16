@@ -12,11 +12,10 @@ add docker proxy
 http://mherman.org/
 
 
+
 # links:
-https://github.com/alexmingoia/koa-router/tree/master/
-
-
-http://www.ruanyifeng.com/blog/2016/11/javascript.html
+aws:
+  https://medium.com/trisfera/deploying-an-express-application-to-aws-lambda-the-easy-way-fa5fbef190ba#.vmuhnsx7r
 
 
 
@@ -42,8 +41,12 @@ todos:
         https://www.smashingmagazine.com/2016/08/getting-started-koa-2-async-functions/
           import bodyParser from 'koa-bodyparser';
           import cors from 'kcors';
+        process.on(`uncaughtException`, console.error);
+        [19 things I learnt reading the NodeJS docs](https://hackernoon.com/19-things-i-learnt-reading-the-nodejs-docs-8a2dcc7f307f#.ibos50cqi)
+          finish net part
+        [Node.js at Scale - Understanding the Node.js Event Loop](https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/)
+        how properly handle request validation
+          writer a high order function that return a params validation middleware
 
-        
-
-
+        can chaiHttp test raw text response?
         
