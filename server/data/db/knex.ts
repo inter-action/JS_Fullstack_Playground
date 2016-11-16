@@ -1,7 +1,6 @@
 import { KnexFile } from '../util'
 import { ENV } from '../../utils'
 
-import * as process from 'process'
 import * as Knex from 'knex'
 
 const environment = process.env.NODE_ENV || ENV.dev;

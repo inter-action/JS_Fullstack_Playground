@@ -1,5 +1,3 @@
-import * as process from 'process'
-
 import * as chai from 'chai'
 
 // KnexInstance
@@ -28,4 +26,4 @@ export const KNEX_CONFIGS = {
         directory: Constants.KNEX_SEEDS_PATH
     }
 }
-export { chai, chaiHttp, server, should, expect, KnexInstance, process }
+export { chai, chaiHttp, server, should, expect, KnexInstance }
