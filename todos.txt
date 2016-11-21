@@ -21,32 +21,38 @@ aws:
 
 todos:
 
-    done:
-  
+  done:
+    es6 symbol - https://www.keithcirkel.co.uk/metaprogramming-in-es6-symbols/
 
-    pending:
-        http://mochajs.org/
-        https://www.tutorialspoint.com/makefile/makefile_dependencies.htm
-        handle nodejs exception, no leak to user 
-        json api versioning
-        add bookshelf orm, refactor tests run on sqlite3
-        
-        integrate koa-route with https://github.com/hapijs/boom
+  pending:
+    http://mochajs.org/
+    https://www.tutorialspoint.com/makefile/makefile_dependencies.htm
+    handle nodejs exception, no leak to user 
+    json api versioning
+    add bookshelf orm, refactor tests run on sqlite3
+    /node_modules/@types/koa-router/index.d.ts
+    how this `res.body[0].explicit.should.not.be.ok;` is writed in src code
 
-        /node_modules/@types/koa-router/index.d.ts
-        add logger
+    https://www.smashingmagazine.com/2016/08/getting-started-koa-2-async-functions/
+      import bodyParser from 'koa-bodyparser';
+      import cors from 'kcors';
+    process.on(`uncaughtException`, console.error);
+    [19 things I learnt reading the NodeJS docs](https://hackernoon.com/19-things-i-learnt-reading-the-nodejs-docs-8a2dcc7f307f#.ibos50cqi)
+      finish net part
+    [Node.js at Scale - Understanding the Node.js Event Loop](https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/)
+    how properly handle request validation
+      writer a high order function that return a params validation middleware
+    chaiHttp isnt able to test raw text response?
+    add logger
+    integrate koa-route with https://github.com/hapijs/boom
+    http://caolan.github.io/async/
+    
+    es7 decorator
+    es6 reflect - https://www.keithcirkel.co.uk/metaprogramming-in-es6-part-2-reflect/
+    https://blog.risingstack.com/nodejs-at-scale-npm-publish-tutorial/
+    https://blog.risingstack.com/finding-a-memory-leak-in-node-js/
+    redis cluster with docker
+    https with nodejs: https://medium.com/@nileshsingh/everything-about-creating-an-https-server-using-node-js-2fc5c48a8d4e#.9oz0lax2n
 
-        how this `res.body[0].explicit.should.not.be.ok;` is writed
-
-        https://www.smashingmagazine.com/2016/08/getting-started-koa-2-async-functions/
-          import bodyParser from 'koa-bodyparser';
-          import cors from 'kcors';
-        process.on(`uncaughtException`, console.error);
-        [19 things I learnt reading the NodeJS docs](https://hackernoon.com/19-things-i-learnt-reading-the-nodejs-docs-8a2dcc7f307f#.ibos50cqi)
-          finish net part
-        [Node.js at Scale - Understanding the Node.js Event Loop](https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/)
-        how properly handle request validation
-          writer a high order function that return a params validation middleware
-
-        can chaiHttp test raw text response?
-        
+    integrate logrotate, docker with pino logger 
+      http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email

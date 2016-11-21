@@ -12,16 +12,22 @@ DOCKER_MYSQL_CONTAINER_NAME := some_mysql
 SRC_SERVER := server/**/*/*.ts
 SRC_TEST := test
 
+PATH_PRJ_ROOT := $$(pwd)
+PATH_LOG := $(PATH_PRJ_ROOT)/blob/logs/myapp.log
+
 MYSQL_ROOT_PASSWORD := jkliop
 
 .PHONY: test
+
+init:
+	mkdir -p blob/logs
 
 clean:
 	rm -rf server/**/*.js
 	rm -rf test/**/*.js
 	
-run:
-	node server/index.js
+run: init
+	node server/index.js > $(PATH_LOG)
 
 run-debug:
 	node --inspect server/index.js
@@ -74,3 +80,6 @@ docker_mysql_stop:
 # tslint --init
 lint:
 	tslint --format verbose $(SRC_SERVER) $(SRC_TEST)
+
+readlog:
+	tail -f $(PATH_LOG) | pino -lt

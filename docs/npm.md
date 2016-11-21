@@ -17,6 +17,6 @@ https://docs.npmjs.com/misc/config
 # Links
 * [npm config](https://docs.npmjs.com/misc/config)
 * [10 npm tricks](https://www.sitepoint.com/10-npm-tips-and-tricks/?utm_source=nodeweekly&utm_medium=email)
-
+* [npm tricks](https://nodesource.com/blog/seven-more-npm-tricks-to-knock-your-wombat-socks-off?utm_source=nodeweekly&utm_medium=email)
 
 

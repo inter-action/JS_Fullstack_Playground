@@ -5,13 +5,14 @@ this project serves a playground for me to experiment JavaScript fullstack techn
 dev:
 * typescript ✓
 * koajs@2.0 ✓
-* mysql with knex
+* logging ✓
+* mysql with knex ✓
+* orm with bookshelf
 * unit test all the way ✓
 * functional test (some) ✓
 * docker all the way (from dev to production)
 * redis cache
 * angular2 (move it to delicated github repo or submoudle ?)
-* logging
 * i18n
 * travis ci
 
