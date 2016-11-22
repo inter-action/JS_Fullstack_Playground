@@ -5,6 +5,7 @@ this project serves a playground for me to experiment JavaScript fullstack techn
 dev:
 * typescript ✓
 * koajs@2.0 ✓
+    * template rendering
 * logging ✓
 * mysql with knex ✓
 * orm with bookshelf
@@ -15,6 +16,7 @@ dev:
 * angular2 (move it to delicated github repo or submoudle ?)
 * i18n
 * travis ci
+* email sending service ✓
 
 production checkpoints:
 * health checking point

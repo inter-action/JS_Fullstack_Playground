@@ -16,4 +16,4 @@ export const logger = pino({
     name: Constants.APP_NAME,
 })
 
-logger.level = LOGGER_LEVELS.info
+logger.level = LOGGER_LEVELS.debug

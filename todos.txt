@@ -17,12 +17,17 @@ http://mherman.org/
 aws:
   https://medium.com/trisfera/deploying-an-express-application-to-aws-lambda-the-easy-way-fa5fbef190ba#.vmuhnsx7r
 
-
+class P {constructor(){this.name = 'p'} hi(){console.log('phi')}}
+class C extends P{constructor(){super(); this.name = 'c'} hi(){console.log('chi')}}
 
 todos:
 
   done:
     es6 symbol - https://www.keithcirkel.co.uk/metaprogramming-in-es6-symbols/
+    es6 reflect - https://www.keithcirkel.co.uk/metaprogramming-in-es6-part-2-reflect/
+    es7 decorator - https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841#.m9olqtn41
+     
+
 
   pending:
     http://mochajs.org/
@@ -32,7 +37,6 @@ todos:
     add bookshelf orm, refactor tests run on sqlite3
     /node_modules/@types/koa-router/index.d.ts
     how this `res.body[0].explicit.should.not.be.ok;` is writed in src code
-
     https://www.smashingmagazine.com/2016/08/getting-started-koa-2-async-functions/
       import bodyParser from 'koa-bodyparser';
       import cors from 'kcors';
@@ -46,13 +50,11 @@ todos:
     add logger
     integrate koa-route with https://github.com/hapijs/boom
     http://caolan.github.io/async/
-    
-    es7 decorator
-    es6 reflect - https://www.keithcirkel.co.uk/metaprogramming-in-es6-part-2-reflect/
     https://blog.risingstack.com/nodejs-at-scale-npm-publish-tutorial/
     https://blog.risingstack.com/finding-a-memory-leak-in-node-js/
     redis cluster with docker
     https with nodejs: https://medium.com/@nileshsingh/everything-about-creating-an-https-server-using-node-js-2fc5c48a8d4e#.9oz0lax2n
-
     integrate logrotate, docker with pino logger 
       http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email
+
+    read nodejs stream doc

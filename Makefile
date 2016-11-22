@@ -15,6 +15,8 @@ SRC_TEST := test
 PATH_PRJ_ROOT := $$(pwd)
 PATH_LOG := $(PATH_PRJ_ROOT)/blob/logs/myapp.log
 
+PATH_TEST_UNIT := test/unit
+
 MYSQL_ROOT_PASSWORD := jkliop
 
 .PHONY: test
@@ -27,7 +29,8 @@ clean:
 	rm -rf test/**/*.js
 	
 run: init
-	node server/index.js > $(PATH_LOG)
+	# node server/index.js > $(PATH_LOG)
+	node server/mailsender/mailgun.js
 
 run-debug:
 	node --inspect server/index.js
@@ -35,6 +38,9 @@ run-debug:
 test:
 	NODE_ENV=test mocha --recursive $(SRC_TEST)	
 
+test-unit:
+	NODE_ENV=test mocha --recursive $(PATH_TEST_UNIT)
+	
 # add tsc as a dependency
 test-with-dep: tsc
 	mocha --recursive $(SRC_TEST)	
