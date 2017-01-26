@@ -2,7 +2,7 @@ import * as chai from 'chai'
 
 // KnexInstance
 import { server } from '../../server/index'
-import { KnexInstance } from '../../server/data/db/knex'
+import { KnexInstance } from '../../server/data/db'
 import { Constants } from '../util'
 import { ENV } from '../../server/utils'
 
