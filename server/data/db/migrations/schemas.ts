@@ -1,14 +1,30 @@
-exports.up = function (knex: any) {// create schema
-    return knex.schema.createTable('shows', function (table: any) {
+import * as KnexModule from 'knex';
+
+/*
+from cli:
+    knex migrate:latest --env test --knexfile  build/server/data/db/knexfile.js
+*/
+
+exports.up = async function (knex: KnexModule) {// create schema
+    await <Promise<any>>knex.schema.createTable('shows', function (table) {
         table.increments();
         table.string('name').notNullable().unique();
         table.string('channel').notNullable();
         table.string('genre').notNullable();
         table.integer('rating').notNullable();
         table.boolean('explicit').notNullable();
+    })
+
+    return await <Promise<any>>knex.schema.createTable('user', function (table) {
+        table.increments();
+        table.string('username', 25).notNullable();
+        table.string('password').notNullable();
+        table.string('email', 200).notNullable().unique();
+        table.timestamps();
     });
 };
 
-exports.down = function (knex: any) {// drop schema
-    return knex.schema.dropTable('shows');
+exports.down = async function (knex: KnexModule) {// drop schema
+    await <Promise<any>>knex.schema.dropTable('shows')
+    return await <Promise<any>>knex.schema.dropTable('user');
 };
