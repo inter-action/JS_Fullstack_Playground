@@ -1,1 +1,0 @@
-exports.KnexFile = require('./db/knexfile')

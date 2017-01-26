@@ -52,5 +52,11 @@ you're surprised by some wired stuff, assume you're using vscode ofc, I suggest 
     made the choices they made. And it has more chanllenge.
 
 
+# Issues:
+
+* when test related to db failed, and it reports db table missing. you need to create your tables specified in the 
+migration folder by run `knex migrate:latest --env test --knexfile  <your project absolute path>build/server/data/db/knexfile.js`,
+if it fails, delete your tables in your testdb first.
+
 # Credits
 * [Michael Herman's blog](http://mherman.org/)

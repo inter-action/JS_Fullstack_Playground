@@ -9,8 +9,10 @@ DOCKER_APP_NAME := interaction/js_fullstack_playground
 DOCKER_NODE_PORT := 9000
 DOCKER_MYSQL_CONTAINER_NAME := some_mysql 
 
-SRC_SERVER := server/**/*/*.ts
-SRC_TEST := test
+PATH_SRC_ROOT := server
+PATH_SRC_TEST := test
+PATH_BUILD_TEST := build/$(PATH_SRC_TEST)
+PATH_BUILD_ROOT := build/$(PATH_SRC_ROOT)
 
 PATH_PRJ_ROOT := $$(pwd)
 PATH_LOG := $(PATH_PRJ_ROOT)/blob/logs/myapp.log
@@ -25,28 +27,27 @@ init:
 	mkdir -p blob/logs
 
 clean:
-	rm -rf server/**/*.js
-	rm -rf test/**/*.js
+	rm -rf build
 	
 run: init
-	# node server/index.js > $(PATH_LOG)
-	node server/mailsender/mailgun.js
+	@printf "server started on port $(DOCKER_NODE_PORT)\n"
+	node $(PATH_BUILD_ROOT)/index.js > $(PATH_LOG)
 
 run-debug:
-	node --inspect server/index.js
+	node --inspect $(PATH_BUILD_ROOT)/index.js
 
-test:
-	NODE_ENV=test mocha --recursive $(SRC_TEST)	
+test: tsc
+	NODE_ENV=test mocha --recursive $(PATH_BUILD_TEST)	
 
 test-unit:
 	NODE_ENV=test mocha --recursive $(PATH_TEST_UNIT)
 	
 # add tsc as a dependency
 test-with-dep: tsc
-	mocha --recursive $(SRC_TEST)	
+	mocha --recursive $(PATH_BUILD_TEST)	
 
 testw: tsc
-	NODE_ENV=test mmocha --compilers ts:ts-node/register --recursive --watch $(SRC_TEST)
+	NODE_ENV=test mocha --recursive --watch $(PATH_BUILD_TEST)
 
 tsc:
 	tsc
@@ -85,7 +86,7 @@ docker_mysql_stop:
 # create lint by
 # tslint --init
 lint:
-	tslint --format verbose $(SRC_SERVER) $(SRC_TEST)
+	tslint --format verbose --project .
 
 readlog:
 	tail -f $(PATH_LOG) | pino -lt

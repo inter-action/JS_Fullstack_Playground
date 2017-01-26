@@ -6,10 +6,11 @@
     "noImplicitAny": true,
     "removeComments": true,
     "preserveConstEnums": true,
-    "allowJs": false,
+    "allowJs": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "outDir": "./build"
   },
   "include": [
     "server/**/*",

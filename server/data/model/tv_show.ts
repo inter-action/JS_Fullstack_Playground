@@ -1,4 +1,4 @@
-import { KnexInstance } from '../db/knex'
+import { KnexInstance } from '../db'
 
 function Shows() {
     return KnexInstance('shows')

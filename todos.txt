@@ -1,3 +1,8 @@
+ knex migrate:make library --env test --knexfile  /Users/interaction/workspace/nodejs/js_fullstack_playground/build/server/data/db/knexfile.js
+ knex migrate:latest library --env test --knexfile  /Users/interaction/workspace/nodejs/js_fullstack_playground/build/server/data/db/knexfile.js
+ knex migrate:latest --env test --knexfile  /Users/interaction/workspace/nodejs/js_fullstack_playground/build/server/data/db/knexfile.js
+
+
 # Road maps
 
 * npm or yarn?
@@ -56,4 +61,11 @@ todos:
       http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email
 
     read nodejs stream doc
-    make knex dir doc
+    update knex doc
+      make knex dir doc
+
+    unify knex workflow
+
+    replace bookshelf config the dotenv
+    
+
