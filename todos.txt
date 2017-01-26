@@ -17,8 +17,6 @@ http://mherman.org/
 aws:
   https://medium.com/trisfera/deploying-an-express-application-to-aws-lambda-the-easy-way-fa5fbef190ba#.vmuhnsx7r
 
-class P {constructor(){this.name = 'p'} hi(){console.log('phi')}}
-class C extends P{constructor(){super(); this.name = 'c'} hi(){console.log('chi')}}
 
 todos:
 
