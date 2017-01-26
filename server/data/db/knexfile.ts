@@ -18,8 +18,8 @@ usage:
   knex seed:run --env dev #run seed file
 
 like:
-  knex migrate:latest --env dev --knexfile /Users/interaction/workspace/nodejs/js_fullstack_playground/jssrc/data/db/knexfile.js
-  knex seed:run --env dev --knexfile /Users/interaction/workspace/nodejs/js_fullstack_playground/jssrc/data/db/knexfile.js
+  knex migrate:latest --env dev --knexfile <yourknexfile root path>
+  knex seed:run --env dev --knexfile <yourknexfile root path>
 */
 
 import { ENV } from '../../utils'
