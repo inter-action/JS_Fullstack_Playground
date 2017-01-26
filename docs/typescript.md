@@ -24,6 +24,14 @@
   require doesnt force typescript check while import enforce type check.
   that means you have to install that module/package types from npm.
 
+* two flavor type conversion
+
+    ```typescript
+    <Promise<any>> some_variable // convert without typechecking
+
+    some_variable as <Promise<any>> // convert with typechecking
+    ```
+
 
 ## Quirks:
 *  error TS1192: Module '"./node_modules/@types/koa/index"' has no default export.

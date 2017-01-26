@@ -39,6 +39,13 @@ to rollback you database, knex  would infer out which is last miragtion based on
     # To rollback the last batch of migrations:
     knex migrate:rollback
     
+
+### seed:
+
+    knex seed:run --env test --knexfile <knex_configfile>
+    
+    
+    
     
     
     
