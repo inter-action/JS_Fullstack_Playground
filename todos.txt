@@ -56,3 +56,4 @@ todos:
       http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email
 
     read nodejs stream doc
+    make knex dir doc

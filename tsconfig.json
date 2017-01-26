@@ -7,7 +7,9 @@
     "removeComments": true,
     "preserveConstEnums": true,
     "allowJs": false,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
   },
   "include": [
     "server/**/*",

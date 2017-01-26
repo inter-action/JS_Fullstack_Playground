@@ -5,7 +5,7 @@ http://mherman.org/blog/2015/09/10/testing-node-js-with-mocha-and-chai/#.WCVFo6J
 http://mherman.org/blog/2016/04/28/test-driven-development-with-node/#.WCUx56J96NY
 */
 
-import { chai, chaiHttp, server, should, expect } from './func_test_util'
+import { chai, server, expect } from './func_test_util'
 // https://www.smashingmagazine.com/2016/08/getting-started-koa-2-async-functions/
 
 describe('app', function () {

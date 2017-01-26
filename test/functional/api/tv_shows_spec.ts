@@ -1,4 +1,4 @@
-import { chai, chaiHttp, server, should, expect, KnexInstance, KNEX_CONFIGS } from '../func_test_util'
+import { chai, server, KnexInstance, KNEX_CONFIGS } from '../func_test_util'
 
 
 describe('API Routes', function () {
@@ -27,7 +27,7 @@ describe('API Routes', function () {
         it('should return all shows', function (done) {
             chai.request(server)
                 .get('/api/tv_shows')
-                .end(function (err, res) {
+                .end(function (_, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.be.a('array');
@@ -52,7 +52,7 @@ describe('API Routes', function () {
         it('should return a single show', function (done) {
             chai.request(server)
                 .get('/api/tv_shows/1')
-                .end(function (err, res) {
+                .end(function (_, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.be.a('object');
@@ -83,7 +83,7 @@ describe('API Routes', function () {
                     rating: 4,
                     explicit: true
                 })
-                .end(function (err, res) {
+                .end(function (_, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.be.a('object');
@@ -111,7 +111,7 @@ describe('API Routes', function () {
                     rating: 4,
                     explicit: true
                 })
-                .end(function (err, res) {
+                .end(function (_, res) {
                     res.should.have.status(200);
                     res.should.be.json; // jshint ignore:line
                     res.body.should.be.a('object');
@@ -137,7 +137,7 @@ describe('API Routes', function () {
                     rating: 4,
                     explicit: true
                 })
-                .end(function (err, res) {
+                .end(function (_, res) {
                     res.should.have.status(422);
                     done();
                 });
@@ -149,7 +149,7 @@ describe('API Routes', function () {
         it('should delete a show', function (done) {
             chai.request(server)
                 .del('/api/tv_shows/1')
-                .end(function (error, response) {
+                .end(function (_, response) {
                     response.should.have.status(200);
                     response.should.be.json;
                     response.body.should.be.a('object');
@@ -165,7 +165,7 @@ describe('API Routes', function () {
                     response.body.explicit.should.not.be.ok
                     chai.request(server)
                         .get('/api/tv_shows')
-                        .end(function (err, res) {
+                        .end(function (_, res) {
                             res.should.have.status(200);
                             res.should.be.json;
                             res.body.should.be.a('array');

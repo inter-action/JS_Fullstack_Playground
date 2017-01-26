@@ -1,4 +1,3 @@
-import * as fs from 'fs'
 import * as pino from 'pino'
 
 import { Constants } from '../utils'

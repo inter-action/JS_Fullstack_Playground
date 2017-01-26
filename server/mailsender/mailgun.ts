@@ -8,7 +8,7 @@ import { BytesReader } from '../utils'
 
 // should have used superagent
 // todo: remove sensitive data from this file
-function sendmail(options: any) {
+export function sendmail(options: any) {
     options = {
         from: 'Mailgun Sandbox <postmaster@sandbox2f07aac2c5e04826a0fffb549244596d.mailgun.org>',
         to: 'jing.miao <243127395@qq.com>',
