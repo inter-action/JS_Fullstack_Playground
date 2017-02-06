@@ -69,7 +69,8 @@ module.exports = {
         // todo: remove overrided code.
         seeds: {
             directory: './seeds/' + ENV.test
-        }
+        },
+        debug: false// enable debug, this option open knex query output
     },
 
     staging: {

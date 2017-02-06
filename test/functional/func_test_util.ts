@@ -2,8 +2,7 @@ import * as chai from 'chai'
 
 // KnexInstance
 import { server } from '../../server/index'
-import { KnexInstance } from '../../server/data/db'
-import { Constants } from '../util'
+import { KnexInstance, KnexConstants } from '../../server/data/db'
 import { ENV } from '../../server/utils'
 
 
@@ -15,15 +14,7 @@ const should = chai.should()
 const expect = chai.expect
 chai.use(chaiHttp);
 
-process.env.NODE_ENV = ENV.test // set env
+// set from makefile
+// process.env.NODE_ENV = ENV.test // set env
 
-export const KNEX_CONFIGS = {
-    MIGRATION: {
-        directory: Constants.KNEX_MIGRATION_PATH
-    },
-
-    SEED: {
-        directory: Constants.KNEX_SEEDS_PATH
-    }
-}
-export { chai, chaiHttp, server, should, expect, KnexInstance }
+export { chai, chaiHttp, server, should, expect, KnexInstance, KnexConstants }

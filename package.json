@@ -11,7 +11,10 @@
     "url": "git+ssh://git@github.com/inter-action/JS_Fullstack_Playground.git"
   },
   "keywords": [
-    "fullstack"
+    "fullstack",
+    "typescript",
+    "nodejs boilerplate",
+    "koajs"
   ],
   "author": "",
   "license": "ISC",
@@ -20,6 +23,8 @@
   },
   "homepage": "https://github.com/inter-action/JS_Fullstack_Playground#readme",
   "dependencies": {
+    "bcrypt": "^1.0.2",
+    "bookshelf": "^0.10.3",
     "knex": "^0.12.6",
     "koa": "^2.0.0-alpha.7",
     "koa-bodyparser": "^3.2.0",
@@ -41,8 +46,9 @@
     "chai": "^3.5.0",
     "chai-http": "^3.0.0",
     "mocha": "^3.1.2",
+    "nodemon": "^1.11.0",
     "ts-node": "^1.7.0",
     "tslint": "^3.15.1",
-    "typescript": "^2.1.1"
+    "typescript": "^2.2.0"
   }
 }

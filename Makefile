@@ -11,13 +11,13 @@ DOCKER_MYSQL_CONTAINER_NAME := some_mysql
 
 PATH_SRC_ROOT := server
 PATH_SRC_TEST := test
-PATH_BUILD_TEST := build/$(PATH_SRC_TEST)
+
 PATH_BUILD_ROOT := build/$(PATH_SRC_ROOT)
+PATH_BUILD_TEST := build/$(PATH_SRC_TEST)
+
 
 PATH_PRJ_ROOT := $$(pwd)
 PATH_LOG := $(PATH_PRJ_ROOT)/blob/logs/myapp.log
-
-PATH_TEST_UNIT := test/unit
 
 MYSQL_ROOT_PASSWORD := jkliop
 
@@ -31,23 +31,21 @@ clean:
 	
 run: init
 	@printf "server started on port $(DOCKER_NODE_PORT)\n"
-	node $(PATH_BUILD_ROOT)/index.js > $(PATH_LOG)
+	nodemon $(PATH_BUILD_ROOT)/index.js > $(PATH_LOG)
 
 run-debug:
-	node --inspect $(PATH_BUILD_ROOT)/index.js
+	nodemon --inspect $(PATH_BUILD_ROOT)/index.js
 
-test: tsc
-	NODE_ENV=test mocha --recursive $(PATH_BUILD_TEST)	
-
-test-unit:
-	NODE_ENV=test mocha --recursive $(PATH_TEST_UNIT)
+test: tsc test-unit test-functional
 	
-# add tsc as a dependency
-test-with-dep: tsc
-	mocha --recursive $(PATH_BUILD_TEST)	
+test-unit:
+	NODE_ENV=test mocha --recursive $(PATH_BUILD_ROOT)
+	
+test-functional:
+	NODE_ENV=test mocha --recursive $(PATH_BUILD_TEST)
 
 testw: tsc
-	NODE_ENV=test mocha --recursive --watch $(PATH_BUILD_TEST)
+	NODE_ENV=test mocha --recursive --watch $(PATH_BUILD_TEST) $(PATH_BUILD_ROOT)
 
 tsc:
 	tsc

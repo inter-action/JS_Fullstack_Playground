@@ -1,28 +1,6 @@
-import { chai, server, KnexInstance, KNEX_CONFIGS } from '../func_test_util'
+import { chai, server } from '../func_test_util'
 
-
-describe('API Routes', function () {
-    beforeEach((done) => {// run each test in this block
-        KnexInstance.migrate.rollback(KNEX_CONFIGS.MIGRATION)
-            .then(() => {
-                KnexInstance.migrate.latest(KNEX_CONFIGS.MIGRATION)
-                    .then(() => {
-                        return KnexInstance.seed.run(KNEX_CONFIGS.SEED)
-                            .then(() => {
-                                done();
-                            });
-                    });
-            });
-    });
-
-    afterEach((done) => {
-        KnexInstance.migrate.rollback(KNEX_CONFIGS.MIGRATION)
-            .then(function () {
-                done();
-            });
-    });
-
-
+export function runTvShowTest() {
     describe('Get all shows', () => {
         it('should return all shows', function (done) {
             chai.request(server)
@@ -185,4 +163,4 @@ describe('API Routes', function () {
                 });
         });
     });
-});
+}
