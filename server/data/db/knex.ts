@@ -13,6 +13,6 @@ export const KnexConstants = {
         directory: path.resolve(__dirname, './migrations')
     },
     SEED: {
-        directory: path.resolve(__dirname, './seeds')
+        directory: path.resolve(__dirname, `./seeds/${environment}`)
     }
 }

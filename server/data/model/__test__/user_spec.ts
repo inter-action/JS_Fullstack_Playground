@@ -17,14 +17,10 @@ describe('Array', function () {
     beforeEach((done) => {// run each test in this block
         KnexInstance.migrate.rollback(KnexConstants.MIGRATION)
             .then(() => {
-                KnexInstance.migrate.latest(KnexConstants.MIGRATION)
-                    .then(() => {
-                        return KnexInstance.seed.run(KnexConstants.SEED)
-                            .then(() => {
-                                done();
-                            });
-                    });
-            });
+                return KnexInstance.migrate.latest(KnexConstants.MIGRATION)
+            }).then(() => {
+                done()
+            })
     });
 
     afterEach((done) => {
@@ -57,7 +53,7 @@ describe('Array', function () {
             ]);
 
             bluebird.all(users.invokeThen('save')).then(() => {
-                return User.findAll().then(data => {
+                return User.findAll().then((data: any) => {
                     // console.log('result collection is', data.length)
                     expect(data.length).to.eq(2);
                     done()

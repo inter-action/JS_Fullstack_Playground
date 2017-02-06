@@ -2,7 +2,7 @@ import * as fs from 'fs'
 
 import * as chai from 'chai'
 
-import { BytesReader } from '../../../server/utils'
+import { BytesReader } from '../io'
 
 const expect = chai.expect
 
