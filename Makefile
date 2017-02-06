@@ -31,10 +31,10 @@ clean:
 	
 run: init
 	@printf "server started on port $(DOCKER_NODE_PORT)\n"
-	node $(PATH_BUILD_ROOT)/index.js > $(PATH_LOG)
+	nodemon $(PATH_BUILD_ROOT)/index.js > $(PATH_LOG)
 
 run-debug:
-	node --inspect $(PATH_BUILD_ROOT)/index.js
+	nodemon --inspect $(PATH_BUILD_ROOT)/index.js
 
 test: tsc
 	NODE_ENV=test mocha --recursive $(PATH_BUILD_TEST)	
