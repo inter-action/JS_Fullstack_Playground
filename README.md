@@ -71,6 +71,12 @@ you're surprised by some wired stuff, assume you're using vscode ofc, I suggest 
 migration folder by run `knex migrate:latest --env test --knexfile  <your project absolute path>build/server/data/db/knexfile.js`,
 if it fails, delete your tables in your testdb first.
 
+
+*  error TS2428: All declarations of 'WeakMap' must have identical type parameters.
+https://github.com/DefinitelyTyped/DefinitelyTyped/issues/14324
+
+
+
 # Credits
 * [Michael Herman's blog](http://mherman.org/)
 
