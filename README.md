@@ -37,6 +37,19 @@ other low priorities checkpoints:
 all the notes in this process would reside in docs/ directory.
 
 
+# start
+
+dev:
+```shell
+npm install
+make tscw
+#open a new tab
+make readlog
+#open a new tab
+make run
+```
+
+
 # notes
 * this repo includes my vscode editor settings, which may not be what u like, also note that in case 
 you're surprised by some wired stuff, assume you're using vscode ofc, I suggest u take look at it.
@@ -60,3 +73,11 @@ if it fails, delete your tables in your testdb first.
 
 # Credits
 * [Michael Herman's blog](http://mherman.org/)
+
+
+#References:
+
+* [Chai](http://chaijs.com/api/bdd/)
+* [Blue Bird API](http://bluebirdjs.com/docs/api-reference.html)
+* [pino api](https://github.com/pinojs/pino/blob/master/docs/API.md#error)
+* [KoaJS examples](https://github.com/koajs/examples)

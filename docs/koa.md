@@ -11,7 +11,17 @@
 
 ## tech stack:
 
-router: koa-router
+```plain
+koa-router
+
+bodyparser: 
+    repo
+        https://github.com/koajs/bodyparser
+    examples:
+        // read request body
+        ctx.request.body
+```
+
 
 
 
