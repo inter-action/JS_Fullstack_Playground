@@ -21,7 +21,12 @@ http://mherman.org/
 # links:
 aws:
   https://medium.com/trisfera/deploying-an-express-application-to-aws-lambda-the-easy-way-fa5fbef190ba#.vmuhnsx7r
-
+  
+node:
+  [19 things I learnt reading the NodeJS docs](https://hackernoon.com/19-things-i-learnt-reading-the-nodejs-docs-8a2dcc7f307f#.ibos50cqi)
+  [Node.js at Scale - Understanding the Node.js Event Loop](https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/)
+  https://blog.risingstack.com/nodejs-at-scale-npm-publish-tutorial/
+  https://blog.risingstack.com/finding-a-memory-leak-in-node-js/
 
 todos:
 
@@ -29,43 +34,47 @@ todos:
     es6 symbol - https://www.keithcirkel.co.uk/metaprogramming-in-es6-symbols/
     es6 reflect - https://www.keithcirkel.co.uk/metaprogramming-in-es6-part-2-reflect/
     es7 decorator - https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841#.m9olqtn41
-     
-
-
-  pending:
-    http://mochajs.org/
-    https://www.tutorialspoint.com/makefile/makefile_dependencies.htm
-    handle nodejs exception, no leak to user 
-    json api versioning
-    add bookshelf orm, refactor tests run on sqlite3
+    add logger
+    process.on(`uncaughtException`, console.error);
     /node_modules/@types/koa-router/index.d.ts
-    how this `res.body[0].explicit.should.not.be.ok;` is writed in src code
+      package type declaration
+
     https://www.smashingmagazine.com/2016/08/getting-started-koa-2-async-functions/
       import bodyParser from 'koa-bodyparser';
       import cors from 'kcors';
-    process.on(`uncaughtException`, console.error);
-    [19 things I learnt reading the NodeJS docs](https://hackernoon.com/19-things-i-learnt-reading-the-nodejs-docs-8a2dcc7f307f#.ibos50cqi)
-      finish net part
-    [Node.js at Scale - Understanding the Node.js Event Loop](https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/)
-    how properly handle request validation
-      writer a high order function that return a params validation middleware
-    chaiHttp isnt able to test raw text response?
-    add logger
-    integrate koa-route with https://github.com/hapijs/boom
-    http://caolan.github.io/async/
-    https://blog.risingstack.com/nodejs-at-scale-npm-publish-tutorial/
-    https://blog.risingstack.com/finding-a-memory-leak-in-node-js/
-    redis cluster with docker
-    https with nodejs: https://medium.com/@nileshsingh/everything-about-creating-an-https-server-using-node-js-2fc5c48a8d4e#.9oz0lax2n
-    integrate logrotate, docker with pino logger 
-      http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email
 
     read nodejs stream doc
+
+
+  pending:
+    https://www.tutorialspoint.com/makefile/makefile_dependencies.htm
+    handle nodejs exception, no leak to user 
+    json api versioning
+    how this `res.body[0].explicit.should.not.be.ok;` is writed in src code
+    chaiHttp isnt able to test raw text response?
+    http://caolan.github.io/async/
+    redis cluster with docker
+    https with nodejs: 
+      https://medium.com/@nileshsingh/everything-about-creating-an-https-server-using-node-js-2fc5c48a8d4e#.9oz0lax2n
+    integrate logrotate, docker with pino logger 
+      http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email
+    
     update knex doc
       make knex dir doc
-
     unify knex workflow
 
-    replace bookshelf config the dotenv
-    
+    add authenticate middleware
+    add dependence explaination
 
+    how properly handle request validation
+      writer a high order function that return a params validation middleware
+
+    integrate koa-route with https://github.com/hapijs/boom
+
+    add bookshelf orm, refactor tests run on sqlite3
+    replace bookshelf config the dotenv
+      bookshelf eager load & lazy load
+
+    fix test
+    update npm package
+    unit test should ignore `UnprocessableEntityError` result by ctx.assert
