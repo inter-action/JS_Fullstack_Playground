@@ -19,8 +19,8 @@ app.use(async (ctx, next) => {
 
 
 // handle uncaught error. replace console with logger 
-app.on('error', function (err: any) {
-    logger.error('server error', err);
+app.on('error', function (error: any) {
+    logger.error(error, 'server error');
 });
 
 // gracefully exit or handle error here

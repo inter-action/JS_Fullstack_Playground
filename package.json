@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/inter-action/JS_Fullstack_Playground#readme",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "knex": "^0.12.6",
     "koa": "^2.0.0-alpha.7",
     "koa-bodyparser": "^3.2.0",
