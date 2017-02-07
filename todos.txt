@@ -79,11 +79,16 @@ todos:
     bookshelf:
       validate model on save
       bookshelf eager load & lazy load
+      filter sensitive out 充血模型 api
+      find better way to type 充血模型
       
     exception handling:
       handle nodejs exception, no leak to user 
       integrate koa-route with https://github.com/hapijs/boom
 
     refactor tests run on sqlite3
+
+    create a custom Validation error, eg. Inside user model
+
     
     

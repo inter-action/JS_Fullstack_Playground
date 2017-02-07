@@ -49,6 +49,12 @@ make readlog
 make run
 ```
 
+# common make rules
+
+```shell
+#debug
+make run-debug
+```
 
 # notes
 * this repo includes my vscode editor settings, which may not be what u like, also note that in case 

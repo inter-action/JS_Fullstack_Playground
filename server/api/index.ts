@@ -9,7 +9,7 @@ const bcrypt_compare: any = Bluebird.promisify(bcrypt.compare);
 let ghash = '';
 
 let ApiRoutes = new Router()
-    .post('/register', async (ctx, next) => {
+    .post('/register', async (ctx) => {
         const request_body = ctx.request.body;
         const hash = await bcrypt_create_hash(request_body.password, saltRounds);
         ghash = hash
