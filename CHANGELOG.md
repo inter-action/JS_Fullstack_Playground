@@ -1,8 +1,11 @@
 ```plain
+2017-02-07
+    add dotenv lib
+    
 2017-02-06
     automatically reload node scripts
     add bookshelf orm lib
-    
+
 
 2016-11-14
     add mailgun email sender

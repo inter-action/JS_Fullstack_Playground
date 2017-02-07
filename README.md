@@ -54,6 +54,11 @@ make run
 * this repo includes my vscode editor settings, which may not be what u like, also note that in case 
 you're surprised by some wired stuff, assume you're using vscode ofc, I suggest u take look at it.
 
+* dotenv:
+    > .env file was add to faciliate config, even though [dot env doc](https://www.npmjs.com/package/dotenv) discourages the practice of including .env file into git version control. the consideration is this: i need .env file to config my dev
+    settings. The actual prod config would be made inside docker config file.(I'll stick to this strategy until the facts hit me otherwise.)
+
+
 # compatiblitiy
 * node > 4.x ,  typescript async support requires it
 

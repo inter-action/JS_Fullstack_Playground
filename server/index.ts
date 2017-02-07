@@ -6,6 +6,9 @@ import { logger } from './logging'
 import { Constants } from './utils'
 import routes from './routes'
 
+// load dotenv
+require('dotenv').config();
+
 const app = new Koa()
 
 app.use(async (ctx, next) => {

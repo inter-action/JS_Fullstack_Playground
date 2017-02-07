@@ -22,9 +22,11 @@ like:
   knex seed:run --env dev --knexfile <yourknexfile root path>
 */
 
-import { ENV } from '../../utils'
+import { ENV, get_mysql_env } from '../../utils'
 
 // Update with your config settings.
+
+let MYSQL_ENV_CONFIG = get_mysql_env();
 
 module.exports = {
 
@@ -38,10 +40,10 @@ module.exports = {
     [ENV.dev]: {
         client: 'mysql',
         connection: {
-            host: '127.0.0.1',
-            user: 'root',
-            password: 'jkliop',
-            database: 'myapp_dev'
+            host: MYSQL_ENV_CONFIG.HOST,
+            user: MYSQL_ENV_CONFIG.USER,
+            password: MYSQL_ENV_CONFIG.PASSWORD,
+            database: MYSQL_ENV_CONFIG.DB
         },
         pool: {
             min: 2,

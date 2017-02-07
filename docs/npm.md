@@ -16,6 +16,7 @@ https://docs.npmjs.com/misc/config
     
 
 ## update depencies
+https://medium.com/@_jh3y/how-to-update-all-npm-packages-in-your-project-at-once-17a8981860ea#.ig26mg9xq
 
     npm outdated
     npm update --save/--save-dev 
