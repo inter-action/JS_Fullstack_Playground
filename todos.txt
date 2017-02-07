@@ -42,13 +42,20 @@ todos:
     https://www.smashingmagazine.com/2016/08/getting-started-koa-2-async-functions/
       import bodyParser from 'koa-bodyparser';
       import cors from 'kcors';
-
     read nodejs stream doc
+    replace bookshelf config the dotenv
+    update npm package
 
+    bookshelf:
+      add bookshelf orm
+
+    exception handling:
+      unit test should ignore `UnprocessableEntityError` result by ctx.assert
 
   pending:
+    clean todo in src code.
     https://www.tutorialspoint.com/makefile/makefile_dependencies.htm
-    handle nodejs exception, no leak to user 
+    
     json api versioning
     how this `res.body[0].explicit.should.not.be.ok;` is writed in src code
     chaiHttp isnt able to test raw text response?
@@ -69,12 +76,14 @@ todos:
     how properly handle request validation
       writer a high order function that return a params validation middleware
 
-    integrate koa-route with https://github.com/hapijs/boom
-
-    add bookshelf orm, refactor tests run on sqlite3
-    replace bookshelf config the dotenv
+    bookshelf:
+      validate model on save
       bookshelf eager load & lazy load
+      
+    exception handling:
+      handle nodejs exception, no leak to user 
+      integrate koa-route with https://github.com/hapijs/boom
 
-    fix test
-    update npm package
-    unit test should ignore `UnprocessableEntityError` result by ctx.assert
+    refactor tests run on sqlite3
+    
+    
