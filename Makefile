@@ -36,7 +36,7 @@ run: init
 run-debug:
 	nodemon --inspect $(PATH_BUILD_ROOT)/index.js
 
-test: tsc test-unit test-functional
+test: clean tsc test-unit test-functional
 	
 test-unit:
 	NODE_ENV=test mocha --recursive $(PATH_BUILD_ROOT)

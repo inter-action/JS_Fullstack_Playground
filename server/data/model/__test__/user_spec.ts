@@ -5,6 +5,9 @@ import * as bluebird from 'bluebird';
 import { KnexInstance, KnexConstants } from '../../db'
 
 const {User, Users} = require('../user');
+import { IUser } from '../user';
+
+
 
 const failed_test = (done: any) => {
     return (error: any) => {
@@ -32,7 +35,7 @@ describe('Array', function () {
 
     describe('# User.save', function () {
         it('test save user', function (done) {
-            let user: any = new User({ username: 'alex', email: 'someemail@qq.com', password: 'fdsafdas' });
+            let user: any = new User(<IUser>{ username: 'alex', email: 'someemail@qq.com', password: 'fdsafdas' });
             user.save().then((model: any) => {
                 expect(model).to.be.ok;
             }).then(() => {
@@ -43,6 +46,18 @@ describe('Array', function () {
                 })
             }).catch(failed_test(done));
         });
+
+        it('should not save user when failing validation', function (done) {
+            let user: any = new User(<IUser>{ username: 'samewell' });
+            user.save().then(() => {
+                assert(false, 'this should never got executed');
+                done();
+            }).catch((err: any) => {
+                // console.log(err);
+                assert(true);
+                done();
+            })
+        })
     });
 
     describe('# Users.save ', function () {

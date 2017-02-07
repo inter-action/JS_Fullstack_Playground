@@ -1,9 +1,33 @@
+import * as ValidatorJS from 'validator';
+import * as _ from 'lodash';
+
+import { booleanChain } from '../../utils';
 import { bookshelf } from '../db';
 
 export const User: any = bookshelf.Model.extend(
     {
         tableName: 'user',
-        hasTimestamps: true
+        hasTimestamps: true,
+
+        initialize: function () {
+            this.on('saving', this.validateSave);
+        },
+
+        validateSave: function () {
+            let attr: IUser = this.attributes;
+
+            let result = booleanChain<IUser>(e => _.isString(e.username) && ValidatorJS.isLength(e.username, { min: 0 }))
+                .map(e => _.isString(e.email) && ValidatorJS.isEmail(e.email))
+                .map(e => _.isString(e.password) && ValidatorJS.isLength(e.password, { min: 8 }))
+                .run(attr);
+
+            if (!result) {
+                // this would prevent model from saved
+                throw new Error('validation failed');
+            }
+            // else do nothing
+        },
+
     }, {
         // static methods
 
