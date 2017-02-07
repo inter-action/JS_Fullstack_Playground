@@ -14,6 +14,13 @@ https://docs.npmjs.com/misc/config
     source ~/.zshrc
     ```
     
+
+## update depencies
+
+    npm outdated
+    npm update --save/--save-dev 
+
+
 # Links
 * [npm config](https://docs.npmjs.com/misc/config)
 * [10 npm tricks](https://www.sitepoint.com/10-npm-tips-and-tricks/?utm_source=nodeweekly&utm_medium=email)
