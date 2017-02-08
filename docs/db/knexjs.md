@@ -20,9 +20,9 @@ a demo reside /jssrc/data/db directory
 ### Migration:
 how migration cli works:
 
-`knex migrate:latest --env test --knexfile  /Users/interaction/workspace/nodejs/js_fullstack_playground/build/server/data/db/knexfile.js`
+`knex migrate:latest --env test --knexfile  build/server/data/db/knexfile.js`
 when you run this in your command line prompt, knex change it's directory to where knex config
-file located, that is `/Users/interaction/workspace/nodejs/js_fullstack_playground/build/server/data/db/`
+file located, that is `build/server/data/db/`
 .then knex will try to create your tables specified in you migration folder with two addtional tables,
 `knex_migration` & `knex_migration_lock`. this two tables preserve some migration history info. when you try
 to rollback you database, knex  would infer out which is last miragtion based on info in these two tables.

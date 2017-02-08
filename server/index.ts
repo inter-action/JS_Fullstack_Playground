@@ -2,12 +2,17 @@ import * as Koa from 'koa'
 import * as http from 'http'
 import * as bodyParser from 'koa-bodyparser'
 
+// load dotenv
+let result = require('dotenv').config();
+if (result.error) {
+    throw result.error
+}
+
 import { logger } from './logging'
 import { Constants } from './utils'
 import routes from './routes'
 
-// load dotenv
-require('dotenv').config();
+
 
 const koa = new Koa()
 
@@ -50,7 +55,10 @@ koa.on('error', function (error: any) {
 });
 
 // gracefully exit or handle error here
-process.on('uncaughtException', logger.error);
+process.on('uncaughtException', (err) => {
+    logger.error(err, 'fatal err occurred, ready to shutdown');
+    process.exit(1);
+});
 
 // app.listen(9000);
 const server = http.createServer(koa.callback()).listen(Constants.APP_PORT)
