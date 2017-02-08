@@ -48,9 +48,14 @@ todos:
 
     bookshelf:
       add bookshelf orm
+      validate model on save
 
     exception handling:
       unit test should ignore `UnprocessableEntityError` result by ctx.assert
+      handle nodejs exception, no leak to user 
+      integrate koa-route with https://github.com/hapijs/boom
+
+    create a custom Validation error, eg. Inside user model
 
   pending:
     clean todo in src code.
@@ -77,18 +82,12 @@ todos:
       writer a high order function that return a params validation middleware
 
     bookshelf:
-      validate model on save
       bookshelf eager load & lazy load
-      filter sensitive out 充血模型 api
+      filter sensitive out data access api
       find better way to type 充血模型
       
-    exception handling:
-      handle nodejs exception, no leak to user 
-      integrate koa-route with https://github.com/hapijs/boom
-
     refactor tests run on sqlite3
-
-    create a custom Validation error, eg. Inside user model
+    
 
     
     

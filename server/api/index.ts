@@ -1,5 +1,8 @@
 import * as Bluebird from 'bluebird';
 import * as Router from 'koa-router'
+import * as Boom from 'boom';
+
+// import { User } from '../data/model';
 import { tv_show } from './tv_show'
 
 const bcrypt = require('bcrypt');
@@ -11,6 +14,9 @@ let ghash = '';
 let ApiRoutes = new Router()
     .post('/register', async (ctx) => {
         const request_body = ctx.request.body;
+        if (!request_body.password) {// this kind error should not be written into log.
+            throw Boom.badRequest('password is required');
+        }
         const hash = await bcrypt_create_hash(request_body.password, saltRounds);
         ghash = hash
         ctx.body = `${ghash}, ${request_body.password}`

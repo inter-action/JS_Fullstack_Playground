@@ -1,7 +1,7 @@
 import * as ValidatorJS from 'validator';
 import * as _ from 'lodash';
 
-import { booleanChain } from '../../utils';
+import { booleanChain, errors } from '../../utils';
 import { bookshelf } from '../db';
 
 export const User: any = bookshelf.Model.extend(
@@ -23,7 +23,7 @@ export const User: any = bookshelf.Model.extend(
 
             if (!result) {
                 // this would prevent model from saved
-                throw new Error('validation failed');
+                throw new errors.ValidationError('user validation failed');
             }
             // else do nothing
         },
