@@ -1,22 +1,29 @@
-import * as chai from 'chai';
+import { assert } from 'chai';
+const ava = require('ava');
+
 import { get_mysql_env } from '../env';
 
-const {assert} = chai;
+let origin_env = process.env;
 
-// these tests require `require('dotenv').config();` call
-// this is made in the server/index.ts 
-// I dont quite sure how that is called from test run
-// but that's just what the fact is.
-describe('#dotenv', function () {
-    it('should get correct mysql config', function () {
-        let MYSQL_ENV = get_mysql_env();
-        assert.equal(MYSQL_ENV.HOST, '127.0.0.1');
-        assert.equal(MYSQL_ENV.DB, 'myapp');
-        assert.equal(MYSQL_ENV.USER, 'root');
-        assert.equal(MYSQL_ENV.PASSWORD, 'jkliop');
-    });
+ava.beforeEach(_ => {
+    require('dotenv').config();
+})
 
-    it('command line should override .env file', function () {
-        assert.equal(process.env.NODE_ENV, 'test');
-    });
+ava.afterEach(async _ => {
+    process.env = origin_env;
+});
+
+
+ava('dotenv: should get correct mysql config', t => {
+    let MYSQL_ENV = get_mysql_env();
+    assert.equal(MYSQL_ENV.HOST, '127.0.0.1');
+    assert.equal(MYSQL_ENV.DB, 'myapp');
+    assert.equal(MYSQL_ENV.USER, 'root');
+    assert.equal(MYSQL_ENV.PASSWORD, 'jkliop');
+    t.pass();
+});
+
+ava('dotenv: command line should override .env file', t => {
+    assert.equal(process.env.NODE_ENV, 'test');
+    t.pass();
 });

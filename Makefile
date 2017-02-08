@@ -35,13 +35,14 @@ run: clean tsc
 run-debug:
 	nodemon --inspect $(PATH_BUILD_ROOT)/index.js
 
+
 test: clean tsc test-unit test-functional
 	
 test-unit:
-	NODE_ENV=test mocha --recursive $(PATH_BUILD_ROOT)
+	NODE_ENV=test ava --verbose --timeout=3s $(PATH_BUILD_ROOT)/**/*spec.js
 	
 test-functional:
-	NODE_ENV=test mocha --recursive $(PATH_BUILD_TEST)
+	NODE_ENV=test ava --serial --verbose $(PATH_BUILD_TEST)/functional/**/*spec.js
 
 testw: tsc
 	NODE_ENV=test mocha --recursive --watch $(PATH_BUILD_TEST) $(PATH_BUILD_ROOT)

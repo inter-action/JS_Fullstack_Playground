@@ -1,6 +1,8 @@
 ```plain
 2017-02-08
     integrated with hapi/boom
+    migrate test framework mocha to ava
+    
 
 2017-02-07
     add dotenv lib

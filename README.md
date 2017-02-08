@@ -65,6 +65,14 @@ you're surprised by some wired stuff, assume you're using vscode ofc, I suggest 
     settings. The actual prod config would be made inside docker config file.(I'll stick to this strategy until the facts hit me otherwise.)
 
 
+# style guide
+
+    #imports order:
+
+    node, global, local lib
+
+
+
 # compatiblitiy
 * node > 4.x ,  typescript async support requires it
 
