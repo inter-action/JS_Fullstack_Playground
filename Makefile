@@ -23,13 +23,12 @@ MYSQL_ROOT_PASSWORD := jkliop
 
 .PHONY: test
 
-init:
-	mkdir -p blob/logs
-
 clean:
+	rm -rf blob/logs
+	mkdir -p blob/logs
 	rm -rf build
 	
-run: init
+run: clean tsc
 	@printf "server started on port $(DOCKER_NODE_PORT)\n"
 	nodemon $(PATH_BUILD_ROOT)/index.js > $(PATH_LOG)
 

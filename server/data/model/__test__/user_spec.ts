@@ -52,8 +52,7 @@ describe('Array', function () {
             user.save().then(() => {
                 assert(false, 'this should never got executed');
                 done();
-            }).catch((err: any) => {
-                // console.log(err);
+            }).catch(_ => {
                 assert(true);
                 done();
             })
