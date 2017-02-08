@@ -3,7 +3,7 @@ export const ENV = {
     test: 'test'
 }
 
-export const get_mysql_env = () => {
+function get_mysql_env() {
     return {
         HOST: process.env.MYSQL_CONNECTION_HOST,
         DB: process.env.MYSQL_CONNECTION_DB,
@@ -15,5 +15,6 @@ export const get_mysql_env = () => {
 export const ENV_UTILS = {
     is_test: () => {
         return process.env.NODE_ENV === ENV.test
-    }
+    },
+    get_mysql_env
 }

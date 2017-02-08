@@ -22,11 +22,11 @@ like:
   knex seed:run --env dev --knexfile <yourknexfile root path>
 */
 
-import { ENV, get_mysql_env } from '../../utils'
+import { ENV, ENV_UTILS } from '../../utils'
 
 // Update with your config settings.
 
-let MYSQL_ENV_CONFIG = get_mysql_env();
+let MYSQL_ENV_CONFIG = ENV_UTILS.get_mysql_env();
 
 module.exports = {
 
