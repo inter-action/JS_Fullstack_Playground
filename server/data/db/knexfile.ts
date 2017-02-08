@@ -21,13 +21,26 @@ like:
   knex migrate:latest --env dev --knexfile <yourknexfile root path>
   knex seed:run --env dev --knexfile <yourknexfile root path>
 */
+import * as path from 'path';
+import * as assert from 'assert';
 
 import { ENV, ENV_UTILS } from '../../utils'
 
-// Update with your config settings.
+if (!ENV_UTILS.get_current_env()) {
+    process.env.NODE_ENV = ENV.dev;
+    let result = require('dotenv').config({ path: path.resolve('../../../../.env') });
+    if (result.error) {
+        throw result.error;
+    }
+}
 
 let MYSQL_ENV_CONFIG = ENV_UTILS.get_mysql_env();
 
+if (!ENV_UTILS.is_test()) {
+    assert(MYSQL_ENV_CONFIG.USER && MYSQL_ENV_CONFIG.PASSWORD, 'no valid mysql configuration');
+}
+
+// Update with your config settings.
 module.exports = {
 
     // development: {

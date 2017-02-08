@@ -1,6 +1,9 @@
 # ABOUT THIS REPO
 this project serves a playground for me to experiment JavaScript fullstack techniques.
 
+### keywords:
+koa2, node, ava, chai, bookshelf, knex, typescript
+
 ## main checkpoints I planed to implement:
 dev:
 * typescript ✓
@@ -46,6 +49,9 @@ make tscw
 #open a new tab
 make readlog
 #open a new tab
+
+# install knex globally
+knex migrate:latest --env dev --knexfile  build/server/data/db/knexfile.js
 make run
 ```
 
@@ -78,11 +84,7 @@ you're surprised by some wired stuff, assume you're using vscode ofc, I suggest 
 
 
 # decisions
-* reactjs vs angular2:
-    I initially planed to use react eco libs as front-end bricks to build univeral app. Then I thought
-    I have learned/exercised enough from my daily work. I want to understand & learn why the angular2 team
-    made the choices they made. And it has more chanllenge.
-
+...
 
 # Issues:
 
@@ -97,6 +99,7 @@ https://github.com/DefinitelyTyped/DefinitelyTyped/issues/14324
 
 
 # Credits
+* [Ghost](https://github.com/TryGhost/Ghost)
 * [Michael Herman's blog](http://mherman.org/)
 
 
@@ -106,3 +109,5 @@ https://github.com/DefinitelyTyped/DefinitelyTyped/issues/14324
 * [Blue Bird API](http://bluebirdjs.com/docs/api-reference.html)
 * [pino api](https://github.com/pinojs/pino/blob/master/docs/API.md#error)
 * [KoaJS examples](https://github.com/koajs/examples)
+* [Boom API](https://github.com/hapijs/boom)
+* [validatorjs](https://github.com/chriso/validator.js)

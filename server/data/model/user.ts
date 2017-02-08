@@ -16,7 +16,11 @@ export const User: any = bookshelf.Model.extend(
         validateSave: function () {
             let attr: IUser = this.attributes;
 
-            let result = booleanChain<IUser>(e => _.isString(e.username) && ValidatorJS.isLength(e.username, { min: 0 }))
+            let result = booleanChain<IUser>(e => {
+                return _.isString(e.username) &&
+                    ValidatorJS.isLength(e.username, { min: 0 }) &&
+                    ValidatorJS.matches(e.username, /^[a-z-_0-9]+$/i)
+            })
                 .map(e => _.isString(e.email) && ValidatorJS.isEmail(e.email))
                 .map(e => _.isString(e.password) && ValidatorJS.isLength(e.password, { min: 8 }))
                 .run(attr);

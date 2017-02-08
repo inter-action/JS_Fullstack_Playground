@@ -23,7 +23,12 @@ bodyparser:
 ```
 
 
+## notes
 
+* always return something in your endpoint either by:
+    * throw error
+    * set ctx.body
+    * set ctx.status
 
 
 

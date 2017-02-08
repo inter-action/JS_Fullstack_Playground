@@ -16,5 +16,9 @@ export const ENV_UTILS = {
     is_test: () => {
         return process.env.NODE_ENV === ENV.test
     },
+
+    get_current_env() {
+        return process.env.NODE_ENV;
+    },
     get_mysql_env
 }
