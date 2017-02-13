@@ -20,7 +20,7 @@ export async function ensureUser(ctx, next) {
         return ctx.throw(401)
     }
 
-    ctx.state.user = await User.findOne({ id: decoded.id })
+    ctx.state.user = await User.findOnePr({ id: decoded.id })
     // bookshelf always return a result, otherwise a Model.NotFoundError is thrown
     // if (!ctx.state.user) {
     //     ctx.throw(401)

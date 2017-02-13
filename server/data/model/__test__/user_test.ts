@@ -26,7 +26,7 @@ ava.serial('#User.save: test save user', async _ => {
     return await user.save().then((model: any) => {
         expect(model).to.be.ok;
     }).then(() => {
-        return User.findOne({ username: 'alexfdsfds' }).then((user: any) => {
+        return User.findOnePr({ username: 'alexfdsfds' }).then((user: any) => {
             expect(user.attributes).to.have.property('username', 'alexfdsfds');
             expect(user.attributes).to.have.property('email', 'someemail@qq.com');
         })
@@ -73,5 +73,5 @@ ava.serial('#Users.save: test batch save user', async _ => {
     ]);
 
     await bluebird.all(users.invokeThen('save'));
-    return await User.findAll().then((data: any) => { expect(data.length).to.eq(2); })
+    return await User.findAllPr().then((data: any) => { expect(data.length).to.eq(2); })
 })
