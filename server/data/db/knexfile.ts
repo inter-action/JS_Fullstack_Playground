@@ -21,18 +21,9 @@ like:
   knex migrate:latest --env dev --knexfile <yourknexfile root path>
   knex seed:run --env dev --knexfile <yourknexfile root path>
 */
-import * as path from 'path';
 import * as assert from 'assert';
 
 import { ENV, ENV_UTILS } from '../../utils'
-
-if (!ENV_UTILS.get_current_env()) {
-    process.env.NODE_ENV = ENV.dev;
-    let result = require('dotenv').config({ path: path.resolve('../../../../.env') });
-    if (result.error) {
-        throw result.error;
-    }
-}
 
 let MYSQL_ENV_CONFIG = ENV_UTILS.get_mysql_env();
 
