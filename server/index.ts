@@ -3,15 +3,15 @@ if (!process.env.NODE_ENV) {
 }
 require('./config');
 
+import * as http from 'http'
 
 import * as Koa from 'koa'
-import * as http from 'http'
 import * as bodyParser from 'koa-bodyparser'
 
 import { logger } from './logging'
 import { Constants } from './utils'
+import { createErrMiddleware } from './middleware'
 import routes from './routes'
-
 
 
 const koa = new Koa()
@@ -21,22 +21,8 @@ koa.use(async (ctx, next) => {
     await next();
     const ms = new Date().getTime() - start.getTime();
     logger.info(`${ctx.method} ${ctx.url} - ${ms}ms`);
-}).use(async (ctx, next) => { // boom error handler middleware
-    try {
-        await next();
-    } catch (e) {
-        if (e.isBoom) {
-            let output = e.output;
-            ctx.status = output.statusCode;
-            Reflect.ownKeys(output.headers).forEach(k => {
-                ctx.response.set(k as string, output.headers[k]);
-            });
-            ctx.body = output.payload;
-        } else {
-            throw e;
-        }
-    }
 })
+    .use(createErrMiddleware())
     .use(bodyParser({ jsonLimit: '1kb' }))
     .use(routes.routes())
 
@@ -44,7 +30,7 @@ koa.use(async (ctx, next) => {
 koa.on('error', function (error: any) {
     // skip logging HttpError all together
     // todo: find a better way to discriminate HttpError
-    if (error.__proto__.status != null) {
+    if (error.__proto__.status != null || error.status) {
         return;
     }
     // if (error.isBoom) {
@@ -62,5 +48,5 @@ process.on('uncaughtException', (err) => {
 
 // app.listen(9000);
 const server = http.createServer(koa.callback()).listen(Constants.APP_PORT)
-logger.info(`server started at localhost:${Constants.APP_PORT}`)
+logger.info(`server started at localhost:${Constants.APP_PORT}, with Env: ${process.env.NODE_ENV}`)
 export { koa, server };

@@ -10,7 +10,7 @@ export class AppError extends Error {
 }
 
 export class ValidationError extends AppError {
-    constructor(msg: string, others: {} = {}) {
+    constructor(msg: string, public status = 401, others: {} = {}) {
         super(msg, others, 'ValidationError');
     }
 }
