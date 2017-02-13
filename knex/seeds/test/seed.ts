@@ -69,8 +69,9 @@ function withTable(table: KnexModule.QueryBuilder) {
 async function seed_users(knex: KnexModule) {
     return withTable(knex('user'))(async table => {
         await <Promise<any>>table.insert({
-            username: 'alex',
-            password: 'alex_password',
+            username: 'bran_stark',
+            // raw password: fuckyouguys
+            password: '$2a$10$Me6ee0U0pwsA9QrdmanvjOi1EurxcWltCsOaesoxt4HWFUWKuUhjW',
             email: 'alex_email',
             created_at: new Date(),
             updated_at: new Date()

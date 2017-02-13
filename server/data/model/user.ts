@@ -37,17 +37,17 @@ export const User: any = bookshelf.Model.extend(
         /*
         @return Promise<bookshelf.Model>
         */
-        findOne: function (query: any, options: any) {
+        findOnePr: function (query: any, options: any) {
             return this.forge(query).fetch(options);
         },
         /*
         @return Promise<Collection>
         */
-        findAll: function (filter: any = {}, options: any) {
+        findAllPr: function (filter: any = {}, options: any) {
             return this.forge().where(filter).fetchAll(options);
         },
 
-        create: function (data: IUser, options: any) {
+        createPr: function (data: IUser, options: any) {
             return this.forge(data).save(null, options);
         },
 
@@ -56,23 +56,20 @@ export const User: any = bookshelf.Model.extend(
         find user , compare password, if not match return null else return user
         @return Promise<user|null, null>
         */
-        login: function (username, password) {
-            return User.findOne({ username }).then(models => {
-                let user = <DBUser>models.attributes;
-                return bcryptCompare(password, user.password).then(ismatch => {
-                    if (ismatch) {
-                        // todo: add a toView api ?
-                        delete user.password;
-                        return user;
-                    } else {
-                        return null;
-                    }
-                });
-            })
+        loginPr: async function (username, password) {
+            let model = await User.findOnePr({ username })
+            let user = <DBUser>model.attributes;
+            let ismatch = await bcryptCompare(password, user.password);
+            if (ismatch) {
+                delete user.password
+                return user
+            } else {
+                throw new errors.AppError('username & password not match', 401);
+            }
         },
 
         // return Promise<password: string>
-        createHash: function (password: string) {
+        createHashPr: function (password: string) {
             return bcryptCreateHash(password, saltRounds);
         },
 
@@ -93,7 +90,7 @@ export const User: any = bookshelf.Model.extend(
 
 
         // return a JWT token
-        createToken: async function (user: DBUser) {
+        createTokenPr: async function (user: DBUser) {
             return await jwtSign({ id: user.id }, ENV_UTILS.getEnvConfig().JWT_SIGNED_TOKEN, {});
         }
 

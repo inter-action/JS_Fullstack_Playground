@@ -12,7 +12,7 @@ let ApiRoutes = new Router()
         if (error) {
             throw error;
         }
-        const hash = await User.createHash(body.password);
+        const hash = await User.createHashPr(body.password);
         body.password = hash;
         await new User(body).save(body);
         ctx.status = 200;
@@ -22,13 +22,13 @@ let ApiRoutes = new Router()
         if (!body.username || !body.password) {
             throw new errors.ValidationError('invalid request');
         }
-        let user = await User.login(body.username, body.password)
+        let user = await User.loginPr(body.username, body.password)
 
         if (!user) {
             ctx.status = 401;
             ctx.body = 'invalid username or password';
         } else {
-            ctx.body = { data: await User.createToken(user) };
+            ctx.body = { data: await User.createTokenPr(user) };
             ctx.status = 200
         }
     })
