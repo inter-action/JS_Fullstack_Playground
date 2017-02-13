@@ -27,6 +27,7 @@
     "bookshelf": "^0.10.3",
     "boom": "^4.2.0",
     "dotenv": "^4.0.0",
+    "jsonwebtoken": "^7.2.1",
     "knex": "^0.12.6",
     "koa": "^2.0.0",
     "koa-bodyparser": "^3.2.0",

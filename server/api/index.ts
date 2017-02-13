@@ -1,31 +1,40 @@
-import * as Bluebird from 'bluebird';
 import * as Router from 'koa-router'
-import * as Boom from 'boom';
 
-import { User } from '../data/model';
+import { User, IUser, validateUserView } from '../data/model';
 import { tv_show } from './tv_show';
-
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const bcrypt_create_hash: any = Bluebird.promisify(bcrypt.hash);
-const bcrypt_compare: any = Bluebird.promisify(bcrypt.compare);
-let ghash = '';
+import { errors } from '../utils';
+import { ensureUser } from '../middleware';
 
 let ApiRoutes = new Router()
     .post('/register', async (ctx) => {
-        const request_body = ctx.request.body;
-        if (!request_body.password) {// this kind error should not be written into log.
-            throw Boom.badRequest('password is required');
+        const body = ctx.request.body;
+        let error = validateUserView(body)
+        if (error) {
+            throw error;
         }
-        const hash = await bcrypt_create_hash(request_body.password, saltRounds);
-        request_body.password = hash;
-        await new User(request_body).save(request_body);
+        const hash = await User.createHash(body.password);
+        body.password = hash;
+        await new User(body).save(body);
         ctx.status = 200;
     })
-    .post('/login', async (ctx) => {
-        const request_body = ctx.request.body;
-        const is_password_valid = await bcrypt_compare(request_body.password, ghash);
-        ctx.body = `${is_password_valid}, ${request_body.password}`
+    .post('/auth', async (ctx) => {
+        const body = ctx.request.body as IUser;
+        if (!body.username || !body.password) {
+            throw new errors.ValidationError('invalid request');
+        }
+        let user = await User.login(body.username, body.password)
+
+        if (!user) {
+            ctx.status = 401;
+            ctx.body = 'invalid username or password';
+        } else {
+            ctx.body = { data: await User.createToken(user) };
+            ctx.status = 200
+        }
+    })
+    .get('/test_auth', ensureUser, async ctx => {
+        ctx.status = 200;
+        ctx.body = 'hey you reached me';
     })
 
 

@@ -97,3 +97,8 @@ readlog:
 
 db_migration: compile
 	node ./build/knex/bin/migration.js -env dev -command migration
+
+git_merge_master:
+	git checkout master
+	git merge dev
+	git checkout dev

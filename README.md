@@ -31,10 +31,18 @@ production checkpoints:
 * https
 
 security:
+* rate limit
 
 
 other low priorities checkpoints:
-* JWT & Outh2
+* Auth:
+    * register
+    * Auth
+    * forget password
+    * activate account
+    * deactivate account
+* JWT ✓
+* Outh2
 * Sketch design
 
 all the notes in this process would reside in docs/ directory.

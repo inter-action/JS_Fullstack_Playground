@@ -66,25 +66,6 @@ ava.serial('#User.save: should not save user when failing validation: username l
     t.fail();
 })
 
-
-ava.serial('#User.save: should not save user when failing validation: username contains illegal character', async t => {
-    let user: any = new User(<IUser>{ username: 'same$%^&*' });
-
-    try {
-        return await user.save().then(() => {
-            assert(false, 'this should never got executed');
-        });
-    } catch (e) {
-        if (e instanceof errors.ValidationError) {
-            t.pass();
-            return;
-        }
-    }
-
-    t.fail();
-})
-
-
 ava.serial('#Users.save: test batch save user', async _ => {
     const users = Users.forge([
         { username: 'alexander-hx', email: 'someemail@qq.com', password: 'fdsafdas' },
