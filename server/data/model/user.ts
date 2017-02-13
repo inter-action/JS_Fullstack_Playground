@@ -1,8 +1,17 @@
 import * as ValidatorJS from 'validator';
 import * as _ from 'lodash';
+import * as Bluebird from 'bluebird';
 
-import { booleanChain, errors } from '../../utils';
+import { booleanChain, errors, ENV_UTILS } from '../../utils';
 import { bookshelf } from '../db';
+
+const jwt = require('jsonwebtoken');
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+const bcryptCreateHash: any = Bluebird.promisify(bcrypt.hash);
+const bcryptCompare: any = Bluebird.promisify(bcrypt.compare);
+const jwtSign: any = Bluebird.promisify(jwt.sign);
 
 export const User: any = bookshelf.Model.extend(
     {
@@ -13,30 +22,20 @@ export const User: any = bookshelf.Model.extend(
             this.on('saving', this.validateSave);
         },
 
+        // todo: can i safely turn this off ?
         validateSave: function () {
             let attr: IUser = this.attributes;
-
-            let result = booleanChain<IUser>(e => {
-                return _.isString(e.username) &&
-                    ValidatorJS.isLength(e.username, { min: 0 }) &&
-                    ValidatorJS.matches(e.username, /^[a-z-_0-9]+$/i)
-            })
-                .map(e => _.isString(e.email) && ValidatorJS.isEmail(e.email))
-                .map(e => _.isString(e.password) && ValidatorJS.isLength(e.password, { min: 8 }))
-                .run(attr);
-
-            if (!result) {
-                // this would prevent model from saved
-                throw new errors.ValidationError('user validation failed');
+            if (!User.validate(attr)) {
+                throw new errors.ValidationError('user model invalid');
             }
-            // else do nothing
         },
 
     }, {
         // static methods
 
+        // todo: filter out password data, interal api call should preseve all data
         /*
-        @return Promise<Model>
+        @return Promise<bookshelf.Model>
         */
         findOne: function (query: any, options: any) {
             return this.forge(query).fetch(options);
@@ -48,15 +47,85 @@ export const User: any = bookshelf.Model.extend(
             return this.forge().where(filter).fetchAll(options);
         },
 
-        create: function (data: any, options: any) {
+        create: function (data: IUser, options: any) {
             return this.forge(data).save(null, options);
         },
+
+        // todo: make this func async
+        /*
+        find user , compare password, if not match return null else return user
+        @return Promise<user|null, null>
+        */
+        login: function (username, password) {
+            return User.findOne({ username }).then(models => {
+                let user = <DBUser>models.attributes;
+                return bcryptCompare(password, user.password).then(ismatch => {
+                    if (ismatch) {
+                        // todo: add a toView api ?
+                        delete user.password;
+                        return user;
+                    } else {
+                        return null;
+                    }
+                });
+            })
+        },
+
+        // return Promise<password: string>
+        createHash: function (password: string) {
+            return bcryptCreateHash(password, saltRounds);
+        },
+
+        // only validate model, the ultimate result to be persisted into database
+        // view model you do it in your controller
+        validate: function (user: IUser) {
+            let result = booleanChain<IUser>(e => {
+                return _.isString(e.username) &&
+                    ValidatorJS.isLength(e.username, { min: 0 }) &&
+                    ValidatorJS.matches(e.username, /^[a-z-_0-9]+$/i)
+            })
+                .map(e => _.isString(e.email) && ValidatorJS.isEmail(e.email))
+                .map(e => _.isString(e.password))
+                .run(user);
+
+            return result;
+        },
+
+
+        // return a JWT token
+        createToken: async function (user: DBUser) {
+            return await jwtSign({ id: user.id }, ENV_UTILS.getEnvConfig().JWT_SIGNED_TOKEN, {});
+        }
+
     });
 
+// && ValidatorJS.isLength(e.password, { min: 8 })
 export interface IUser {
     username: string,
     email: string,
-    password: string,
+    password?: string,
+}
+
+export interface DBUser extends IUser {
+    id: number,
+}
+
+export function validateUserView(user: IUser): errors.ValidationError | null {
+    if (!(_.isString(user.username) &&
+        ValidatorJS.isLength(user.username, { min: 0 }) &&
+        ValidatorJS.matches(user.username, /^[a-z-_0-9]+$/i))) {
+        return new errors.ValidationError('username is invalid')
+    }
+
+    if (!(_.isString(user.email) && ValidatorJS.isEmail(user.email))) {
+        return new errors.ValidationError('email is invalid')
+    }
+
+    if (!(_.isString(user.password) && ValidatorJS.isLength(user.password, { min: 8 }))) {
+        return new errors.ValidationError('password is invalid')
+    }
+
+    return null
 }
 
 export const Users = bookshelf.Collection.extend({

@@ -12,6 +12,14 @@ function get_mysql_env() {
     }
 }
 
+interface ENV_KEYS {
+    JWT_SIGNED_TOKEN: string,
+}
+
+function getEnvConfig(): ENV_KEYS {
+    return process.env
+}
+
 export const ENV_UTILS = {
     is_test: () => {
         return process.env.NODE_ENV === ENV.test
@@ -20,5 +28,6 @@ export const ENV_UTILS = {
     get_current_env() {
         return process.env.NODE_ENV;
     },
-    get_mysql_env
+    get_mysql_env,
+    getEnvConfig
 }
