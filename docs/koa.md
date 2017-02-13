@@ -20,7 +20,36 @@ bodyparser:
     examples:
         // read request body
         ctx.request.body
+
+
 ```
+
+
+* session:
+https://github.com/koajs/generic-session
+
+    npm install --save koa-convert koa-generic-session
+    ```
+    const convert = require('koa-convert') // necessary until koa-generic-session has been updated to support koa@2
+    const session = require('koa-generic-session')
+    ```
+
+## auth: passport, JWT
+    require session support.
+
+    ```
+    npm install --save passport-local koa-passport@next  
+
+    ```
+
+### JWT
+jwt is data encoded a single token make up with 3 major parts. It ensure data's integrity, 
+the 3rd signed hash make it hard to temper the data it contains.
+
+jwt: 
+* [JWT introduction](https://jwt.io/introduction/)
+* [understanding jwt](https://medium.com/vandium-software/5-easy-steps-to-understanding-json-web-tokens-jwt-1164c0adfcec#.h2lcdtlr2)
+
 
 
 ## notes
@@ -31,6 +60,9 @@ bodyparser:
     * set ctx.status
 
 
+## RESTful api:
+
+* [post vs create](http://stackoverflow.com/questions/630453/put-vs-post-in-rest)
 
 
 

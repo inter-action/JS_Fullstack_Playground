@@ -1,6 +1,19 @@
- knex migrate:make library --env test --knexfile  /Users/interaction/workspace/nodejs/js_fullstack_playground/build/server/data/db/knexfile.js
- knex migrate:latest library --env test --knexfile  /Users/interaction/workspace/nodejs/js_fullstack_playground/build/server/data/db/knexfile.js
- knex migrate:latest --env test --knexfile  /Users/interaction/workspace/nodejs/js_fullstack_playground/build/server/data/db/knexfile.js
+ knex migrate:make library --env test --knexfile  build/server/data/db/knexfile.js
+ knex migrate:latest library --env test --knexfile  build/server/data/db/knexfile.js
+ knex migrate:latest --env test --knexfile  build/server/data/db/knexfile.js
+ knex migrate:latest --env dev --knexfile  build/server/data/db/knexfile.js
+
+
+# rename scripts
+
+    #!/bin/bash
+    for file in $(find test -type f); do
+        case $file in
+        *spec.ts) # has a extension
+            mv $file ${file/spec/test};
+        esac
+    done
+
 
 
 # Road maps
@@ -56,6 +69,14 @@ todos:
       integrate koa-route with https://github.com/hapijs/boom
 
     create a custom Validation error, eg. Inside user model
+    change test framework mocha to ava
+    merge get_mysql_env, ENV_UTILS 
+    rename spec to test
+
+    knex:
+      update knex doc
+      unify knex workflow
+
 
   pending:
     clean todo in src code.
@@ -71,10 +92,7 @@ todos:
     integrate logrotate, docker with pino logger 
       http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email
     
-    update knex doc
-      make knex dir doc
-    unify knex workflow
-
+    
     add authenticate middleware
     add dependence explaination
 
@@ -87,6 +105,37 @@ todos:
       find better way to type 充血模型
       
     refactor tests run on sqlite3
+    unit-test, treat db test specially, with loose timeout
+    
+    add status field on user
+      0: none activiated
+      1: activated
+      10-15: warning stage
+      20: locked
+
+    add mysql eager test on run
+
+
+    auth with passport:
+      what session is for
+      koa2 with passport
+      https://github.com/rkusa/koa-passport
+
+
+  /Users/interaction/workspace/nodejs/koa2-api-boilerplate/src/modules/index.js
+    api doc
+    
+
+    $2a$10$Me6ee0U0pwsA9QrdmanvjOi1EurxcWltCsOaesoxt4HWFUWKuUhjW
+    fuckyouguys
+
+
+    所有 可以await 的api 以一种统一的方式命名掉
+    jwt 到底是干啥的 我记得是用作session的替代的，如果如此， 要留session 吗，还是两者并存
+    mongodb 感觉比mysql好用多了，有没有做一版mongo的？
+
+    update doc related to knex migration
+
     
 
     
