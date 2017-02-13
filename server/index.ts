@@ -1,12 +1,12 @@
+if (!process.env.NODE_ENV) {
+    process.env.NODE_ENV = 'dev';
+}
+require('./config');
+
+
 import * as Koa from 'koa'
 import * as http from 'http'
 import * as bodyParser from 'koa-bodyparser'
-
-// load dotenv
-let result = require('dotenv').config();
-if (result.error) {
-    throw result.error
-}
 
 import { logger } from './logging'
 import { Constants } from './utils'

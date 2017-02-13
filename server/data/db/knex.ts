@@ -10,9 +10,9 @@ export const KnexInstance = Knex(config);
 
 export const KnexConstants = {
     MIGRATION: {
-        directory: path.resolve(__dirname, './migrations')
+        directory: path.resolve(__dirname, '../../../knex/migrations')
     },
     SEED: {
-        directory: path.resolve(__dirname, `./seeds/${environment}`)
+        directory: path.resolve(__dirname, `../../../knex/seeds/${environment}`)
     }
 }

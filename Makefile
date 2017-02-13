@@ -28,7 +28,13 @@ clean:
 	mkdir -p blob/logs
 	rm -rf build
 	
-run: clean tsc
+copy-res:
+	mkdir -p build/server/config/dotenv
+	cp -r server/config/dotenv/*.env build/server/config/dotenv
+
+compile: tsc copy-res
+
+run: clean compile
 	@printf "server started on port $(DOCKER_NODE_PORT)\n"
 	nodemon $(PATH_BUILD_ROOT)/index.js > $(PATH_LOG)
 
@@ -36,12 +42,12 @@ run-debug:
 	nodemon --inspect $(PATH_BUILD_ROOT)/index.js
 
 
-test: clean tsc test-unit test-functional
+test: clean compile test-unit test-functional
 	
 test-unit:
 	NODE_ENV=test ava --verbose --timeout=3s $(PATH_BUILD_ROOT)/**/*test.js
 	
-test-functional:
+test-functional: 
 	NODE_ENV=test ava --serial --verbose $(PATH_BUILD_TEST)/functional/**/*test.js
 
 testw: tsc
@@ -88,3 +94,6 @@ lint:
 
 readlog:
 	tail -f $(PATH_LOG) | pino -lt
+
+db_migration: compile
+	node ./build/knex/bin/migration.js -env dev -command migration

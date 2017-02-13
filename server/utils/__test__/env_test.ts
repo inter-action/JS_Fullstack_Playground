@@ -6,7 +6,7 @@ import { ENV_UTILS } from '../env';
 let origin_env = process.env;
 
 ava.beforeEach(_ => {
-    require('dotenv').config();
+    require('../../config');
 })
 
 ava.afterEach(async _ => {
@@ -17,7 +17,7 @@ ava.afterEach(async _ => {
 ava('dotenv: should get correct mysql config', t => {
     let MYSQL_ENV = ENV_UTILS.get_mysql_env();
     assert.equal(MYSQL_ENV.HOST, '127.0.0.1');
-    assert.equal(MYSQL_ENV.DB, 'myapp');
+    assert.equal(MYSQL_ENV.DB, 'myapp_dev');
     assert.equal(MYSQL_ENV.USER, 'root');
     assert.equal(MYSQL_ENV.PASSWORD, 'jkliop');
     t.pass();
