@@ -13,6 +13,7 @@
     "outDir": "./build"
   },
   "include": [
+    "knex/**/*",
     "server/**/*",
     "test/**/*"
   ],
