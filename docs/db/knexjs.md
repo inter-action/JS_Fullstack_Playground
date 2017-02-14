@@ -18,7 +18,7 @@ a demo reside /jssrc/data/db directory
 ## Tools
 
 ### Migration:
-how migration cli works:
+how migration cli works: (this is no longer working, after changes made yestoday, try use db_migration rule defined in makefile)
 
 `knex migrate:latest --env test --knexfile  build/server/data/db/knexfile.js`
 when you run this in your command line prompt, knex change it's directory to where knex config

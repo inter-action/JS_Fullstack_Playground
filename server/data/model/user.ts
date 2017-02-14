@@ -91,7 +91,8 @@ export const User: any = bookshelf.Model.extend(
 
         // return a JWT token
         createTokenPr: async function (user: DBUser) {
-            return await jwtSign({ id: user.id }, ENV_UTILS.getEnvConfig().JWT_SIGNED_TOKEN, {});
+            // todo: change getEnvConfig method to more secure one
+            return await jwtSign({ id: user.id }, ENV_UTILS.getEnvConfig().JWT_SIGNED_TOKEN, {})
         }
 
     });

@@ -4,7 +4,7 @@ import { chai, server } from '../func_test_util'
 
 export function runTvShowTest() {
     let TAG = 'API_TEST:TV_SHOWS';
-    ava.cb(`${TAG}: GET /api/tv_shows, should return all shows`, t => {
+    ava.serial.cb(`${TAG}: GET /api/tv_shows, should return all shows`, t => {
         chai.request(server)
             .get('/api/tv_shows')
             .end(function (_, res) {
@@ -27,7 +27,7 @@ export function runTvShowTest() {
     });
 
 
-    ava.cb(`${TAG}: GET /api/tv_shows/:id, should return a single show `, t => {
+    ava.serial.cb(`${TAG}: GET /api/tv_shows/:id, should return a single show `, t => {
         chai.request(server)
             .get('/api/tv_shows/1')
             .end(function (_, res) {
@@ -48,7 +48,7 @@ export function runTvShowTest() {
             });
     });
 
-    ava.cb(`${TAG}: POST /api/tv_shows, should add a show`, t => {
+    ava.serial.cb(`${TAG}: POST /api/tv_shows, should add a show`, t => {
         chai.request(server)
             .post('/api/tv_shows')
             .send({
@@ -76,7 +76,7 @@ export function runTvShowTest() {
             });
     });
 
-    ava.cb(`${TAG}: PUT /api/tv_shows/:id, should update a show`, t => {
+    ava.serial.cb(`${TAG}: PUT /api/tv_shows/:id, should update a show`, t => {
 
         chai.request(server)
             .put('/api/tv_shows/1')
@@ -103,7 +103,7 @@ export function runTvShowTest() {
     });
 
 
-    ava.cb(`${TAG}: PUT /api/tv_shows/:id, should NOT update a show if the id field is part of the request, `, t => {
+    ava.serial.cb(`${TAG}: PUT /api/tv_shows/:id, should NOT update a show if the id field is part of the request, `, t => {
 
         chai.request(server)
             .put('/api/tv_shows/1')
@@ -118,7 +118,7 @@ export function runTvShowTest() {
             });
     });
 
-    ava.cb(`${TAG}: DELETE /api/tv_shows/:id, should delete a show `, t => {
+    ava.serial.cb(`${TAG}: DELETE /api/tv_shows/:id, should delete a show `, t => {
 
         chai.request(server)
             .del('/api/tv_shows/1')
