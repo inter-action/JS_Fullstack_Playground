@@ -8,6 +8,13 @@ import * as http from 'http'
 import * as Koa from 'koa'
 import * as bodyParser from 'koa-bodyparser'
 
+// necessary until koa-generic-session has been updated to support koa@2
+const convert = require('koa-convert');
+const session = require('koa-generic-session');
+const passport = require('koa-passport');
+require('./config/passport');
+
+
 import { logger } from './logging'
 import { Constants } from './utils'
 import { createErrMiddleware } from './middleware'
@@ -16,6 +23,8 @@ import routes from './routes'
 
 const koa = new Koa()
 
+//todo: move this
+koa.keys = ['whatsoever']
 koa.use(async (ctx, next) => {
     const start = new Date();
     await next();
@@ -24,6 +33,16 @@ koa.use(async (ctx, next) => {
 })
     .use(createErrMiddleware())
     .use(bodyParser({ jsonLimit: '1kb' }))
+    .use(convert(session()))
+    // req._passport.session = req.session[passport._key];
+    // extract data with key `passport._key` from session
+    // passport._key is the result of `serializeUser`
+    .use(passport.initialize())
+    // passport core lib include a session strategy. on success it would set a user 
+    // property on req object.
+    // var property = req._passport.instance._userProperty || 'user';
+    // req[property] = user;
+    .use(passport.session())
     .use(routes.routes())
 
 // handle uncaught error. replace console with logger 

@@ -1,8 +1,8 @@
 import * as Router from 'koa-router'
+import * as koaPassport from 'koa-passport';
 
-import { User, IUser, validateUserView } from '../data/model';
+import { User, validateUserView } from '../data/model';
 import { tv_show } from './tv_show';
-import { errors } from '../utils';
 import { ensureUser } from '../middleware';
 
 let ApiRoutes = new Router()
@@ -17,19 +17,22 @@ let ApiRoutes = new Router()
         await new User(body).save(body);
         ctx.status = 200;
     })
-    .post('/auth', async (ctx) => {
-        const body = ctx.request.body as IUser;
-        if (!body.username || !body.password) {
-            throw new errors.ValidationError('invalid request');
-        }
-        let user = await User.loginPr(body.username, body.password)
-
-        if (!user) {
-            ctx.status = 401;
-            ctx.body = 'invalid username or password';
+    .post('/auth', koaPassport.authenticate('local') as any, async (ctx) => {
+        let uid = ctx.session.passport.user
+        let model = await User.findOnePr({ id: uid });
+        let token = await User.createTokenPr(model.attributes);
+        debugger
+        ctx.body = { data: token }
+    })
+    .post('/logout', koaPassport.authenticate('local') as any, async ctx => {
+        debugger
+        console.log(ctx.session)
+        console.log(ctx.session.passport)
+        if (!ctx.session.passport.user) {
+            ctx.body = 'already logout'
         } else {
-            ctx.body = { data: await User.createTokenPr(user) };
-            ctx.status = 200
+            ctx.logout();
+            ctx.body = 'ok'
         }
     })
     .get('/test_auth', ensureUser, async ctx => {

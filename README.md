@@ -32,6 +32,8 @@ production checkpoints:
 
 security:
 * rate limit
+* all cookie are http only (secure cookie?)
+
 
 
 other low priorities checkpoints:
@@ -69,6 +71,10 @@ make run
 #debug
 make run-debug
 ```
+
+# coding convention
+* all function returns a Promise and can't easily be typed with typescript, its name ends with `Pr` suffix.
+* 
 
 # notes
 * this repo includes my vscode editor settings, which may not be what u like, also note that in case 

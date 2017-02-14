@@ -53,6 +53,12 @@ test-functional:
 testw: tsc
 	NODE_ENV=test mocha --recursive --watch $(PATH_BUILD_TEST) $(PATH_BUILD_ROOT)
 
+# kill ava process if failed
+# npm install --global inspect-process
+test-debug: 
+	NODE_ENV=test inspect node_modules/ava/profile.js build/test/functional/api/api_base_test.js
+
+
 tsc:
 	tsc
 
@@ -61,6 +67,7 @@ tscw:
 
 tsct:
 	tsc -w --traceResolution
+	
 
 docker_build: tsc
 	npm shrinkwrap

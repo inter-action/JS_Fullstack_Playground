@@ -35,12 +35,7 @@ https://github.com/koajs/generic-session
     ```
 
 ## auth: passport, JWT
-    require session support.
 
-    ```
-    npm install --save passport-local koa-passport@next  
-
-    ```
 
 ### JWT
 jwt is data encoded a single token make up with 3 major parts. It ensure data's integrity, 
@@ -50,7 +45,38 @@ jwt:
 * [JWT introduction](https://jwt.io/introduction/)
 * [understanding jwt](https://medium.com/vandium-software/5-easy-steps-to-understanding-json-web-tokens-jwt-1164c0adfcec#.h2lcdtlr2)
 
+### passport
+require session support.
 
+    npm install --save passport-local koa-passport@next  
+
+    .use(convert(session()))
+    // req._passport.session = req.session[passport._key];
+    // extract data with key `passport._key` from session
+    // passport._key is the result of `serializeUser`
+    .use(passport.initialize())
+    // passport core lib include a session strategy. on success it would set a user 
+    // property on req object.
+    // var property = req._passport.instance._userProperty || 'user';
+    // req[property] = user;
+    .use(passport.session())
+
+passport core does some monkey patch on http.IncomingMessage which is request object.
+file:  passport/lib/http/request.js
+methods: login(user, options, done), logout(), isAuthenticated(): boolean.
+
+auth flow:
+
+passport will try all the strategies one by one, any error would be throw via `next(err)` call,
+if one strategy call `fail()` method, passport accumulates its error then attempts next one,
+util one success, or all failed.
+
+if no strategy has successfully authenticated user, passport would fail with 
+
+      if (options.failWithError) {
+        return next(new AuthenticationError(http.STATUS_CODES[res.statusCode], rstatus));
+      }
+      res.end(http.STATUS_CODES[res.statusCode]);
 
 ## notes
 

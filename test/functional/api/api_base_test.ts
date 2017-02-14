@@ -2,7 +2,7 @@ const ava = require('ava');
 
 import { KnexInstance, KnexConstants } from '../func_test_util'
 import { runTvShowTest } from './_tv_shows'
-import { runRegisterTest } from './_register_login';
+import { runRegisterTest } from './_auth';
 
 ava.beforeEach(async _ => {// run each test in this block
     await KnexInstance.migrate.rollback(KnexConstants.MIGRATION)

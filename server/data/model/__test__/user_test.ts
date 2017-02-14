@@ -51,7 +51,6 @@ ava.serial('#User.save: should not save user when failing validation: no passwor
 
 ava.serial('#User.save: should not save user when failing validation: username length', async t => {
     let user: any = new User(<IUser>{ username: 'same' });
-
     try {
         return await user.save().then(() => {
             assert(false, 'this should never got executed');
