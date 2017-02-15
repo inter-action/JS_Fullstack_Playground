@@ -2,31 +2,9 @@ const ava = require('ava');
 
 import { chai, server } from '../func_test_util'
 
+let TAG = 'API_TEST:TV_SHOWS';
+
 export function runTvShowTest() {
-    let TAG = 'API_TEST:TV_SHOWS';
-    ava.serial.cb(`${TAG}: GET /api/tv_shows, should return all shows`, t => {
-        chai.request(server)
-            .get('/api/tv_shows')
-            .end(function (_, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.should.be.a('array');
-                res.body.length.should.equal(4);
-                res.body[0].should.have.property('name');
-                res.body[0].name.should.equal('Suits');
-                res.body[0].should.have.property('channel');
-                res.body[0].channel.should.equal('USA Network');
-                res.body[0].should.have.property('genre');
-                res.body[0].genre.should.equal('Drama');
-                res.body[0].should.have.property('rating');
-                res.body[0].rating.should.equal(3);
-                res.body[0].should.have.property('explicit');
-                res.body[0].explicit.should.not.be.ok; // ok is like , a == truthy 
-                t.end();
-            });
-    });
-
-
     ava.serial.cb(`${TAG}: GET /api/tv_shows/:id, should return a single show `, t => {
         chai.request(server)
             .get('/api/tv_shows/1')
@@ -157,5 +135,30 @@ export function runTvShowTest() {
                     });
             });
 
+    });
+}
+
+
+export function noSideEffect() {
+    ava.cb(`${TAG}: GET /api/tv_shows, should return all shows`, t => {
+        chai.request(server)
+            .get('/api/tv_shows')
+            .end(function (_, res) {
+                res.should.have.status(200);
+                res.should.be.json;
+                res.body.should.be.a('array');
+                res.body.length.should.equal(4);
+                res.body[0].should.have.property('name');
+                res.body[0].name.should.equal('Suits');
+                res.body[0].should.have.property('channel');
+                res.body[0].channel.should.equal('USA Network');
+                res.body[0].should.have.property('genre');
+                res.body[0].genre.should.equal('Drama');
+                res.body[0].should.have.property('rating');
+                res.body[0].rating.should.equal(3);
+                res.body[0].should.have.property('explicit');
+                res.body[0].explicit.should.not.be.ok; // ok is like , a == truthy 
+                t.end();
+            });
     });
 }
