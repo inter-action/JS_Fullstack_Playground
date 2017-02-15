@@ -43,7 +43,7 @@ class BooleanNode<T> {
     }
 }
 
-// todo: this provides nearly zero value except providing a functional api implementation demo
+// this provides nearly zero value except providing a functional api implementation demo
 // actually I kind like how this api can group boolean assertion together :)
 export function booleanChain<T>(e: BooleanExpression<T>): BooleanNode<T> {
     return new BooleanNode(e);

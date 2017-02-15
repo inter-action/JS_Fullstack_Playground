@@ -1,34 +1,8 @@
-/*
-this file is knex config file. the reason for this file not resided inside server folder
-is because knex cli creates js file relative to this file. so until i can make sure that
-i dont have to work knex cli, this file has to continue staying here.
-*/
-
-
-/*
-installation:
-  npm install knex -g # get cli
-  npm install knex --save-dev  #access from app
-
-usage:
-  knex init # create a knexfile.js
-  knex migrate:make tv_shows  # create a migration file under ./migrations folder
-  knex migrate:latest --env dev  # create dbs inside configured database 
-  knex seed:make shows_seed --env dev # generate a .seeds/dev folder, configed inside knexfile.js
-  knex seed:run --env dev #run seed file
-
-like:
-  knex migrate:latest --env dev --knexfile <yourknexfile root path>
-  knex seed:run --env dev --knexfile <yourknexfile root path>
-*/
-import * as assert from 'assert';
-
 import { ENV, ENV_UTILS } from '../../utils'
 
-let MYSQL_ENV_CONFIG = ENV_UTILS.get_mysql_env();
-
+let MYSQL_ENV_CONFIG;
 if (!ENV_UTILS.is_test()) {
-    assert(MYSQL_ENV_CONFIG.USER && MYSQL_ENV_CONFIG.PASSWORD, 'no valid mysql configuration');
+    MYSQL_ENV_CONFIG = ENV_UTILS.get_mysql_env();
 }
 
 // Update with your config settings.
@@ -43,7 +17,7 @@ module.exports = {
 
     [ENV.dev]: {
         client: 'mysql',
-        connection: {
+        connection: MYSQL_ENV_CONFIG && {
             host: MYSQL_ENV_CONFIG.HOST,
             user: MYSQL_ENV_CONFIG.USER,
             password: MYSQL_ENV_CONFIG.PASSWORD,
@@ -69,12 +43,6 @@ module.exports = {
         pool: {
             min: 2,
             max: 10
-        },
-        // determine where automatically generated go & from where seed file will be run
-        // note in unit test, this directory is overrided in code
-        // todo: remove overrided code.
-        seeds: {
-            directory: './seeds/' + ENV.test
         },
         debug: false// enable debug, this option open knex query output
     },

@@ -1,24 +1,33 @@
+type ENV_MYSQL_KEYS =
+    'MYSQL_CONNECTION_HOST' | 'MYSQL_CONNECTION_DB' | 'MYSQL_CONNECTION_USER' | 'MYSQL_CONNECTION_PASSWORD';
+
+type ENV_KEYS = ENV_MYSQL_KEYS | 'JWT_SIGNED_TOKEN' | 'APP_COOKIE_KEY' | 'APP_PORT';
+
+
+function getEnvConfig(key: ENV_KEYS, safe = true): string {
+    let result = process.env[key];
+
+    if (safe && !result) {
+        throw new Error(`no config been found for key: ${key}`);
+    }
+    return result;
+}
+
 export const ENV = {
     dev: 'dev',
     test: 'test'
 }
 
+
 function get_mysql_env() {
     return {
-        HOST: process.env.MYSQL_CONNECTION_HOST,
-        DB: process.env.MYSQL_CONNECTION_DB,
-        USER: process.env.MYSQL_CONNECTION_USER,
-        PASSWORD: process.env.MYSQL_CONNECTION_PASSWORD
+        HOST: getEnvConfig('MYSQL_CONNECTION_HOST'),
+        DB: getEnvConfig('MYSQL_CONNECTION_DB'),
+        USER: getEnvConfig('MYSQL_CONNECTION_USER'),
+        PASSWORD: getEnvConfig('MYSQL_CONNECTION_PASSWORD')
     }
 }
 
-interface ENV_KEYS {
-    JWT_SIGNED_TOKEN: string,
-}
-
-function getEnvConfig(): ENV_KEYS {
-    return process.env
-}
 
 export const ENV_UTILS = {
     is_test: () => {

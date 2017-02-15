@@ -19,7 +19,7 @@ export async function ensureUser(ctx, next) {
 
         let decoded: any = null
         try {
-            decoded = await promiseVerify(token, ENV_UTILS.getEnvConfig().JWT_SIGNED_TOKEN);
+            decoded = await promiseVerify(token, ENV_UTILS.getEnvConfig('JWT_SIGNED_TOKEN'));
         } catch (err) {
             return ctx.throw(401)
         }
