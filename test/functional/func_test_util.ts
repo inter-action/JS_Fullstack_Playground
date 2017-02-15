@@ -5,9 +5,6 @@ const glob = require('glob');
 import { server } from '../../server/index'
 import { KnexInstance, KnexConstants } from '../../server/data/db'
 
-
-// todo: fix this
-// import * as chaiHttp from 'chai-http';
 const chaiHttp = require('chai-http')
 const should = chai.should()
 
@@ -28,6 +25,10 @@ export function dbRollback() {
     }
 }
 
+// load from config/test.env, but i hate context switching
+let methodBlackList: RegExp[] = [
+    // /^tv_show/gi
+];
 
 export function runWithFilter(cb: (module: any, key: string, hasSideEffect: boolean) => void) {
     // options is optional
@@ -36,9 +37,14 @@ export function runWithFilter(cb: (module: any, key: string, hasSideEffect: bool
         else {
             for (let i = 0; i < files.length; i++) {
                 let filepath: string = files[i];
-                let filename = filepath.substring(filepath.lastIndexOf('/'));
+                let filename = filepath.substring(filepath.lastIndexOf('/') + 1);
                 if (filename.indexOf('test') !== -1) {
-                    console.log('skip test: ', filename);
+                    console.log('skip test with no test keyword: ', filename);
+                    continue;
+                }
+
+                if (methodBlackList.some(r => r.test(filename))) {
+                    console.log(`skip test:  ${filename} in blacklist `);
                     continue;
                 }
 
@@ -47,7 +53,7 @@ export function runWithFilter(cb: (module: any, key: string, hasSideEffect: bool
                     if (typeof module[k] !== 'function') return;
 
                     let hasSideEffect = true
-                    if (/noSideEffect$/.test(k)) {
+                    if (/noSideEffect$/i.test(k)) {
                         hasSideEffect = false
                     }
                     cb(module, k, hasSideEffect)

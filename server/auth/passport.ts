@@ -9,12 +9,12 @@ import { errors } from '../utils';
 // these two function is current used by passport session strategy
 // also could be used by other strategies.
 passport.serializeUser((user, done) => {
-    done(null, user.id)
+    done(null, user.uuid)
 })
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (uuid, done) => {
     try {
-        const model = await User.findOnePr({ id })
+        const model = await User.findOnePr({ uuid })
         done(null, model.attributes);
     } catch (err) {
         done(err)

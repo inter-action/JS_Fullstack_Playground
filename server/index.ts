@@ -12,7 +12,7 @@ import * as bodyParser from 'koa-bodyparser'
 const convert = require('koa-convert');
 const session = require('koa-generic-session');
 const passport = require('koa-passport');
-require('./config/passport');
+require('./auth/passport');
 
 
 import { logger } from './logging'
