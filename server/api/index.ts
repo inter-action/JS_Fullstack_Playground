@@ -5,6 +5,7 @@ import { User, validateUserView } from '../data/model';
 import { tv_show } from './tv_show';
 import { ensureUser } from '../middleware';
 
+const localAuth: any = koaPassport.authenticate('local')
 let ApiRoutes = new Router()
     .post('/register', async (ctx) => {
         const body = ctx.request.body;
@@ -17,19 +18,15 @@ let ApiRoutes = new Router()
         await new User(body).save(body);
         ctx.status = 200;
     })
-    .post('/auth', koaPassport.authenticate('local') as any, async (ctx) => {
-        let uid = ctx.session.passport.user
-        let model = await User.findOnePr({ id: uid });
+    .post('/auth', localAuth, async (ctx) => {
+        let uuid = ctx.session.passport.user
+        let model = await User.findOnePr({ uuid });
         let token = await User.createTokenPr(model.attributes);
         ctx.body = { data: token }
     })
-    .post('/logout', koaPassport.authenticate('local') as any, async ctx => {
-        if (!ctx.session.passport.user) {
-            ctx.body = 'already logout'
-        } else {
-            ctx.logout();
-            ctx.body = 'ok'
-        }
+    .post('/logout', localAuth, async ctx => {
+        ctx.logout();
+        ctx.status = 200;
     })
     .get('/test_auth', ensureUser, async ctx => {
         ctx.status = 200;

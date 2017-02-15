@@ -17,6 +17,7 @@ exports.up = async function (knex: KnexModule) {// create schema
 
     return await <Promise<any>>knex.schema.createTable('user', function (table) {
         table.increments();
+        table.string('uuid', 36).notNullable();
         table.string('username', 25).notNullable();
         table.string('password').notNullable();
         table.string('email', 200).notNullable().unique();

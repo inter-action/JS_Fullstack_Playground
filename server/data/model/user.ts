@@ -2,9 +2,10 @@ import * as ValidatorJS from 'validator';
 import * as _ from 'lodash';
 import * as Bluebird from 'bluebird';
 
+
 import { booleanChain, errors, ENV_UTILS } from '../../utils';
 import { bookshelf } from '../db';
-
+import { AppBookshelf } from './base'
 const jwt = require('jsonwebtoken');
 
 const bcrypt = require('bcrypt');
@@ -13,12 +14,16 @@ const bcryptCreateHash: any = Bluebird.promisify(bcrypt.hash);
 const bcryptCompare: any = Bluebird.promisify(bcrypt.compare);
 const jwtSign: any = Bluebird.promisify(jwt.sign);
 
-export const User: any = bookshelf.Model.extend(
+export const User: any = AppBookshelf.Model.extend(
     {
+        // AppBookshelf.Model.prototype.<method_name>.apply(this, arguments);
+        // call super method 
+
         tableName: 'user',
         hasTimestamps: true,
 
         initialize: function () {
+            AppBookshelf.Model.prototype.initialize.apply(this, arguments);
             this.on('saving', this.validateSave);
         },
 
@@ -30,6 +35,8 @@ export const User: any = bookshelf.Model.extend(
         },
 
     }, {
+        // AppBookshelf.Model.<method_name> call super static methods
+
         // static methods
 
         // todo: filter out password data, interal api call should preseve all data
@@ -46,7 +53,7 @@ export const User: any = bookshelf.Model.extend(
             return this.forge().where(filter).fetchAll(options);
         },
 
-        createPr: function (data: IUser, options: any) {
+        createAndSavePr: function (data: DBUser, options: any) {
             return this.forge(data).save(null, options);
         },
 
@@ -73,14 +80,15 @@ export const User: any = bookshelf.Model.extend(
 
         // only validate model, the ultimate result to be persisted into database
         // view model you do it in your controller
-        validate: function (user: IUser) {
-            let result = booleanChain<IUser>(e => {
+        validate: function (user: DBUser) {
+            let result = booleanChain<DBUser>(e => {
                 return _.isString(e.username) &&
                     ValidatorJS.isLength(e.username, { min: 0 }) &&
                     ValidatorJS.matches(e.username, /^[a-z-_0-9]+$/i)
             })
                 .map(e => _.isString(e.email) && ValidatorJS.isEmail(e.email))
                 .map(e => _.isString(e.password))
+                .map(e => _.isString(e.uuid))
                 .run(user);
 
             return result;
@@ -103,6 +111,7 @@ export interface IUser {
 
 export interface DBUser extends IUser {
     id: number,
+    uuid: string,
 }
 
 export function validateUserView(user: IUser): errors.ValidationError | null {
