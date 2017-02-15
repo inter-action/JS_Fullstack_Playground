@@ -16,15 +16,15 @@ require('./config/passport');
 
 
 import { logger } from './logging'
-import { Constants } from './utils'
+import { ENV_UTILS } from './utils'
 import { createErrMiddleware } from './middleware'
 import routes from './routes'
 
 
 const koa = new Koa()
 
-//todo: move this
-koa.keys = ['whatsoever']
+// session require this
+koa.keys = [ENV_UTILS.getEnvConfig('APP_COOKIE_KEY')]
 koa.use(async (ctx, next) => {
     const start = new Date();
     await next();
@@ -65,7 +65,7 @@ process.on('uncaughtException', (err) => {
     process.exit(1);
 });
 
-// app.listen(9000);
-const server = http.createServer(koa.callback()).listen(Constants.APP_PORT)
-logger.info(`server started at localhost:${Constants.APP_PORT}, with Env: ${process.env.NODE_ENV}`)
+let port = ENV_UTILS.getEnvConfig('APP_PORT');
+const server = http.createServer(koa.callback()).listen(port)
+logger.info(`server started at localhost:${port}, with Env: ${process.env.NODE_ENV}`)
 export { koa, server };

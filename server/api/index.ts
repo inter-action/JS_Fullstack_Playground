@@ -21,13 +21,9 @@ let ApiRoutes = new Router()
         let uid = ctx.session.passport.user
         let model = await User.findOnePr({ id: uid });
         let token = await User.createTokenPr(model.attributes);
-        debugger
         ctx.body = { data: token }
     })
     .post('/logout', koaPassport.authenticate('local') as any, async ctx => {
-        debugger
-        console.log(ctx.session)
-        console.log(ctx.session.passport)
         if (!ctx.session.passport.user) {
             ctx.body = 'already logout'
         } else {

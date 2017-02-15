@@ -17,7 +17,7 @@ module.exports = {
 
     [ENV.dev]: {
         client: 'mysql',
-        connection: {
+        connection: MYSQL_ENV_CONFIG && {
             host: MYSQL_ENV_CONFIG.HOST,
             user: MYSQL_ENV_CONFIG.USER,
             password: MYSQL_ENV_CONFIG.PASSWORD,

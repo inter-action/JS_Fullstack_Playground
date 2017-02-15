@@ -1,14 +1,19 @@
 import * as stream from 'stream'
 
 
+// like java BytesReader, read bytes into memory
 export class BytesReader extends stream.Writable {
     // todo: optionalize this
-    private _buffer = new Buffer(512 * 1024).fill(0)
+    private _buffer;
     private length = 0
     private encoding: null | string = null
 
+    constructor(size: number = 512 * 1024, options?: {}) {
+        super(options);
+        this._buffer = new Buffer(size).fill(0);
+    }
+
     protected _write(chunk: any, encoding: string, callback: Function): void {
-        // logger.info('write data' + (chunk as Buffer).toString('utf8'))
         try {
             if (Buffer.isBuffer(chunk)) {
                 const src = chunk as Buffer

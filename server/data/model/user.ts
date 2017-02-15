@@ -22,7 +22,6 @@ export const User: any = bookshelf.Model.extend(
             this.on('saving', this.validateSave);
         },
 
-        // todo: can i safely turn this off ?
         validateSave: function () {
             let attr: IUser = this.attributes;
             if (!User.validate(attr)) {
@@ -90,7 +89,6 @@ export const User: any = bookshelf.Model.extend(
 
         // return a JWT token
         createTokenPr: async function (user: DBUser) {
-            // todo: change getEnvConfig method to more secure one
             return await jwtSign({ id: user.id }, ENV_UTILS.getEnvConfig('JWT_SIGNED_TOKEN'), {})
         }
 
