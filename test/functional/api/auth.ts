@@ -2,9 +2,9 @@ const ava = require('ava');
 import { chai, server } from '../func_test_util';
 const {assert} = chai;
 
+let TAG = 'API_TEST:rister&login';
 
-export function runRegisterTest() {
-    let TAG = 'API_TEST:rister&login';
+export function withSideEffect() {
     ava.cb(`${TAG}: register should success`, t => {
         chai.request(server)
             .post('/api/register')
@@ -46,6 +46,54 @@ export function runRegisterTest() {
             });
     })
 
+
+
+    // todo: cant make this test work, test would throw error
+    // at request2 with return status 400, but there should be no error 
+    // in this app with status code 400, now I suspect `connection: close`
+    // header cause this, i could delay the time between requests.
+
+    // ava.only(`${TAG}: logout should work`, async t => {
+    //     let agent = chai.request.agent(server)
+    //     let resp1: any = await toPromise(
+    //         agent.post('/api/auth')
+    //             .send({
+    //                 username: 'bran_stark',
+    //                 password: 'fuckyouguys',
+    //             })
+    //     )
+    //     assert(resp1.status === 200)
+
+    //     let resp2: any = await toPromise(
+    //         agent.post('/api/logout')
+    //     )
+    //     assert(resp2.status === 200);
+
+    //     let resp3: any = await toPromise(
+    //         agent.get('/api/test_auth')
+    //     )
+
+    //     assert(resp3.status === 401);
+    // })
+    // todo: auth should also be successful with email
+
+
+    // ava.cb(`${TAG}: login should success`, t => {
+    //     chai.request(server)
+    //         .post('/api/login')
+    //         .send({
+    //             email: '243127392@qq.com',
+    //             password: 'fuckyouguys'
+    //         })
+    //         .end(function (_, res) {
+    //             res.should.have.status(200);
+    //             t.end();
+    //         });
+    // });
+}
+
+
+export function noSideEffect() {
     ava.cb(`${TAG}: auth success`, t => {
         chai.request(server)
             .post('/api/auth')
@@ -105,47 +153,4 @@ export function runRegisterTest() {
         let resp2: any = await agent.get('/api/test_auth')
         t.is(resp2.status, 200)
     })
-
-    // todo: cant make this test work, test would throw error
-    // at request2 with return status 400, but there should be no error 
-    // in this app with status code 400, now I suspect `connection: close`
-    // header cause this, i could delay the time between requests.
-
-    // ava.only(`${TAG}: logout should work`, async t => {
-    //     let agent = chai.request.agent(server)
-    //     let resp1: any = await toPromise(
-    //         agent.post('/api/auth')
-    //             .send({
-    //                 username: 'bran_stark',
-    //                 password: 'fuckyouguys',
-    //             })
-    //     )
-    //     assert(resp1.status === 200)
-
-    //     let resp2: any = await toPromise(
-    //         agent.post('/api/logout')
-    //     )
-    //     assert(resp2.status === 200);
-
-    //     let resp3: any = await toPromise(
-    //         agent.get('/api/test_auth')
-    //     )
-
-    //     assert(resp3.status === 401);
-    // })
-    // todo: auth should also be successful with email
-
-
-    // ava.cb(`${TAG}: login should success`, t => {
-    //     chai.request(server)
-    //         .post('/api/login')
-    //         .send({
-    //             email: '243127392@qq.com',
-    //             password: 'fuckyouguys'
-    //         })
-    //         .end(function (_, res) {
-    //             res.should.have.status(200);
-    //             t.end();
-    //         });
-    // });
 }
