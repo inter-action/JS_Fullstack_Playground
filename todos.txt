@@ -20,24 +20,24 @@ docker-compose run api npm install cors
 
 add docker proxy
 
-# blogs:
-http://mherman.org/
-
-
 # blah blah blah
 
     $2a$10$Me6ee0U0pwsA9QrdmanvjOi1EurxcWltCsOaesoxt4HWFUWKuUhjW
     fuckyouguys
 
 # links:
-aws:
-  https://medium.com/trisfera/deploying-an-express-application-to-aws-lambda-the-easy-way-fa5fbef190ba#.vmuhnsx7r
-  
-node:
-  [19 things I learnt reading the NodeJS docs](https://hackernoon.com/19-things-i-learnt-reading-the-nodejs-docs-8a2dcc7f307f#.ibos50cqi)
-  [Node.js at Scale - Understanding the Node.js Event Loop](https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/)
-  https://blog.risingstack.com/nodejs-at-scale-npm-publish-tutorial/
-  https://blog.risingstack.com/finding-a-memory-leak-in-node-js/
+  aws:
+    https://medium.com/trisfera/deploying-an-express-application-to-aws-lambda-the-easy-way-fa5fbef190ba#.vmuhnsx7r
+    
+  node:
+    [19 things I learnt reading the NodeJS docs](https://hackernoon.com/19-things-i-learnt-reading-the-nodejs-docs-8a2dcc7f307f#.ibos50cqi)
+    [Node.js at Scale - Understanding the Node.js Event Loop](https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/)
+    https://blog.risingstack.com/nodejs-at-scale-npm-publish-tutorial/
+    https://blog.risingstack.com/finding-a-memory-leak-in-node-js/
+
+
+  https://www.tutorialspoint.com/makefile/makefile_dependencies.htm
+
 
 todos:
 
@@ -57,6 +57,7 @@ todos:
       integrate koa-route with https://github.com/hapijs/boom
 
     security: 
+      change jwt id to uuid
 
     es6 symbol - https://www.keithcirkel.co.uk/metaprogramming-in-es6-symbols/
     es6 reflect - https://www.keithcirkel.co.uk/metaprogramming-in-es6-part-2-reflect/
@@ -86,16 +87,18 @@ todos:
     所有 可以await 的api 以一种统一的方式命名掉
     update doc related to knex migration
 
-    
+    replace all console log with logger, due to pino writing format
+    make request no side effect run concurrently
 
   pending:
     mongodb 感觉比mysql好用多了，有没有做一版mongo的？
       事物该如何处理
+    
+    http://apidocjs.com/
+      https://github.com/adrianObel/koa2-api-boilerplate
 
     
-
     clean todo in src code.
-    https://www.tutorialspoint.com/makefile/makefile_dependencies.htm
     
     json api versioning
     how this `res.body[0].explicit.should.not.be.ok;` is writed in src code
@@ -105,7 +108,6 @@ todos:
       https://medium.com/@nileshsingh/everything-about-creating-an-https-server-using-node-js-2fc5c48a8d4e#.9oz0lax2n
     integrate logrotate, docker with pino logger 
       http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email
-    
     
     add authenticate middleware
     add dependence explaination
@@ -118,6 +120,10 @@ todos:
       filter sensitive out data access api
       when bookshelf can support es6, it's very unpleasant to work with along with typescript.
         extend es6 - https://github.com/tgriesser/bookshelf/issues/756
+      
+      add bookshelf plugins, complete bookshelf config as Ghost does.
+
+      find all, pagination, sort...etc
 
     refactor tests run on sqlite3
     unit-test, treat db test specially, with loose timeout
@@ -128,23 +134,13 @@ todos:
       10-15: warning stage
       20: locked
 
-    add mysql eager test on run
+    test db eagerly on start
 
     auth with passport:
       what session is for
       koa2 with passport
       https://github.com/rkusa/koa-passport
 
-
-  /Users/interaction/workspace/nodejs/koa2-api-boilerplate/src/modules/index.js
-    api doc
-    
-    replace all console log with logger
-      due to pino writing format
-      
     security: 
-      change jwt id to uuid
-
-    make request no side effect run concurrently
-
     
+    add utility to export & import data, like what Ghost does

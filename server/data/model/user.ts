@@ -14,6 +14,8 @@ const bcryptCreateHash: any = Bluebird.promisify(bcrypt.hash);
 const bcryptCompare: any = Bluebird.promisify(bcrypt.compare);
 const jwtSign: any = Bluebird.promisify(jwt.sign);
 
+// I can type this user with a User constructor & a User type. Like the `Date`
+// example in link https://basarat.gitbooks.io/typescript/content/docs/types/lib.d.ts.html
 export const User: any = AppBookshelf.Model.extend(
     {
         // AppBookshelf.Model.prototype.<method_name>.apply(this, arguments);
