@@ -23,7 +23,7 @@ let ApiRoutes = new Router()
     .post('/auth', localAuth, async (ctx) => {
         let uuid = ctx.session.passport.user
         let model = await User.findOnePr({ uuid });
-        let token = await User.createTokenPr(model.attributes);
+        let token = await User.createTokenPr(model.toJSON());
         ctx.body = { data: token }
     })
     .post('/logout', sessionAuth, async ctx => {

@@ -30,7 +30,7 @@ export const User: any = AppBookshelf.Model.extend(
         },
 
         validateSave: function () {
-            let attr: IUser = this.attributes;
+            let attr: IUser = this.toJSON();
             if (!User.validate(attr)) {
                 throw new errors.ValidationError('user model invalid');
             }
@@ -65,7 +65,7 @@ export const User: any = AppBookshelf.Model.extend(
         */
         loginPr: async function (username, password) {
             let model = await User.findOnePr({ username })
-            let user = <DBUser>model.attributes;
+            let user = <DBUser>model.toJSON();
             let ismatch = await bcryptCompare(password, user.password);
             if (ismatch) {
                 delete user.password
