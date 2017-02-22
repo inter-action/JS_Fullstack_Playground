@@ -1,7 +1,7 @@
 import * as Router from 'koa-router'
 import * as koaPassport from 'koa-passport';
 
-import { User, validateUserView } from '../data/model';
+import { User, validateUserView } from '../model';
 import { tv_show } from './tv_show';
 import { ensureUser } from '../middleware';
 

@@ -2,7 +2,7 @@ const { verify } = require('jsonwebtoken');
 import * as BlueBird from 'bluebird';
 
 import { getAuthToken, ENV_UTILS } from '../utils'
-import { User } from '../data/model'
+import { User } from '../model'
 
 const promiseVerify: any = BlueBird.promisify(verify);
 

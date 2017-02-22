@@ -1,5 +1,5 @@
 import * as Router from 'koa-router'
-import * as TvShow from '../../data/model/tv_show'
+import * as TvShow from '../../model/tv_show'
 
 const tv_show = new Router()
 

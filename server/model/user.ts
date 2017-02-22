@@ -3,8 +3,8 @@ import * as _ from 'lodash';
 import * as Bluebird from 'bluebird';
 
 
-import { booleanChain, errors, ENV_UTILS } from '../../utils';
-import { bookshelf } from '../db';
+import { booleanChain, errors, ENV_UTILS } from '../utils';
+import { bookshelf } from '../data/db';
 import { AppBookshelf } from './base'
 const jwt = require('jsonwebtoken');
 

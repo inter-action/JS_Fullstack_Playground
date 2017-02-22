@@ -2,7 +2,7 @@
 const passport = require('koa-passport');
 const {Strategy} = require('passport-local')
 
-import { User } from '../data/model';
+import { User } from '../model';
 import { errors } from '../utils';
 
 // any error would propagate with `next(error)` call

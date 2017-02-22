@@ -3,8 +3,8 @@ const ava = require('ava');
 
 import * as bluebird from 'bluebird';
 
-import { KnexInstance, KnexConstants } from '../../db'
-import { errors } from '../../../utils'
+import { KnexInstance, KnexConstants } from '../../data/db'
+import { errors } from '../../utils'
 
 const {User, Users} = require('../user');
 import { IUser } from '../user';
