@@ -33,6 +33,7 @@ production checkpoints:
 security:
 * rate limit
 * all cookie are http only (secure cookie?)
+* specific endpoint spam prevention
 
 
 
@@ -60,8 +61,7 @@ make tscw
 make readlog
 #open a new tab
 
-# install knex globally
-knex migrate:latest --env dev --knexfile  build/server/data/db/knexfile.js
+make db_migration
 make run
 ```
 

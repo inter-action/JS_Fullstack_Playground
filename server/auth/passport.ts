@@ -20,7 +20,11 @@ passport.deserializeUser(async (uuid, done) => {
         done(err)
     }
 })
+// passport can paired with session, if auth success, a `passport.user` field would add to 
+// session object which is the result of serializeUser
 
+// passport-core include a session strategy which get deserialized user from session's `passport.user`
+// via deserializeUser method
 passport.use('local', new Strategy({
     usernameField: 'username',
     passwordField: 'password',

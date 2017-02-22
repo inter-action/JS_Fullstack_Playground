@@ -38,8 +38,8 @@ koa.use(async (ctx, next) => {
     // extract data with key `passport._key` from session
     // passport._key is the result of `serializeUser`
     .use(passport.initialize())
-    // passport core lib include a session strategy. on success it would set a user 
-    // property on req object.
+    // passport core lib include a session strategy. on success it would set a serialized user 
+    // on req object.
     // var property = req._passport.instance._userProperty || 'user';
     // req[property] = user;
     .use(passport.session())
