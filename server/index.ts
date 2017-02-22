@@ -18,7 +18,7 @@ require('./auth/passport');
 import { logger } from './logging'
 import { ENV_UTILS } from './utils'
 import { createErrMiddleware } from './middleware'
-import routes from './routes'
+import { initRoutes } from './routes'
 
 
 const koa = new Koa()
@@ -43,7 +43,12 @@ koa.use(async (ctx, next) => {
     // var property = req._passport.instance._userProperty || 'user';
     // req[property] = user;
     .use(passport.session())
-    .use(routes.routes())
+
+
+initRoutes(koa);
+
+
+
 
 // handle uncaught error. replace console with logger 
 koa.on('error', function (error: any) {

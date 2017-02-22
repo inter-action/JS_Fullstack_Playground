@@ -65,13 +65,14 @@ export const User: any = AppBookshelf.Model.extend(
         */
         loginPr: async function (username, password) {
             let model = await User.findOnePr({ username })
+            if (!model) return null;
             let user = <DBUser>model.toJSON();
             let ismatch = await bcryptCompare(password, user.password);
             if (ismatch) {
                 delete user.password
                 return user
             } else {
-                throw new errors.AppError('username & password not match', 401);
+                return null;
             }
         },
 

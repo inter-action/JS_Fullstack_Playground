@@ -26,7 +26,7 @@ ava.serial('#User.save: test save user', async _ => {
     return await user.save().then((model: any) => {
         expect(model).to.be.ok;
     }).then(() => {
-        return User.findOnePr({ username: 'alexfdsfds' }).then((user: any) => {
+        return User.findOnePr({ username: 'alexfdsfds' }, { require: true }).then((user: any) => {
             expect(user.toJSON()).to.have.property('username', 'alexfdsfds');
             expect(user.toJSON()).to.have.property('email', 'someemail@qq.com');
         })

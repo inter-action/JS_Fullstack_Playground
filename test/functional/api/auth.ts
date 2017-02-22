@@ -102,8 +102,8 @@ export function noSideEffect() {
                 password: 'fuckyouguys',
             })
             .end(function (_, res) {
-                assert(res.status === 200);
-                assert(typeof res.body.data === 'string' && res.body.data)
+                t.is(res.status, 200);
+                t.truthy(typeof res.body.data === 'string' && res.body.data);
                 t.end();
             });
     })
@@ -116,14 +116,14 @@ export function noSideEffect() {
                 password: 'fuckyouguys',
             })
             .end(function (_, res) {
-                assert(res.status === 200);
+                t.is(res.status, 200);
                 let token = res.body.data;
 
                 chai.request(server)
                     .get('/api/test_auth')
                     .set('authorization', `Bearer ${token}`)
                     .end(function (_, res) {
-                        assert(res.status === 200);
+                        t.is(res.status, 200);
                         t.end();
                     });
             });
@@ -135,22 +135,8 @@ export function noSideEffect() {
             .get('/api/test_auth')
             .set('authorization', `Bearer fdsafdsafs`)
             .end(function (_, res) {
-                assert(res.status === 401);
+                t.is(res.status, 401);
                 t.end();
             });
-    })
-
-    ava(`${TAG}: logined user able to send a second request without auth token`, async t => {
-        // preserve cookie using agent
-        let agent = await chai.request.agent(server)
-        let resp1: any = await agent.post('/api/auth')
-            .send({
-                username: 'bran_stark',
-                password: 'fuckyouguys',
-            })
-        t.is(resp1.status, 200)
-
-        let resp2: any = await agent.get('/api/test_auth')
-        t.is(resp2.status, 200)
     })
 }

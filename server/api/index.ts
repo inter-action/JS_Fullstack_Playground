@@ -1,14 +1,11 @@
 import * as Router from 'koa-router'
-import * as koaPassport from 'koa-passport';
 
 import { User, validateUserView } from '../model';
 import { tv_show } from './tv_show';
-import { ensureUser } from '../middleware';
+import { AuthMiddlewares } from '../middleware';
 
-const localAuth: any = koaPassport.authenticate('local')
-const sessionAuth: any = koaPassport.authenticate('session');
 
-let ApiRoutes = new Router()
+export const ApiRoutes = new Router({ prefix: '/api' })
     .post('/register', async (ctx) => {
         const body = ctx.request.body;
         let error = validateUserView(body)
@@ -20,22 +17,21 @@ let ApiRoutes = new Router()
         await new User(body).save(body);
         ctx.status = 200;
     })
-    .post('/auth', localAuth, async (ctx) => {
-        let uuid = ctx.session.passport.user
-        let model = await User.findOnePr({ uuid });
-        let token = await User.createTokenPr(model.toJSON());
+    // return a bearer token for auth. using username & password
+    .post('/auth', async (ctx, next) => {
+        let user = await AuthMiddlewares.localAuth(ctx, next)
+        let token = await User.createTokenPr(user);
         ctx.body = { data: token }
     })
-    .post('/logout', sessionAuth, async ctx => {
-        ctx.logout();
-        ctx.status = 200;
-    })
-    .get('/test_auth', ensureUser, async ctx => {
+    // pass on a valid bearer token
+    .get('/test_auth', AuthMiddlewares.ensureBearerToken, async ctx => {
         ctx.status = 200;
         ctx.body = 'hey you reached me';
     })
+    .get('/', (ctx) => {
+        ctx.body = 'Hello api';
+    })
 
 
-ApiRoutes.use('/tv_shows', tv_show.routes(), tv_show.allowedMethods());
 
-export default ApiRoutes
+ApiRoutes.use(tv_show.routes(), tv_show.allowedMethods());
