@@ -1,4 +1,5 @@
 import * as Router from 'koa-router'
+import * as koaPassport from 'koa-passport';
 
 import { User, validateUserView } from '../model';
 import { tv_show } from './tv_show';
@@ -18,9 +19,8 @@ export const ApiRoutes = new Router({ prefix: '/api' })
         ctx.status = 200;
     })
     // return a bearer token for auth. using username & password
-    .post('/auth', async (ctx, next) => {
-        let user = await AuthMiddlewares.localAuth(ctx, next)
-        let token = await User.createTokenPr(user);
+    .post('/auth', koaPassport.authenticate('local', { session: false }), async (ctx) => {
+        let token = await User.createTokenPr(ctx.req.user);
         ctx.body = { data: token }
     })
     // pass on a valid bearer token
