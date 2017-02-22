@@ -6,6 +6,8 @@ import { tv_show } from './tv_show';
 import { ensureUser } from '../middleware';
 
 const localAuth: any = koaPassport.authenticate('local')
+const sessionAuth: any = koaPassport.authenticate('session');
+
 let ApiRoutes = new Router()
     .post('/register', async (ctx) => {
         const body = ctx.request.body;
@@ -24,7 +26,7 @@ let ApiRoutes = new Router()
         let token = await User.createTokenPr(model.attributes);
         ctx.body = { data: token }
     })
-    .post('/logout', localAuth, async ctx => {
+    .post('/logout', sessionAuth, async ctx => {
         ctx.logout();
         ctx.status = 200;
     })
