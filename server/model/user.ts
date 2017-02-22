@@ -128,7 +128,7 @@ export function validateUserView(user: IUser): errors.ValidationError | null {
         return new errors.ValidationError('email is invalid')
     }
 
-    if (!(_.isString(user.password) && ValidatorJS.isLength(user.password, { min: 8 }))) {
+    if (!(_.isString(user.password) && ValidatorJS.isLength(user.password as any, { min: 8 }))) {
         return new errors.ValidationError('password is invalid')
     }
 
