@@ -8,7 +8,7 @@ koa2, node, ava, chai, bookshelf, knex, typescript
 dev:
 * typescript ✓
 * koajs@2.0 ✓
-    * template rendering
+    * template rendering (ejs) ✓
 * logging ✓
 * mysql with knex ✓
 * orm with bookshelf
@@ -20,6 +20,7 @@ dev:
 * i18n
 * travis ci
 * email sending service ✓
+* reactjs server rendering ?
 
 production checkpoints:
 * health checking point
@@ -121,3 +122,4 @@ https://github.com/DefinitelyTyped/DefinitelyTyped/issues/14324
 * [KoaJS examples](https://github.com/koajs/examples)
 * [Boom API](https://github.com/hapijs/boom)
 * [validatorjs](https://github.com/chriso/validator.js)
+* [ejs](https://github.com/mde/ejs)

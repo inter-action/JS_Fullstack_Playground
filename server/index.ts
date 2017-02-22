@@ -4,6 +4,7 @@ if (!process.env.NODE_ENV) {
 require('./config');
 
 import * as http from 'http'
+import * as path from 'path';
 
 import * as Koa from 'koa'
 import * as bodyParser from 'koa-bodyparser'
@@ -13,6 +14,8 @@ const convert = require('koa-convert');
 const session = require('koa-generic-session');
 const passport = require('koa-passport');
 require('./auth/passport');
+
+const views = require('koa-views');
 
 
 import { logger } from './logging'
@@ -32,6 +35,7 @@ koa.use(async (ctx, next) => {
     logger.info(`${ctx.method} ${ctx.url} - ${ms}ms`);
 })
     .use(createErrMiddleware())
+    .use(views(path.resolve(__dirname, '../views'), { extension: 'ejs', map: { ejs: 'ejs' }, }))
     .use(bodyParser({ jsonLimit: '1kb' }))
     .use(convert(session()))
     // req._passport.session = req.session[passport._key];

@@ -9,7 +9,9 @@ declare module 'koa-router' {
             passport: {
                 user: number
             },
-        }
+        },
+
+        render: (tpl_path: string, opts?: {}) => Promise<any>,
     }
 }
 
