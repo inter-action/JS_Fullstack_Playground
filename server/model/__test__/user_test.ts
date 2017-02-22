@@ -3,8 +3,8 @@ const ava = require('ava');
 
 import * as bluebird from 'bluebird';
 
-import { KnexInstance, KnexConstants } from '../../db'
-import { errors } from '../../../utils'
+import { KnexInstance, KnexConstants } from '../../data/db'
+import { errors } from '../../utils'
 
 const {User, Users} = require('../user');
 import { IUser } from '../user';
@@ -26,9 +26,9 @@ ava.serial('#User.save: test save user', async _ => {
     return await user.save().then((model: any) => {
         expect(model).to.be.ok;
     }).then(() => {
-        return User.findOnePr({ username: 'alexfdsfds' }).then((user: any) => {
-            expect(user.attributes).to.have.property('username', 'alexfdsfds');
-            expect(user.attributes).to.have.property('email', 'someemail@qq.com');
+        return User.findOnePr({ username: 'alexfdsfds' }, { require: true }).then((user: any) => {
+            expect(user.toJSON()).to.have.property('username', 'alexfdsfds');
+            expect(user.toJSON()).to.have.property('email', 'someemail@qq.com');
         })
     })
 })

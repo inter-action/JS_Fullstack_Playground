@@ -31,6 +31,7 @@ clean:
 copy-res:
 	mkdir -p build/server/config/dotenv
 	cp -r server/config/dotenv/*.env build/server/config/dotenv
+	cp -r views build
 
 compile: tsc copy-res
 

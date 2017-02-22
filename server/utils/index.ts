@@ -11,7 +11,7 @@ export { Constants, paths, errors }
 /*
 return `authorization: Bearer <token>` if found otherwise null
 */
-export function getAuthToken(ctx) {
+export function getAuthBearerToken(ctx): null | string {
     const header = ctx.request.header.authorization
     if (!header) {
         return null

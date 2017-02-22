@@ -1,4 +1,6 @@
-export * from './validator';
+import * as AuthMiddlewares from './auth';
+
+export { AuthMiddlewares }
 
 export function createErrMiddleware() {
     return async (ctx, next) => {

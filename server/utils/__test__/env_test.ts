@@ -31,6 +31,6 @@ ava('dotenv: command line should override .env file', t => {
 // Generate a v4 UUID (random)
 const uuidV4 = require('uuid/v4');
 
-ava.skip('dotenv: command line should override .env file', t => {
+ava.skip('dotenv: command line should override .env file', _ => {
     console.log(uuidV4())
 });

@@ -2,7 +2,7 @@
 const passport = require('koa-passport');
 const {Strategy} = require('passport-local')
 
-import { User } from '../data/model';
+import { User } from '../model';
 import { errors } from '../utils';
 
 // any error would propagate with `next(error)` call
@@ -14,13 +14,17 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (uuid, done) => {
     try {
-        const model = await User.findOnePr({ uuid })
-        done(null, model.attributes);
+        const model = await User.findOnePr({ uuid }, { require: true })
+        done(null, model.toJSON());
     } catch (err) {
         done(err)
     }
 })
+// passport can paired with session, if auth success, a `passport.user` field would add to 
+// session object which is the result of serializeUser
 
+// passport-core include a session strategy which get deserialized user from session's `passport.user`
+// via deserializeUser method
 passport.use('local', new Strategy({
     usernameField: 'username',
     passwordField: 'password',

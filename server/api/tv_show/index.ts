@@ -1,14 +1,13 @@
 import * as Router from 'koa-router'
-import * as TvShow from '../../data/model/tv_show'
+import * as TvShow from '../../model/tv_show'
 
-const tv_show = new Router()
+export const tv_show = new Router({ prefix: '/tv_shows' })
 
 tv_show
-    .get('/', async (ctx, next) => {// next is not needed. but for demo purpose i leave it here
+    .get('/', async (ctx) => {
         try {
             const shows = await TvShow.getAll()
             ctx.body = shows
-            return await next() // this line is not necessary
         } catch (ex) {
             ctx.throw(404, ex.message)
         }
@@ -36,4 +35,3 @@ tv_show
         ctx.body = item
     })
 
-export { tv_show }

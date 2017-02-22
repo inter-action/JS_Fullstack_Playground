@@ -4,6 +4,7 @@ if (!process.env.NODE_ENV) {
 require('./config');
 
 import * as http from 'http'
+import * as path from 'path';
 
 import * as Koa from 'koa'
 import * as bodyParser from 'koa-bodyparser'
@@ -14,11 +15,13 @@ const session = require('koa-generic-session');
 const passport = require('koa-passport');
 require('./auth/passport');
 
+const views = require('koa-views');
+
 
 import { logger } from './logging'
 import { ENV_UTILS } from './utils'
 import { createErrMiddleware } from './middleware'
-import routes from './routes'
+import { initRoutes } from './routes'
 
 
 const koa = new Koa()
@@ -32,18 +35,24 @@ koa.use(async (ctx, next) => {
     logger.info(`${ctx.method} ${ctx.url} - ${ms}ms`);
 })
     .use(createErrMiddleware())
+    .use(views(path.resolve(__dirname, '../views'), { extension: 'ejs', map: { ejs: 'ejs' }, }))
     .use(bodyParser({ jsonLimit: '1kb' }))
     .use(convert(session()))
     // req._passport.session = req.session[passport._key];
     // extract data with key `passport._key` from session
     // passport._key is the result of `serializeUser`
     .use(passport.initialize())
-    // passport core lib include a session strategy. on success it would set a user 
-    // property on req object.
+    // passport core lib include a session strategy. on success it would set a serialized user 
+    // on req object.
     // var property = req._passport.instance._userProperty || 'user';
     // req[property] = user;
     .use(passport.session())
-    .use(routes.routes())
+
+
+initRoutes(koa);
+
+
+
 
 // handle uncaught error. replace console with logger 
 koa.on('error', function (error: any) {

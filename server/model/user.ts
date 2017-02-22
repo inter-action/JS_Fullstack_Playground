@@ -3,8 +3,8 @@ import * as _ from 'lodash';
 import * as Bluebird from 'bluebird';
 
 
-import { booleanChain, errors, ENV_UTILS } from '../../utils';
-import { bookshelf } from '../db';
+import { booleanChain, errors, ENV_UTILS } from '../utils';
+import { bookshelf } from '../data/db';
 import { AppBookshelf } from './base'
 const jwt = require('jsonwebtoken');
 
@@ -14,6 +14,8 @@ const bcryptCreateHash: any = Bluebird.promisify(bcrypt.hash);
 const bcryptCompare: any = Bluebird.promisify(bcrypt.compare);
 const jwtSign: any = Bluebird.promisify(jwt.sign);
 
+// I can type this user with a User constructor & a User type. Like the `Date`
+// example in link https://basarat.gitbooks.io/typescript/content/docs/types/lib.d.ts.html
 export const User: any = AppBookshelf.Model.extend(
     {
         // AppBookshelf.Model.prototype.<method_name>.apply(this, arguments);
@@ -28,7 +30,7 @@ export const User: any = AppBookshelf.Model.extend(
         },
 
         validateSave: function () {
-            let attr: IUser = this.attributes;
+            let attr: IUser = this.toJSON();
             if (!User.validate(attr)) {
                 throw new errors.ValidationError('user model invalid');
             }
@@ -63,13 +65,14 @@ export const User: any = AppBookshelf.Model.extend(
         */
         loginPr: async function (username, password) {
             let model = await User.findOnePr({ username })
-            let user = <DBUser>model.attributes;
+            if (!model) return null;
+            let user = <DBUser>model.toJSON();
             let ismatch = await bcryptCompare(password, user.password);
             if (ismatch) {
                 delete user.password
                 return user
             } else {
-                throw new errors.AppError('username & password not match', 401);
+                return null;
             }
         },
 
@@ -125,7 +128,7 @@ export function validateUserView(user: IUser): errors.ValidationError | null {
         return new errors.ValidationError('email is invalid')
     }
 
-    if (!(_.isString(user.password) && ValidatorJS.isLength(user.password, { min: 8 }))) {
+    if (!(_.isString(user.password) && ValidatorJS.isLength(user.password as any, { min: 8 }))) {
         return new errors.ValidationError('password is invalid')
     }
 

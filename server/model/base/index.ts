@@ -1,4 +1,4 @@
-const {bookshelf} = require('../../db');
+const {bookshelf} = require('../../data/db');
 const uuidV4 = require('uuid/v4');
 
 export const AppBookshelf = bookshelf;
