@@ -46,7 +46,9 @@ other low priorities checkpoints:
     * activate account
     * deactivate account
 * JWT ✓
-* Outh2
+* OAuth2
+    * github ✓
+    * weixin 
 * Sketch design
 
 all the notes in this process would reside in docs/ directory.
@@ -123,3 +125,7 @@ https://github.com/DefinitelyTyped/DefinitelyTyped/issues/14324
 * [Boom API](https://github.com/hapijs/boom)
 * [validatorjs](https://github.com/chriso/validator.js)
 * [ejs](https://github.com/mde/ejs)
+
+passport:
+* [passport](http://passportjs.org/docs)
+* [koa passport](https://github.com/rkusa/koa-passport)

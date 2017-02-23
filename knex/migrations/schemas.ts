@@ -22,6 +22,8 @@ exports.up = async function (knex: KnexModule) {// create schema
         table.string('username', 25).notNullable();
         table.string('password').notNullable();
         table.string('email', 200).notNullable().unique();
+        table.string('from', 20).defaultTo('this_app');
+        table.string('from_id', 200).defaultTo('');
         table.timestamps();
     });
 };

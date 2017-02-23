@@ -27,3 +27,33 @@ export function getAuthBearerToken(ctx): null | string {
     }
     return null
 }
+
+
+/**
+ * Return a unique identifier with the given `len`.
+ *
+ *     utils.uid(10);
+ *     // => "FDaS435D2z"
+ *
+ * @param {Number} len
+ * @return {String}
+ * @api private
+ */
+export function uid(len: number): string {
+    let buf: string[] = [],
+        chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+        charlen = chars.length,
+        i;
+
+    for (i = 1; i < len; i = i + 1) {
+        let t = chars[getRandomInt(0, charlen - 1)]
+        buf.push(t);
+    }
+
+    return buf.join('');
+}
+
+// return a int in range [from, end], inclusive
+function getRandomInt(from: number, end: number): number {
+    return Math.floor(Math.random() * ((end + 1) - from)) + from
+}

@@ -1,3 +1,7 @@
-<% if (msg) { %>
-  <h2><%= msg.hello %></h2>
-<% } %>
+<% if (user) { %>
+  <h2>hello👻: <%= user.username %> !</h2>
+  <a href="/logout">logout</a>
+<% } else { %>
+  <h2>hello👻: anonymous! </h2>
+  <a href="/login">Login</a>
+<% } %> 

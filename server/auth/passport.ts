@@ -1,9 +1,11 @@
 
 const passport = require('koa-passport');
 const {Strategy} = require('passport-local')
+const GitHubStrategy = require('passport-github2').Strategy;
 
-import { User } from '../model';
-import { errors } from '../utils';
+import { User, DBUser } from '../model';
+import { errors, uid, ENV_UTILS } from '../utils';
+import { logger } from '../logging'
 
 // any error would propagate with `next(error)` call
 // these two function is current used by passport session strategy
@@ -46,3 +48,39 @@ passport.use('local', new Strategy({
         done(err)
     }
 }))
+
+
+
+let GITHUB_CLIENT_ID = ENV_UTILS.getEnvConfig('OAUTH_GITHUB_CLIENT_ID', false);
+let GITHUB_CLIENT_SECRET = ENV_UTILS.getEnvConfig('OAUTH_GITHUB_CLIENT_SECREAT', false)
+
+if (GITHUB_CLIENT_ID && GITHUB_CLIENT_SECRET) {
+    // Use the GitHubStrategy within Passport.
+    //   Strategies in Passport require a `verify` function, which accept
+    //   credentials (in this case, an accessToken, refreshToken, and GitHub
+    //   profile), and invoke a callback with a user object.
+    passport.use(new GitHubStrategy({
+        clientID: GITHUB_CLIENT_ID,
+        clientSecret: GITHUB_CLIENT_SECRET,
+        callbackURL: 'http://127.0.0.1:9000/auth/github/callback'
+    },
+        async function (accessToken, refreshToken, profile, done) {
+            try {
+                let user = { from: 'github', from_id: profile.id, username: profile.username } as DBUser
+                let dbUser = await User.findOnePr({ from: user.from, from_id: user.from_id });
+                if (!dbUser) {
+                    // create a dummy email for simplicity
+                    user.email = user.username + '@github.com'
+                    user.password = uid(10)
+                    dbUser = await User.addPr(user)
+                }
+                done(null, dbUser.toJSON())
+            } catch (e) {
+                done(e)
+            }
+        }
+    ));
+} else {
+    logger.warn('OAUTH configuration: GitHub missing');
+}
+
