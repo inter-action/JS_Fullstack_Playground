@@ -21,38 +21,34 @@ ava.afterEach(async _ => {
 });
 
 
-ava.serial('#User.save: test save user', async _ => {
-    let user: any = new User(<IUser>{ username: 'alexfdsfds', email: 'someemail@qq.com', password: 'fdsafdas' });
-    return await user.save().then((model: any) => {
-        expect(model).to.be.ok;
-    }).then(() => {
-        return User.findOnePr({ username: 'alexfdsfds' }, { require: true }).then((user: any) => {
-            expect(user.toJSON()).to.have.property('username', 'alexfdsfds');
-            expect(user.toJSON()).to.have.property('email', 'someemail@qq.com');
-        })
-    })
+ava.serial('#User.save: test save user', async t => {
+    let user: any = <IUser>{ username: 'alexfdsfds', email: 'someemail@qq.com', password: 'fdsafdas' }
+    let model = await User.addPr(user);
+    t.truthy(model);
+    model = await User.findOnePr({ username: 'alexfdsfds' }, { require: true })
+    expect(model.toJSON()).to.have.property('username', 'alexfdsfds');
+    expect(model.toJSON()).to.have.property('email', 'someemail@qq.com');
 })
 
 ava.serial('#User.save: should not save user when failing validation: no password', async t => {
-    let user: any = new User(<IUser>{ username: 'samewell' });
-    return await user.save().then(() => {
-        assert(false, 'this should never got executed');
-    }).then(_ => {
-        t.fail();
-    }, e => {
-        if (e instanceof errors.ValidationError) {
-            t.pass();
+    let user: any = <IUser>{ username: 'samewell' };
+    try {
+        await User.addPr(user)
+    } catch (err) {
+        if (err instanceof errors.ValidationError) {
+            return t.pass();
         } else {
-            t.fail();
+            return t.fail('expect validation to work properly');
         }
-    })
+    }
+    return t.fail('this shouldn\'t got executed');
 })
 
 
 ava.serial('#User.save: should not save user when failing validation: username length', async t => {
-    let user: any = new User(<IUser>{ username: 'same' });
+    let user: any = <IUser>{ username: 'same' };
     try {
-        return await user.save().then(() => {
+        return await User.addPr(user).then(() => {
             assert(false, 'this should never got executed');
         });
     } catch (e) {
@@ -62,7 +58,7 @@ ava.serial('#User.save: should not save user when failing validation: username l
         }
     }
 
-    t.fail();
+    t.fail('test failed');
 })
 
 ava.serial('#Users.save: test batch save user', async _ => {

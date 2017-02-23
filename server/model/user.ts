@@ -55,8 +55,15 @@ export const User: any = AppBookshelf.Model.extend(
             return this.forge().where(filter).fetchAll(options);
         },
 
-        createAndSavePr: function (data: DBUser, options: any) {
+        savePr: function (data: DBUser, options: any) {
             return this.forge(data).save(null, options);
+        },
+
+        // password is required, but how can i express this in a typed manner?
+        addPr: async function (data: IUser, options: any) {
+            if (!data.password) throw new errors.ValidationError('password field required');
+            data.password = await User.createHashPr(data.password);
+            return await User.savePr(data, options)
         },
 
         /*
@@ -109,6 +116,8 @@ export const User: any = AppBookshelf.Model.extend(
 export interface IUser {
     username: string,
     email: string,
+    from: string,
+    from_id: string
     password?: string,
 }
 
