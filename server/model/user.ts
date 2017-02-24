@@ -2,7 +2,6 @@ import * as ValidatorJS from 'validator';
 import * as _ from 'lodash';
 import * as Bluebird from 'bluebird';
 
-
 import { booleanChain, errors, ENV_UTILS } from '../utils';
 import { bookshelf } from '../data/db';
 import { AppBookshelf } from './base'
@@ -13,6 +12,21 @@ const saltRounds = 10;
 const bcryptCreateHash: any = Bluebird.promisify(bcrypt.hash);
 const bcryptCompare: any = Bluebird.promisify(bcrypt.compare);
 const jwtSign: any = Bluebird.promisify(jwt.sign);
+
+// && ValidatorJS.isLength(e.password, { min: 8 })
+export interface IUser {
+    username: string,
+    email: string,
+    from: string,
+    from_id: string
+    password?: string,
+}
+
+export interface DBUser extends IUser {
+    id: number,
+    uuid: string,
+}
+
 
 // I can type this user with a User constructor & a User type. Like the `Date`
 // example in link https://basarat.gitbooks.io/typescript/content/docs/types/lib.d.ts.html
@@ -36,6 +50,13 @@ export const User: any = AppBookshelf.Model.extend(
             }
         },
 
+        isActivated() {
+            return this.get('status') === 1;
+        },
+
+        isLocked() {
+            return this.get('status') === 6
+        }
     }, {
         // AppBookshelf.Model.<method_name> call super static methods
 
@@ -108,23 +129,10 @@ export const User: any = AppBookshelf.Model.extend(
         // return a JWT token
         createTokenPr: async function (user: DBUser) {
             return await jwtSign({ id: user.id }, ENV_UTILS.getEnvConfig('JWT_SIGNED_TOKEN'), {})
-        }
+        },
 
     });
 
-// && ValidatorJS.isLength(e.password, { min: 8 })
-export interface IUser {
-    username: string,
-    email: string,
-    from: string,
-    from_id: string
-    password?: string,
-}
-
-export interface DBUser extends IUser {
-    id: number,
-    uuid: string,
-}
 
 export function validateUserView(user: IUser): errors.ValidationError | null {
     if (!(_.isString(user.username) &&

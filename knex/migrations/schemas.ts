@@ -23,6 +23,11 @@ exports.up = async function (knex: KnexModule) {// create schema
         table.string('email', 200).notNullable().unique();
         table.string('from', 20).defaultTo('this_app');
         table.string('from_id', 200).defaultTo('');
+        table.integer('status').defaultTo('0').comment(`
+            0: none activiated
+            1: activated
+            2-5: warning stage
+            6: locked`);
         table.timestamps();
     });
 };

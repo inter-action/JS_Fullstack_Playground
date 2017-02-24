@@ -20,6 +20,13 @@ export const ApiRoutes = new Router({ prefix: '/api' })
     })
     // return a bearer token for auth. using username & password
     .post('/auth', koaPassport.authenticate('local', { session: false }), async (ctx) => {
+        // bussiness logic specific, shouldn't be included in here
+        // if (ctx.req.user.status === 0) {
+        //     throw new errors.AppError('user is not activated', 400);
+        // }
+        // if (ctx.req.user.status === 6) {
+        //     throw new errors.AppError('user is locked', 400);
+        // }
         let token = await User.createTokenPr(ctx.req.user);
         ctx.body = { data: token }
     })
