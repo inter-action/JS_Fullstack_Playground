@@ -1,4 +1,4 @@
-import * as nodemailer from 'nodemailer';
+import * as mailgun from './mailgun'
 
 
-export { nodemailer };
+export { mailgun };
