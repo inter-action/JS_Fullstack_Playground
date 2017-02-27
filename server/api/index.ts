@@ -6,7 +6,7 @@ import { tv_show } from './tv_show';
 import { AuthMiddlewares } from '../middleware';
 
 
-export const ApiRoutes = new Router({ prefix: '/api' })
+export const apiRoutes = new Router({ prefix: '/api' })
     .post('/register', async (ctx) => {
         const body = ctx.request.body;
         let error = validateUserView(body)
@@ -41,4 +41,4 @@ export const ApiRoutes = new Router({ prefix: '/api' })
 
 
 
-ApiRoutes.use(tv_show.routes(), tv_show.allowedMethods());
+apiRoutes.use(tv_show.routes(), tv_show.allowedMethods());

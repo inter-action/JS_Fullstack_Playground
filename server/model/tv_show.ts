@@ -3,6 +3,7 @@ import { KnexInstance } from '../data/db'
 function Shows() {
     return KnexInstance('shows')
 }
+
 export function getAll() {
     return Shows().select() as Promise<any>
 }

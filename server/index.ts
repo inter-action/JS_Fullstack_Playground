@@ -23,7 +23,6 @@ import { ENV_UTILS } from './utils'
 import { createErrMiddleware } from './middleware'
 import { initRoutes } from './routes'
 
-
 const koa = new Koa()
 
 // session require this

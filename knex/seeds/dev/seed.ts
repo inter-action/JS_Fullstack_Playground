@@ -27,7 +27,7 @@ async function seed_users(knex: KnexModule) {
             username: 'bran_stark',
             // raw password: fuckyouguys
             password: '$2a$10$Me6ee0U0pwsA9QrdmanvjOi1EurxcWltCsOaesoxt4HWFUWKuUhjW',
-            email: 'alex_email',
+            email: '243127395@qq.com',
             created_at: new Date(),
             updated_at: new Date()
         })

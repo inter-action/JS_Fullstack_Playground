@@ -1,6 +1,9 @@
-import * as ValidatorJS from 'validator';
+import * as crypto from 'crypto';
+
+import * as validator from 'validator';
 import * as _ from 'lodash';
 import * as Bluebird from 'bluebird';
+import * as boom from 'boom';
 
 import { booleanChain, errors, ENV_UTILS } from '../utils';
 import { bookshelf } from '../data/db';
@@ -25,6 +28,7 @@ export interface IUser {
 export interface DBUser extends IUser {
     id: number,
     uuid: string,
+    password: string
 }
 
 
@@ -114,10 +118,10 @@ export const User: any = AppBookshelf.Model.extend(
         validate: function (user: DBUser) {
             let result = booleanChain<DBUser>(e => {
                 return _.isString(e.username) &&
-                    ValidatorJS.isLength(e.username, { min: 0 }) &&
-                    ValidatorJS.matches(e.username, /^[a-z-_0-9]+$/i)
+                    validator.isLength(e.username, { min: 0 }) &&
+                    validator.matches(e.username, /^[a-z-_0-9]+$/i)
             })
-                .map(e => _.isString(e.email) && ValidatorJS.isEmail(e.email))
+                .map(e => _.isString(e.email) && validator.isEmail(e.email))
                 .map(e => _.isString(e.password))
                 .map(e => _.isString(e.uuid))
                 .run(user);
@@ -131,28 +135,98 @@ export const User: any = AppBookshelf.Model.extend(
             return await jwtSign({ id: user.id }, ENV_UTILS.getEnvConfig('JWT_SIGNED_TOKEN'), {})
         },
 
+        async generateResetToken(expireMili: number, email: string): Promise<[Error | null, string]> {
+            let model = await User.findOnePr({ email });
+            if (!model) return [boom.badRequest('invalid email'), ''];
+            return [null, UserUtils.generateResetToken(expireMili, email, model.get('password'))];
+        },
+
+        async validateResetTokenPr(token: string): Promise<[Error | null, IUser | null]> {
+            let findUserByEmail = async (email) => {
+                // todo: findOnePr should exclude password info by default
+                let user = await User.findOnePr({ email }, { require: true });
+                return user.toJSON();
+            };
+
+            try {
+                let [error, user] = await UserUtils.validateResetToken(token, findUserByEmail, (dbuser) => {
+                    delete dbuser.passowrd;
+                    return dbuser as IUser
+                })
+
+                if (error) {
+                    return [boom.badRequest(error.message), null];
+                }
+                return [null, user]
+            } catch (error) {
+                return [boom.badRequest(error.message), null]
+            }
+        }
+
     });
+
+export const Users = bookshelf.Collection.extend({
+    model: User
+});
 
 
 export function validateUserView(user: IUser): errors.ValidationError | null {
     if (!(_.isString(user.username) &&
-        ValidatorJS.isLength(user.username, { min: 0 }) &&
-        ValidatorJS.matches(user.username, /^[a-z-_0-9]+$/i))) {
+        validator.isLength(user.username, { min: 0 }) &&
+        validator.matches(user.username, /^[a-z-_0-9]+$/i))) {
         return new errors.ValidationError('username is invalid')
     }
 
-    if (!(_.isString(user.email) && ValidatorJS.isEmail(user.email))) {
+    if (!(_.isString(user.email) && validator.isEmail(user.email))) {
         return new errors.ValidationError('email is invalid')
     }
 
-    if (!(_.isString(user.password) && ValidatorJS.isLength(user.password as any, { min: 8 }))) {
+    if (!(_.isString(user.password) && validator.isLength(user.password as any, { min: 8 }))) {
         return new errors.ValidationError('password is invalid')
     }
 
     return null
 }
 
-export const Users = bookshelf.Collection.extend({
-    model: User
-});
+export const UserUtils = {
+    generateResetToken(expireMili: number, email: string, password: string, appname = 'app'): string {
+        function sign(expire: number, email: string, salt: string) {
+            let hash = crypto.createHash('sha256');
+            hash.update(String(expire));
+            hash.update(email);
+            hash.update(salt);
+            return hash.digest('hex');
+        }
 
+        let result = [String(expireMili), email, sign(expireMili, email, password + appname)].join('|');
+        return new Buffer(result).toString('base64');
+    },
+
+    // the whole generate & valid logic token can be replace with JWT. it would be much easier to do so 
+    async validateResetToken(
+        token: string,
+        findUserByEmail: (email) => Promise<DBUser>,
+        convertUser: (DBUser) => IUser): Promise<[Error | null, IUser | null]> {
+
+        let result = new Buffer(token, 'base64').toString();
+        let tokens = result.split('|');
+        if (tokens.length !== 3) return [new Error('invalid token'), null];
+        let expire = parseInt(tokens[0], 10);
+        if (Date.now() > expire) return [new Error('token expired'), null];
+
+        let email = tokens[1];
+        if (!validator.isEmail(email)) return [new Error('invalid email: empty'), null];
+
+        let dbuser = await findUserByEmail(email);
+        if (!dbuser) return [new Error('invalid email: no user'), null]
+
+        let createdToken = UserUtils.generateResetToken(expire, email, dbuser.password);
+        // this implementation is more slower than the simple string comparison
+        // let diff = token.length === createdToken.length ? 0 : 1;
+        // for (let i = createdToken.length - 1; i >= 0; i--) {
+        //     diff |= token.charCodeAt(i) ^ createdToken.charCodeAt(i)
+        // }
+        if (createdToken !== token) return [new Error('invalid token'), null];
+        else return [null, convertUser(dbuser)];
+    }
+}

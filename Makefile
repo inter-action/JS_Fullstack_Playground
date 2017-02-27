@@ -45,7 +45,7 @@ run-debug:
 test: clean compile test-unit test-functional
 	
 test-unit:
-	NODE_ENV=test ava --verbose --timeout=10s $(PATH_BUILD_ROOT)/**/*test.js
+	NODE_ENV=test time -p ava --verbose --timeout=10s $(PATH_BUILD_ROOT)/**/*test.js
 	
 test-functional: 
 	NODE_ENV=test ava --serial --verbose $(PATH_BUILD_TEST)/functional/with_side_effect_test.js
@@ -105,6 +105,9 @@ readlog:
 
 db_migration: compile
 	node ./build/knex/bin/migration.js -env dev -command migration
+
+db_seed: compile
+	node ./build/knex/bin/migration.js -env dev -command seed
 
 git_merge_master:
 	git checkout master
