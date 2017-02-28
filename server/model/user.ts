@@ -7,7 +7,8 @@ import * as boom from 'boom';
 
 import { booleanChain, errors, ENV_UTILS } from '../utils';
 import { bookshelf } from '../data/db';
-import { AppBookshelf } from './base'
+import { AppBookshelf } from './base';
+import { Either, Left, Right } from '../extend_type';
 const jwt = require('jsonwebtoken');
 
 const bcrypt = require('bcrypt');
@@ -141,7 +142,7 @@ export const User: any = AppBookshelf.Model.extend(
             return [null, UserUtils.generateResetToken(expireMili, email, model.get('password'))];
         },
 
-        async validateResetTokenPr(token: string): Promise<[Error | null, IUser | null]> {
+        async validateResetTokenPr(token: string): Promise<Either<Error, IUser>> {
             let findUserByEmail = async (email) => {
                 // todo: findOnePr should exclude password info by default
                 let user = await User.findOnePr({ email }, { require: true });
@@ -149,17 +150,17 @@ export const User: any = AppBookshelf.Model.extend(
             };
 
             try {
-                let [error, user] = await UserUtils.validateResetToken(token, findUserByEmail, (dbuser) => {
+                let result = await UserUtils.validateResetToken(token, findUserByEmail, (dbuser) => {
                     delete dbuser.passowrd;
                     return dbuser as IUser
                 })
 
-                if (error) {
-                    return [boom.badRequest(error.message), null];
+                if (result.isLeft()) {
+                    return new Left<Error, IUser>(boom.badRequest(result.getLeft().message));
                 }
-                return [null, user]
+                return result
             } catch (error) {
-                return [boom.badRequest(error.message), null]
+                return new Left<Error, IUser>(boom.badRequest(error.message));
             }
         }
 
@@ -206,19 +207,19 @@ export const UserUtils = {
     async validateResetToken(
         token: string,
         findUserByEmail: (email) => Promise<DBUser>,
-        convertUser: (DBUser) => IUser): Promise<[Error | null, IUser | null]> {
+        convertUser: (DBUser) => IUser): Promise<Either<Error, IUser>> {
 
         let result = new Buffer(token, 'base64').toString();
         let tokens = result.split('|');
-        if (tokens.length !== 3) return [new Error('invalid token'), null];
+        if (tokens.length !== 3) return new Left<Error, IUser>(new Error('invalid token'));
         let expire = parseInt(tokens[0], 10);
-        if (Date.now() > expire) return [new Error('token expired'), null];
+        if (Date.now() > expire) return new Left<Error, IUser>(new Error('token expired'));
 
         let email = tokens[1];
-        if (!validator.isEmail(email)) return [new Error('invalid email: empty'), null];
+        if (!validator.isEmail(email)) return new Left<Error, IUser>(new Error('invalid email: empty'));
 
         let dbuser = await findUserByEmail(email);
-        if (!dbuser) return [new Error('invalid email: no user'), null]
+        if (!dbuser) return new Left<Error, IUser>(new Error('invalid email: no user'));
 
         let createdToken = UserUtils.generateResetToken(expire, email, dbuser.password);
         // this implementation is more slower than the simple string comparison
@@ -226,7 +227,7 @@ export const UserUtils = {
         // for (let i = createdToken.length - 1; i >= 0; i--) {
         //     diff |= token.charCodeAt(i) ^ createdToken.charCodeAt(i)
         // }
-        if (createdToken !== token) return [new Error('invalid token'), null];
-        else return [null, convertUser(dbuser)];
+        if (createdToken !== token) return new Left<Error, IUser>(new Error('invalid token'));
+        else return new Right<Error, IUser>(convertUser(dbuser));
     }
 }

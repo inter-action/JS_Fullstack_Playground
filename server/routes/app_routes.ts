@@ -81,9 +81,10 @@ appRouts.post('/reset-password', async (ctx, next) => {
         throw boom.badData()
     }
 
-    let [error, user] = await User.validateResetTokenPr(decodeBase64URLsafe(body.token));
-    if (error) throw error;
+    let tokenResult = await User.validateResetTokenPr(decodeBase64URLsafe(body.token));
+    if (tokenResult.isLeft()) throw tokenResult.getLeft();
     else {
+        let user = tokenResult.getRight();
         let usermodel = await User.findOnePr({ email: user.email }, { require: true });
         let pwhash = await User.createHashPr(body.password);
         usermodel.set('password', pwhash);
