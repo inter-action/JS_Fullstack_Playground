@@ -96,8 +96,8 @@ export const User: any = AppBookshelf.Model.extend(
         find user , compare password, if not match return null else return user
         @return Promise<user|null, null>
         */
-        loginPr: async function (username, password) {
-            let model = await User.findOnePr({ username })
+        loginPr: async function (email, password) {
+            let model = await User.findOnePr({ email })
             if (!model) return null;
             let user = <DBUser>model.toJSON();
             let ismatch = await bcryptCompare(password, user.password);

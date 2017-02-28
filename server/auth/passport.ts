@@ -28,16 +28,16 @@ passport.deserializeUser(async (uuid, done) => {
 // passport-core include a session strategy which get deserialized user from session's `passport.user`
 // via deserializeUser method
 passport.use('local', new Strategy({
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
     // passReqToCallback: true,
-}, async (/*req,*/ username, password, done) => {
+}, async (/*req,*/ email, password, done) => {
     // const ctx = req.ctx;
     try {
-        if (!username || !password) {
+        if (!email || !password) {
             return done(new errors.ValidationError('invalid request'));
         }
-        let user = await User.loginPr(username, password)
+        let user = await User.loginPr(email, password)
 
         if (!user) {
             return done(new errors.AppError('invalid username or password', 401))
