@@ -1,12 +1,15 @@
 const { verify } = require('jsonwebtoken');
 import * as BlueBird from 'bluebird';
+import * as Router from 'koa-router';
 
 import { getAuthBearerToken, ENV_UTILS } from '../utils'
 import { User } from '../model'
 
 const promiseVerify: any = BlueBird.promisify(verify);
 
-export async function ensureBearerToken(ctx, next) {
+type Next = () => Promise<any>
+
+export async function ensureBearerToken(ctx: Router.IRouterContext, next: Next) {
     let uid = null;
     const token = getAuthBearerToken(ctx)
 
@@ -28,4 +31,12 @@ export async function ensureBearerToken(ctx, next) {
 
     ctx.state.user = await User.findOnePr({ id: uid }, { require: true })
     return next()
+}
+
+// used for app router
+export async function ensureUser(ctx: Router.IRouterContext, next: Next) {
+    if (ctx.isUnauthenticated()) {
+        return ctx.throw(401);
+    }
+    next()
 }

@@ -1,11 +1,14 @@
-import * as ValidatorJS from 'validator';
+import * as crypto from 'crypto';
+
+import * as validator from 'validator';
 import * as _ from 'lodash';
 import * as Bluebird from 'bluebird';
-
+import * as boom from 'boom';
 
 import { booleanChain, errors, ENV_UTILS } from '../utils';
 import { bookshelf } from '../data/db';
-import { AppBookshelf } from './base'
+import { AppBookshelf } from './base';
+import { Either, Left, Right } from '../extend_type';
 const jwt = require('jsonwebtoken');
 
 const bcrypt = require('bcrypt');
@@ -13,6 +16,22 @@ const saltRounds = 10;
 const bcryptCreateHash: any = Bluebird.promisify(bcrypt.hash);
 const bcryptCompare: any = Bluebird.promisify(bcrypt.compare);
 const jwtSign: any = Bluebird.promisify(jwt.sign);
+
+// && ValidatorJS.isLength(e.password, { min: 8 })
+export interface IUser {
+    username: string,
+    email: string,
+    from: string,
+    from_id: string
+    password?: string,
+}
+
+export interface DBUser extends IUser {
+    id: number,
+    uuid: string,
+    password: string
+}
+
 
 // I can type this user with a User constructor & a User type. Like the `Date`
 // example in link https://basarat.gitbooks.io/typescript/content/docs/types/lib.d.ts.html
@@ -36,6 +55,13 @@ export const User: any = AppBookshelf.Model.extend(
             }
         },
 
+        isActivated() {
+            return this.get('status') === 1;
+        },
+
+        isLocked() {
+            return this.get('status') === 6
+        }
     }, {
         // AppBookshelf.Model.<method_name> call super static methods
 
@@ -93,10 +119,10 @@ export const User: any = AppBookshelf.Model.extend(
         validate: function (user: DBUser) {
             let result = booleanChain<DBUser>(e => {
                 return _.isString(e.username) &&
-                    ValidatorJS.isLength(e.username, { min: 0 }) &&
-                    ValidatorJS.matches(e.username, /^[a-z-_0-9]+$/i)
+                    validator.isLength(e.username, { min: 0 }) &&
+                    validator.matches(e.username, /^[a-z-_0-9]+$/i)
             })
-                .map(e => _.isString(e.email) && ValidatorJS.isEmail(e.email))
+                .map(e => _.isString(e.email) && validator.isEmail(e.email))
                 .map(e => _.isString(e.password))
                 .map(e => _.isString(e.uuid))
                 .run(user);
@@ -108,43 +134,100 @@ export const User: any = AppBookshelf.Model.extend(
         // return a JWT token
         createTokenPr: async function (user: DBUser) {
             return await jwtSign({ id: user.id }, ENV_UTILS.getEnvConfig('JWT_SIGNED_TOKEN'), {})
+        },
+
+        async generateResetToken(expireMili: number, email: string): Promise<[Error | null, string]> {
+            let model = await User.findOnePr({ email });
+            if (!model) return [boom.badRequest('invalid email'), ''];
+            return [null, UserUtils.generateResetToken(expireMili, email, model.get('password'))];
+        },
+
+        async validateResetTokenPr(token: string): Promise<Either<Error, IUser>> {
+            let findUserByEmail = async (email) => {
+                // todo: findOnePr should exclude password info by default
+                let user = await User.findOnePr({ email }, { require: true });
+                return user.toJSON();
+            };
+
+            try {
+                let result = await UserUtils.validateResetToken(token, findUserByEmail, (dbuser) => {
+                    delete dbuser.passowrd;
+                    return dbuser as IUser
+                })
+
+                if (result.isLeft()) {
+                    return new Left<Error, IUser>(boom.badRequest(result.getLeft().message));
+                }
+                return result
+            } catch (error) {
+                return new Left<Error, IUser>(boom.badRequest(error.message));
+            }
         }
 
     });
 
-// && ValidatorJS.isLength(e.password, { min: 8 })
-export interface IUser {
-    username: string,
-    email: string,
-    from: string,
-    from_id: string
-    password?: string,
-}
+export const Users = bookshelf.Collection.extend({
+    model: User
+});
 
-export interface DBUser extends IUser {
-    id: number,
-    uuid: string,
-}
 
 export function validateUserView(user: IUser): errors.ValidationError | null {
     if (!(_.isString(user.username) &&
-        ValidatorJS.isLength(user.username, { min: 0 }) &&
-        ValidatorJS.matches(user.username, /^[a-z-_0-9]+$/i))) {
+        validator.isLength(user.username, { min: 0 }) &&
+        validator.matches(user.username, /^[a-z-_0-9]+$/i))) {
         return new errors.ValidationError('username is invalid')
     }
 
-    if (!(_.isString(user.email) && ValidatorJS.isEmail(user.email))) {
+    if (!(_.isString(user.email) && validator.isEmail(user.email))) {
         return new errors.ValidationError('email is invalid')
     }
 
-    if (!(_.isString(user.password) && ValidatorJS.isLength(user.password as any, { min: 8 }))) {
+    if (!(_.isString(user.password) && validator.isLength(user.password as any, { min: 8 }))) {
         return new errors.ValidationError('password is invalid')
     }
 
     return null
 }
 
-export const Users = bookshelf.Collection.extend({
-    model: User
-});
+export const UserUtils = {
+    generateResetToken(expireMili: number, email: string, password: string, appname = 'app'): string {
+        function sign(expire: number, email: string, salt: string) {
+            let hash = crypto.createHash('sha256');
+            hash.update(String(expire));
+            hash.update(email);
+            hash.update(salt);
+            return hash.digest('hex');
+        }
 
+        let result = [String(expireMili), email, sign(expireMili, email, password + appname)].join('|');
+        return new Buffer(result).toString('base64');
+    },
+
+    // the whole generate & valid logic token can be replace with JWT. it would be much easier to do so 
+    async validateResetToken(
+        token: string,
+        findUserByEmail: (email) => Promise<DBUser>,
+        convertUser: (DBUser) => IUser): Promise<Either<Error, IUser>> {
+
+        let result = new Buffer(token, 'base64').toString();
+        let tokens = result.split('|');
+        if (tokens.length !== 3) return new Left<Error, IUser>(new Error('invalid token'));
+        let expire = parseInt(tokens[0], 10);
+        if (Date.now() > expire) return new Left<Error, IUser>(new Error('token expired'));
+
+        let email = tokens[1];
+        if (!validator.isEmail(email)) return new Left<Error, IUser>(new Error('invalid email: empty'));
+
+        let dbuser = await findUserByEmail(email);
+        if (!dbuser) return new Left<Error, IUser>(new Error('invalid email: no user'));
+
+        let createdToken = UserUtils.generateResetToken(expire, email, dbuser.password);
+        // this implementation is more slower than the simple string comparison
+        // let diff = token.length === createdToken.length ? 0 : 1;
+        // for (let i = createdToken.length - 1; i >= 0; i--) {
+        //     diff |= token.charCodeAt(i) ^ createdToken.charCodeAt(i)
+        // }
+        if (createdToken !== token) return new Left<Error, IUser>(new Error('invalid token'));
+        else return new Right<Error, IUser>(convertUser(dbuser));
+    }
+}

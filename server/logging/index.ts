@@ -32,7 +32,7 @@ interface LogMock {
 
 function createLogger() {
     if (ENV_UTILS.is_test()) {
-        return <LogMock>{ info: console.log, error: console.log };
+        return <LogMock>{ info: console.log, error: console.log, warn: console.log };
     } else {
         return pino({
             name: Constants.APP_NAME,

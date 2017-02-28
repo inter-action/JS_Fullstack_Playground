@@ -1,1 +1,17 @@
-<a href="/auth/github">Github Login</a>
+<p><a href="/auth/github">Github Login</a></p>
+<p><a href="/forget-password">forget password</a></p>
+
+
+<form action="/login" method="post">
+  <div class="form-item">
+    <label for="username">username: </label>
+    <input type="text" name="username" id="username" />
+  </div>
+  <div class="form-item">
+    <label for="password">password: </label>
+    <input type="password" name="password" id="password" />
+  </div>
+  <div class="form-item">
+    <button type="submit">submit</button>
+  </div>
+</form>
