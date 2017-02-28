@@ -7,13 +7,13 @@ let TAG = '#mailsender: ';
 ava(`${TAG}: templates render should work`, async t => {
     let str = await loadTplPr(
         'activation.ejs',
-        { email: '243127395@qq.com', activatedUrl: 'http://localhost:9000/activate' })
+        { email: 'xyz_some@qq.com', activatedUrl: 'http://localhost:9000/activate' })
 
-    expect(str).to.contains('243127395@qq.com');
+    expect(str).to.contains('xyz_some@qq.com');
 });
 
-ava(`${TAG}: should sendmail work `, async t => {
+ava.skip(`${TAG}: should sendmail work `, async t => {
     let html = await loadTplPr('activation.ejs', { email: 'jing.miao@ele.me', activatedUrl: 'http://localhost:9000/activate' })
-    let resp = await sendmail({ to: '243127395@qq.com', subject: 'welcome to Ghost', html })
+    let resp = await sendmail({ to: 'xyz_some@qq.com', subject: 'welcome to Ghost', html })
     console.log(resp)
 })
