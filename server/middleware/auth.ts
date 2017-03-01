@@ -3,14 +3,14 @@ import * as BlueBird from 'bluebird';
 import * as Router from 'koa-router';
 
 import { getAuthBearerToken, ENV_UTILS } from '../utils'
-import { User } from '../model'
+import { getUserAccess } from '../entities'
 
 const promiseVerify: any = BlueBird.promisify(verify);
 
 type Next = () => Promise<any>
 
 export async function ensureBearerToken(ctx: Router.IRouterContext, next: Next) {
-    let uid = null;
+    let uuid = null;
     const token = getAuthBearerToken(ctx)
 
     if (!token) {
@@ -23,13 +23,17 @@ export async function ensureBearerToken(ctx: Router.IRouterContext, next: Next) 
     } catch (err) {
         return ctx.throw(401)
     }
-    uid = decoded.id;
+    uuid = decoded.uuid;
 
-    if (uid == null) {
+    if (uuid == null) {
         return ctx.throw(401);
     }
 
-    ctx.state.user = await User.findOnePr({ id: uid }, { require: true })
+    let user = await getUserAccess().findOne({ uuid: uuid });
+    if (!user) {
+        return ctx.throw(401, 'invalid token')
+    }
+    ctx.state.user = user;
     return next()
 }
 

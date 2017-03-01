@@ -1,14 +1,14 @@
+import { getConnection, connect } from '../../server/db/typeorm';
+import { configEnv } from '../../server/config';
 
 // ./migration -command migration | seed
-// 	node ./build/knex/bin/migration.js -env dev -command migration
-//  node ./build/knex/bin/migration.js -env dev -command seed
-async function migration(KnexInstance, KnexConstants) {
-    await KnexInstance.migrate.latest(KnexConstants.MIGRATION);
+export async function migration() {
+    await getConnection().syncSchema(true)
 }
 
-async function seed(KnexInstance, KnexConstants) {
-    await KnexInstance.migrate.latest(KnexConstants.MIGRATION);
-    return await KnexInstance.seed.run(KnexConstants.SEED);
+export async function seed() {
+    await migration();
+    return await require(`../typeorm/seed/${process.env.NODE_ENV}`).seed();
 }
 
 function parse(args: string[]): any {
@@ -44,11 +44,14 @@ if (require.main === module) {
         console.log('./migration -env [dev|test] -command [migration | seed]')
     } else {
         console.log(`do ${argument.command} using env: ${process.env.NODE_ENV}`)
-        require('../../server/config');
-        const { KnexConstants, KnexInstance } = require('../../server/db/knex');
-        target(KnexInstance, KnexConstants).then(() => {
+        configEnv();
+
+        connect().then(_ => {
+            return target()
+        }).then(_ => {
+            console.log(`done ${argument.command} using env: ${process.env.NODE_ENV}`)
             process.exit(0);
-        }, (e) => {
+        }, e => {
             console.log('fatal error: ', e.stack)
             process.exit(1);
         })

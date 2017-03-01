@@ -3,7 +3,7 @@ import * as KnexModule from 'knex';
 /*
 create seeds:
 
-knex seed:run --env test --knexfile build/server/data/db/knexfile.js
+knex seed:run --env test --knexfile build/server/db/knexfile.js
 
 todo: add db unit test for this
 

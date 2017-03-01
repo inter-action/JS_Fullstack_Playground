@@ -32,7 +32,7 @@ copy-res:
 	/bin/bash ./scripts/copy-res.sh
 	cp -r views build
 
-compile: tsc copy-res
+compile: clean tsc copy-res
 
 run: clean compile
 	@printf "server started on port $(DOCKER_NODE_PORT)\n"
@@ -45,7 +45,7 @@ run-debug:
 test: clean compile test-unit test-functional
 	
 test-unit:
-	NODE_ENV=test time -p ava --verbose --timeout=10s $(PATH_BUILD_ROOT)/**/*test.js
+	NODE_ENV=test TEST_OVERRIDE=test time -p ava --verbose --timeout=10s $(PATH_BUILD_ROOT)/**/*_test.js
 	
 test-functional: 
 	NODE_ENV=test ava --serial --verbose $(PATH_BUILD_TEST)/functional/with_side_effect_test.js
@@ -103,11 +103,11 @@ lint:
 readlog:
 	tail -f $(PATH_LOG) | pino -lt
 
-db_migration: compile
-	node ./build/knex/bin/migration.js -env dev -command migration
+db_migration:
+	node ./build/scripts/bin/db_migration.js -env dev -command migration
 
-db_seed: compile
-	node ./build/knex/bin/migration.js -env dev -command seed
+db_seed:
+	node ./build/scripts/bin/db_migration.js -env dev -command seed
 
 git_merge_master:
 	git checkout master

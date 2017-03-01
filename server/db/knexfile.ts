@@ -1,4 +1,4 @@
-import { ENV, ENV_UTILS } from '../../utils'
+import { ENV, ENV_UTILS } from '../utils'
 
 let MYSQL_ENV_CONFIG;
 if (!ENV_UTILS.is_test()) {

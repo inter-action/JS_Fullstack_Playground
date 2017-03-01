@@ -3,7 +3,7 @@ import { Either, Left, Right } from '../either';
 
 let TAG = '#Either: ';
 
-ava(`${TAG} type assign should work as expected`, t => {
+ava(`${TAG} type assign should work as expected`, _ => {
     let a: Either<Error, number>;
     a = new Left<Error, number>(new Error(''))
 

@@ -3,21 +3,26 @@ const passport = require('koa-passport');
 const {Strategy} = require('passport-local')
 const GitHubStrategy = require('passport-github2').Strategy;
 
-import { User, DBUser } from '../model';
+import { getUserAccess, User } from '../entities'
 import { errors, uid, ENV_UTILS } from '../utils';
 import { logger } from '../logging'
 
 // any error would propagate with `next(error)` call
 // these two function is current used by passport session strategy
 // also could be used by other strategies.
-passport.serializeUser((user, done) => {
+passport.serializeUser((user: User, done) => {
     done(null, user.uuid)
 })
 
 passport.deserializeUser(async (uuid, done) => {
     try {
-        const model = await User.findOnePr({ uuid }, { require: true })
-        done(null, model.toJSON());
+        let access = getUserAccess();
+        const model = await access.findOne({ uuid: uuid })
+        if (model) {
+            done(null, model);
+        } else {
+            done(new Error('no user found for: ' + uuid))
+        }
     } catch (err) {
         done(err)
     }
@@ -28,16 +33,16 @@ passport.deserializeUser(async (uuid, done) => {
 // passport-core include a session strategy which get deserialized user from session's `passport.user`
 // via deserializeUser method
 passport.use('local', new Strategy({
-    usernameField: 'username',
+    usernameField: 'email',
     passwordField: 'password',
     // passReqToCallback: true,
-}, async (/*req,*/ username, password, done) => {
+}, async (/*req,*/ email, password, done) => {
     // const ctx = req.ctx;
     try {
-        if (!username || !password) {
+        if (!email || !password) {
             return done(new errors.ValidationError('invalid request'));
         }
-        let user = await User.loginPr(username, password)
+        let user = await User.loginPr(email, password)
 
         if (!user) {
             return done(new errors.AppError('invalid username or password', 401))
@@ -64,17 +69,21 @@ if (GITHUB_CLIENT_ID && GITHUB_CLIENT_SECRET) {
         clientSecret: GITHUB_CLIENT_SECRET,
         callbackURL: 'http://127.0.0.1:9000/auth/github/callback'
     },
-        async function (accessToken, refreshToken, profile, done) {
+        async function (_accessToken, _refreshToken, profile, done) {
             try {
-                let user = { from: 'github', from_id: profile.id, username: profile.username } as DBUser
-                let dbUser = await User.findOnePr({ from: user.from, from_id: user.from_id });
+                let userAccess = getUserAccess();
+                let user = new User();
+                user.from = 'github';
+                user.fromId = profile.id;
+                user.username = profile.username;
+                let dbUser = await userAccess.findOne({ from: user.from, fromId: user.fromId });
                 if (!dbUser) {
                     // create a dummy email for simplicity
                     user.email = user.username + '@github.com'
-                    user.password = uid(10)
-                    dbUser = await User.addPr(user)
+                    user.password = await User.createHashPr(uid(10));
+                    dbUser = await userAccess.getRespsitory().persist(user);
                 }
-                done(null, dbUser.toJSON())
+                done(null, dbUser)
             } catch (e) {
                 done(e)
             }

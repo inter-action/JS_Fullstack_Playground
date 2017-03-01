@@ -1,37 +1,51 @@
-import { expect, assert } from 'chai';
 const ava = require('ava');
+import { Repository } from 'typeorm';
 
-import * as bluebird from 'bluebird';
+import { cleanDbEachTest } from '../../utils/test_utils';
+import { getUserAccess, User } from '../../entities';
 
-import { KnexInstance, KnexConstants } from '../../data/db'
-import { errors } from '../../utils'
+cleanDbEachTest();
 
-const {User, Users} = require('../user');
-import { IUser } from '../user';
-
+let userResp: Repository<User>;
 
 ava.beforeEach(async _ => {
-    await KnexInstance.migrate.rollback(KnexConstants.MIGRATION);
-    return await KnexInstance.migrate.latest(KnexConstants.MIGRATION);
+    let userAccess = getUserAccess();
+    userResp = userAccess.getRespsitory();
 })
 
-
-ava.afterEach(async _ => {
-    return await KnexInstance.migrate.rollback(KnexConstants.MIGRATION)
+let tag = '#User: '
+ava.serial(`${tag} create user`, async t => {
+    let user = User.create('alexander_mahone', '243242@qq.com', 'freakingpasswd')
+    let dbuser = await userResp.persist(user);
+    t.true(dbuser != null)
 });
 
-let TAG = '#User.save: '
 
-ava.serial(TAG + 'test save user', async t => {
-    let user: any = <IUser>{ username: 'alexfdsfds', email: 'someemail@qq.com', password: 'fdsafdas' }
-    let model = await User.addPr(user);
+ava.serial(`${tag} create user shoudl success via valid js user object coercion`, async t => {
+    let user = User.convertUser({ username: 'alexander_mahone', email: '243242@qq.com', password: 'freakingpasswd' })
+    let dbuser = await userResp.persist(user);
+    t.true(dbuser != null);
+    t.is(dbuser.username, 'alexander_mahone');
+});
+
+ava.serial(tag + '# update user status', async t => {
+    let user = User.create('alexander_mahone', '243242@qq.com', 'freakingpasswd')
+    let model = await userResp.persist(user);
     t.truthy(model);
-    model = await User.findOnePr({ username: 'alexfdsfds' }, { require: true })
-    t.is(model.get('status'), 0);
-    expect(model.toJSON()).to.have.property('username', 'alexfdsfds');
-    expect(model.toJSON()).to.have.property('email', 'someemail@qq.com');
+    model.status = 1;
+    let updated = await userResp.persist(model)
+    t.is(updated.status, 1)
 })
 
+
+ava.serial(`${tag} find user`, async t => {
+    let user = User.create('alexander_mahone', '243242@qq.com', 'freakingpasswd')
+    await userResp.persist(user);
+    let find = await getUserAccess().findOne({ email: user.email })
+    t.true(find != null)
+});
+
+/*
 ava.serial(TAG + 'should not save user when failing validation: no password', async t => {
     let user: any = <IUser>{ username: 'samewell' };
     try {
@@ -102,3 +116,5 @@ ava.serial(TAG + '# update user status', async t => {
     t.true(updated.isLocked())
 })
 
+
+*/

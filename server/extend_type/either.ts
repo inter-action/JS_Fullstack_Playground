@@ -21,7 +21,7 @@ export class Left<L, R> extends Either<L, R>{
         return false;
     }
 
-    mapRight<C>(f: (R) => C): Either<L, C> {
+    mapRight<C>(_: (R) => C): Either<L, C> {
         return new Left<L, C>(this.value);
     }
 
@@ -57,7 +57,7 @@ export class Right<L, R> extends Either<L, R>{
         return new Right<L, C>(f(this.value));
     }
 
-    mapLeft<C>(f: (L) => C): Either<C, R> {
+    mapLeft<C>(_: (L) => C): Either<C, R> {
         return new Right<C, R>(this.value);
     }
 
@@ -67,12 +67,5 @@ export class Right<L, R> extends Either<L, R>{
 
     getRight(): R {
         return this.value;
-    }
-}
-
-
-declare namespace NodeJS {
-    export interface Global {
-        ex: { Either, Left, Right, [k: string]: any };
     }
 }

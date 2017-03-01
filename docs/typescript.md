@@ -58,7 +58,7 @@
 
 # Links:
 * [! typescript deep dive](https://basarat.gitbooks.io/typescript/content/docs/template-strings.html)
-
+* [announcing-typescript-2-2/](https://blogs.msdn.microsoft.com/typescript/2017/02/22/announcing-typescript-2-2/)
 types:
 * [! extend exsiting type](https://basarat.gitbooks.io/typescript/content/docs/types/lib.d.ts.html)
     * `type_extension.d.ts` this file in project demos this topic.

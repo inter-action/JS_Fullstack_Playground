@@ -1,12 +1,12 @@
-import { assert } from 'chai';
 const ava = require('ava');
 
 import { ENV_UTILS } from '../env';
+import { configEnv } from '../../config';
 
 let origin_env = process.env;
 
 ava.beforeEach(_ => {
-    require('../../config');
+    configEnv()
 })
 
 ava.afterEach(async _ => {
@@ -16,15 +16,15 @@ ava.afterEach(async _ => {
 
 ava('dotenv: should get correct mysql config', t => {
     let MYSQL_ENV = ENV_UTILS.get_mysql_env();
-    assert.equal(MYSQL_ENV.HOST, '127.0.0.1');
-    assert.equal(MYSQL_ENV.DB, 'myapp_dev');
-    assert.equal(MYSQL_ENV.USER, 'root');
-    assert.equal(MYSQL_ENV.PASSWORD, 'jkliop');
+    t.is(MYSQL_ENV.HOST, '127.0.0.1');
+    t.is(MYSQL_ENV.DB, 'myapp_test');
+    t.is(MYSQL_ENV.USER, 'root');
+    t.is(MYSQL_ENV.PASSWORD, 'jkliop');
     t.pass();
 });
 
 ava('dotenv: command line should override .env file', t => {
-    assert.equal(process.env.NODE_ENV, 'test');
+    t.is(process.env.TEST_OVERRIDE, 'test');
     t.pass();
 });
 

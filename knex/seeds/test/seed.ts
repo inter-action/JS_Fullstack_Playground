@@ -3,7 +3,7 @@ import * as KnexModule from 'knex';
 /*
 create seeds:
 
-knex seed:run --env test --knexfile build/server/data/db/knexfile.js
+knex seed:run --env test --knexfile build/server/db/knexfile.js
 
 todo: add db unit test for this
 
@@ -73,7 +73,7 @@ async function seed_users(knex: KnexModule) {
             username: 'bran_stark',
             // raw password: fuckyouguys
             password: '$2a$10$Me6ee0U0pwsA9QrdmanvjOi1EurxcWltCsOaesoxt4HWFUWKuUhjW',
-            email: 'alex_email',
+            email: 'bran_stark@ele.me',
             created_at: new Date(),
             updated_at: new Date()
         })

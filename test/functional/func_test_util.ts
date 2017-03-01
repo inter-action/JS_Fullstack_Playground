@@ -3,7 +3,8 @@ const glob = require('glob');
 
 // KnexInstance
 import { server } from '../../server/index'
-import { KnexInstance, KnexConstants } from '../../server/data/db'
+import { seed } from '../../scripts/bin/db_migration';
+import { connect } from '../../server/db/typeorm';
 
 const chaiHttp = require('chai-http')
 const should = chai.should()
@@ -11,24 +12,14 @@ const should = chai.should()
 const expect = chai.expect
 chai.use(chaiHttp);
 
-export function dbSeed() {
-    return async _ => {
-        await KnexInstance.migrate.rollback(KnexConstants.MIGRATION)
-        await KnexInstance.migrate.latest(KnexConstants.MIGRATION)
-        return await KnexInstance.seed.run(KnexConstants.SEED)
-    }
-}
 
-export function dbRollback() {
-    return async _ => {
-        return await KnexInstance.migrate.rollback(KnexConstants.MIGRATION);
-    }
-}
+
 
 // load from config/test.env, but i hate context switching
 let methodBlackList: RegExp[] = [
     // /^tv_show/gi
 ];
+
 
 export function runWithFilter(cb: (module: any, key: string, hasSideEffect: boolean) => void) {
     // options is optional
@@ -64,4 +55,4 @@ export function runWithFilter(cb: (module: any, key: string, hasSideEffect: bool
     })
 }
 
-export { chai, chaiHttp, server, should, expect, KnexInstance, KnexConstants }
+export { chai, chaiHttp, server, should, expect, connect, seed }

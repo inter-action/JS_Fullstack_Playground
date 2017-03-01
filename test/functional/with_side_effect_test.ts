@@ -1,9 +1,14 @@
 const ava = require('ava');
 
-import { dbSeed, dbRollback, runWithFilter } from './func_test_util'
+import { seed, connect, runWithFilter } from './func_test_util'
 
-ava.beforeEach(dbSeed());
-ava.afterEach(dbRollback());
+ava.before(async _ => {
+    await connect()
+});
+
+ava.beforeEach(async _ => {
+    await seed();
+});
 
 
 runWithFilter((module, key, hasSideEffect) => {

@@ -94,9 +94,3 @@ export function sendmail(options: IMailOptions) {
         })
     })
 }
-
-// sendmail(null).then(() => {
-//     logger.info('send successfully')
-// }).catch(e => {
-//     logger.error('failed: ' + e.message)
-// })

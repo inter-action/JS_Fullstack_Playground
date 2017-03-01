@@ -98,7 +98,7 @@ export function noSideEffect() {
         chai.request(server)
             .post('/api/auth')
             .send({
-                username: 'bran_stark',
+                email: 'bran_stark@ele.me',
                 password: 'fuckyouguys',
             })
             .end(function (_, res) {
@@ -112,7 +112,7 @@ export function noSideEffect() {
         chai.request(server)
             .post('/api/auth')
             .send({
-                username: 'bran_stark',
+                email: 'bran_stark@ele.me',
                 password: 'fuckyouguys',
             })
             .end(function (_, res) {

@@ -1,11 +1,13 @@
 const ava = require('ava');
 
-import { dbSeed, dbRollback, runWithFilter } from './func_test_util'
+import { seed, runWithFilter, connect } from './func_test_util'
 // import { runTvShowTest } from './_tv_shows'
 // import { runRegisterTest } from './_auth';
 
-ava.before(dbSeed());
-ava.after(dbRollback());
+ava.before(async _ => {
+    await connect()
+    await seed();
+});
 
 // runTvShowTest();
 // runRegisterTest();
