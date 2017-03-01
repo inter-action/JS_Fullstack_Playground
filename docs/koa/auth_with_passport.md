@@ -89,6 +89,14 @@ methods for strategy core:
     // skip all together with an error provided
 
 
+methods injected to req object:
+
+  req.user
+  req.isAuthenticated(): boolean
+
+
+  
+
 
 
 

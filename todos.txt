@@ -41,7 +41,9 @@ add docker proxy
 
 todos:
 
-  done:
+  DONE:
+  --------------------------------------------------------
+
     knex:
       update knex doc
       unify knex workflow
@@ -58,6 +60,18 @@ todos:
 
     security: 
       change jwt id to uuid
+
+    auth with passport:
+      what session is for
+      koa2 with passport
+      https://github.com/rkusa/koa-passport
+
+
+    add status field on user
+      0: none activiated
+      1: activated
+      2-5: warning stage
+      6: locked
 
     es6 symbol - https://www.keithcirkel.co.uk/metaprogramming-in-es6-symbols/
     es6 reflect - https://www.keithcirkel.co.uk/metaprogramming-in-es6-part-2-reflect/
@@ -89,8 +103,16 @@ todos:
 
     replace all console log with logger, due to pino writing format
     make request no side effect run concurrently
+    unit-test, treat db test specially, with loose timeout
 
-  pending:
+    add authenticate middleware
+
+    add Either type;
+    local login should only take email as username
+  
+  PENDING :
+  --------------------------------------------------------
+  
     mongodb 感觉比mysql好用多了，有没有做一版mongo的？
       事物该如何处理
     
@@ -99,8 +121,8 @@ todos:
 
     
     clean todo in src code.
-    
     json api versioning
+
     how this `res.body[0].explicit.should.not.be.ok;` is writed in src code
     http://caolan.github.io/async/
     redis cluster with docker
@@ -109,38 +131,61 @@ todos:
     integrate logrotate, docker with pino logger 
       http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email
     
-    add authenticate middleware
+    
     add dependence explaination
 
     how properly handle request validation
       writer a high order function that return a params validation middleware
 
     bookshelf:
+      findOnePr should exclude userpassword by default. reset user token.
+        read bookshelf api
+        
       bookshelf eager load & lazy load
       filter sensitive out data access api
-      when bookshelf can support es6, it's very unpleasant to work with along with typescript.
+      when can bookshelf support es6, it's very unpleasant to work with along with typescript.
         extend es6 - https://github.com/tgriesser/bookshelf/issues/756
       
       add bookshelf plugins, complete bookshelf config as Ghost does.
 
       find all, pagination, sort...etc
 
+      intercept user password save, after validation is done, trigger hash
+      I should say, the thing that I am not able to type bookshelf is really pain for me.
+
+
     refactor tests run on sqlite3
-    unit-test, treat db test specially, with loose timeout
-    
-    add status field on user
-      0: none activiated
-      1: activated
-      10-15: warning stage
-      20: locked
-
     test db eagerly on start
-
-    auth with passport:
-      what session is for
-      koa2 with passport
-      https://github.com/rkusa/koa-passport
 
     security: 
     
     add utility to export & import data, like what Ghost does
+
+    tracing:
+      https://en.wikipedia.org/wiki/DTrace
+
+    netstat
+    
+    replace bookshelf with typeorm
+
+    fileupload:
+      http://stackoverflow.com/questions/33751203/how-to-parse-multipart-form-data-body-with-koa
+      https://github.com/dlau/koa-body
+
+    typeorm:
+      https://www.slideshare.net/billkarwin/models-for-hierarchical-data
+
+      add DI: ?
+        https://typeorm.github.io/using-service-container.html
+        https://github.com/pleerock/typedi
+    
+    fix vscode annotation warning
+    rename Nuser
+
+    refine Either type, remove getLeft, getRight
+    clean bookshelf codes
+    
+
+    killall node
+
+    import * as nodeUtil from 'util';
