@@ -45,7 +45,7 @@ if (require.main === module) {
     } else {
         console.log(`do ${argument.command} using env: ${process.env.NODE_ENV}`)
         require('../../server/config');
-        const { KnexConstants, KnexInstance } = require('../../server/data/db/knex');
+        const { KnexConstants, KnexInstance } = require('../../server/db/knex');
         target(KnexInstance, KnexConstants).then(() => {
             process.exit(0);
         }, (e) => {

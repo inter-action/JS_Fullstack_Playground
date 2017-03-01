@@ -2,7 +2,7 @@ import * as KnexModule from 'knex';
 
 /*
 from cli:
-    knex migrate:latest --env test --knexfile  build/server/data/db/knexfile.js
+    knex migrate:latest --env test --knexfile  build/server/db/knexfile.js
 */
 
 exports.up = async function (knex: KnexModule) {// create schema

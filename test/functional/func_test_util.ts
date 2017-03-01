@@ -4,7 +4,7 @@ const glob = require('glob');
 // KnexInstance
 import { server } from '../../server/index'
 import { seed } from '../../scripts/bin/db_migration';
-import { connect } from '../../server/config/typeorm';
+import { connect } from '../../server/db/typeorm';
 
 const chaiHttp = require('chai-http')
 const should = chai.should()

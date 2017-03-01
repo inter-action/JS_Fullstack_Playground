@@ -1,7 +1,7 @@
 import * as path from 'path';
 
-import * as typeorm from './typeorm'
-export { typeorm };
+import * as orm from '../db/typeorm'
+export { orm };
 
 import { logger } from '../logging'
 import { ENV } from '../utils/env';
@@ -27,10 +27,10 @@ export function configEnv() {
 }
 
 async function setDB(syncSchema = true) {
-    await typeorm.connect();
+    await orm.connect();
 
     const env = process.env.NODE_ENV;
     if (syncSchema && env === ENV.dev) {
-        await typeorm.getConnection().syncSchema(true);
+        await orm.getConnection().syncSchema(true);
     }
 }

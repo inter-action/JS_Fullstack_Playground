@@ -1,4 +1,4 @@
-import { getConnection, connect } from '../../server/config/typeorm';
+import { getConnection, connect } from '../../server/db/typeorm';
 import { configEnv } from '../../server/config';
 
 // ./migration -command migration | seed
