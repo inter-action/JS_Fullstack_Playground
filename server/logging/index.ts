@@ -1,6 +1,7 @@
 import * as pino from 'pino'
 
-import { Constants, ENV_UTILS } from '../utils';
+import { ENV_UTILS } from '../utils/env';
+import * as Constants from '../utils/constants';
 
 class LOGGER_LEVELS {
     static readonly fatal = 'fatal'
