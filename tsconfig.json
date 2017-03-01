@@ -1,23 +1,30 @@
 {
   "compilerOptions": {
+    "lib": [
+      "es5",
+      "es6"
+    ],
+    "target": "es6",
     "module": "commonjs",
-    "target": "es2015",
     "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    // "sourceMap": true,
     "noImplicitAny": false,
     "removeComments": true,
     "preserveConstEnums": true,
-    "allowJs": true,
     "strictNullChecks": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
     "outDir": "./build"
   },
   "include": [
-    "knex/**/*",
-    "server/**/*",
-    "test/**/*"
+    "knex",
+    "server",
+    "test",
+    "scripts"
   ],
   "exclude": [
-    "node_modules/**/*"
+    "node_modules"
   ]
 }

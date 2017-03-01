@@ -1,8 +1,10 @@
 if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = 'dev';
 }
-require('./config');
+import { initConfig } from './config';
+initConfig().catch(e => { throw e });
 
+import 'reflect-metadata';
 import * as http from 'http'
 import * as path from 'path';
 

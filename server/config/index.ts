@@ -1,12 +1,28 @@
+import * as typeorm from './typeorm'
+export { typeorm };
+
 import * as path from 'path';
-const env = process.env.NODE_ENV;
+import { ENV } from '../utils/env';
 
-if (!env) {
-    throw new Error('process.env.NODE_ENV is not defined');
+export function initConfig() {
+    const env = process.env.NODE_ENV;
+
+    if (!env) {
+        throw new Error('process.env.NODE_ENV is not defined');
+    }
+
+    let result = require('dotenv').config({ path: path.resolve(__dirname, `./dotenv/${env}.env`) });
+    if (result.error) {
+        throw result.error
+    }
+
+    return setDB()
 }
 
-let result = require('dotenv').config({ path: path.resolve(__dirname, `./dotenv/${env}.env`) });
-if (result.error) {
-    throw result.error
-}
 
+async function setDB() {
+    const env = process.env.NODE_ENV;
+    if (env === ENV.dev) {
+        await typeorm.getConnection().syncSchema(true);
+    }
+}
