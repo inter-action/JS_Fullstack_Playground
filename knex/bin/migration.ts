@@ -1,5 +1,7 @@
 
 // ./migration -command migration | seed
+// 	node ./build/knex/bin/migration.js -env dev -command migration
+//  node ./build/knex/bin/migration.js -env dev -command seed
 async function migration(KnexInstance, KnexConstants) {
     await KnexInstance.migrate.latest(KnexConstants.MIGRATION);
 }
