@@ -4,7 +4,8 @@ import * as validator from 'validator';
 const passport = require('koa-passport');
 import * as _ from 'lodash';
 
-import { User } from '../model';
+import { getUserAccess, User } from '../entities';
+
 import { Constants, decodeBase64URLsafe, encodeBase64URLsafe } from '../utils';
 import { mailgun } from '../mailsender'
 
@@ -45,10 +46,10 @@ appRouts.post('/forget-password', async (ctx, next) => {
         throw boom.badData('email is required');
     }
 
-    let [error, token] = await User.generateResetToken(Date.now() + Constants.TIME.ONE_DAY_MILI_SEC, body.email);
-    if (error) throw error
+    let result = await User.generateResetToken(Date.now() + Constants.TIME.ONE_DAY_MILI_SEC, body.email);
+    if (result.isLeft()) throw result.getLeft();
     else {
-        let html = await mailgun.loadTplPr('reset_password.ejs', { resetUrl: `http://localhost:9000/reset-password?token=${encodeBase64URLsafe(token)}` });
+        let html = await mailgun.loadTplPr('reset_password.ejs', { resetUrl: `http://localhost:9000/reset-password?token=${encodeBase64URLsafe(result.getRight())}` });
         await mailgun.sendmail({ to: body.email, subject: 'reset password', html })
         ctx.status = 200;
     }
@@ -85,14 +86,15 @@ appRouts.post('/reset-password', async (ctx, next) => {
     if (tokenResult.isLeft()) throw tokenResult.getLeft();
     else {
         let user = tokenResult.getRight();
-        let usermodel = await User.findOnePr({ email: user.email }, { require: true });
-        let pwhash = await User.createHashPr(body.password);
-        usermodel.set('password', pwhash);
-        usermodel = await usermodel.save();
+        let usermodel = await getUserAccess().findOne({ email: user.email });
+        ctx.assert(usermodel != null, 500, 'logic error');
+        let typeAssuredUser = usermodel as User;
+        typeAssuredUser.password = await User.createHashPr(body.password);
+        let updated = await getUserAccess().getRespsitory().persist(typeAssuredUser);
         if (ctx.isUnauthenticated()) {
             ctx.logout()
         }
-        ctx.logIn(usermodel.toJSON(), (error) => {
+        ctx.logIn(updated, (error) => {
             if (error) throw error;
             else ctx.redirect('/')
         })

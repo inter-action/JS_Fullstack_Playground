@@ -2,11 +2,12 @@ import { assert } from 'chai';
 const ava = require('ava');
 
 import { ENV_UTILS } from '../env';
+import { initConfig } from '../../config';
 
 let origin_env = process.env;
 
-ava.beforeEach(_ => {
-    require('../../config');
+ava.beforeEach(async _ => {
+    await initConfig()
 })
 
 ava.afterEach(async _ => {

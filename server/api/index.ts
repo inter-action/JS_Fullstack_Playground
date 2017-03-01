@@ -1,7 +1,7 @@
 import * as Router from 'koa-router'
 import * as koaPassport from 'koa-passport';
 
-import { User, validateUserView } from '../model';
+import { User, getUserAccess } from '../entities';
 import { tv_show } from './tv_show';
 import { AuthMiddlewares } from '../middleware';
 
@@ -9,13 +9,13 @@ import { AuthMiddlewares } from '../middleware';
 export const apiRoutes = new Router({ prefix: '/api' })
     .post('/register', async (ctx) => {
         const body = ctx.request.body;
-        let error = validateUserView(body)
+        let error = User.validateUserView(body)
         if (error) {
             throw error;
         }
-        const hash = await User.createHashPr(body.password);
-        body.password = hash;
-        await new User(body).save(body);
+        let user = User.convertUser(body)
+        user.password = await User.createHashPr(user.password);
+        await getUserAccess().getRespsitory().persist(user)
         ctx.status = 200;
     })
     // return a bearer token for auth. using username & password

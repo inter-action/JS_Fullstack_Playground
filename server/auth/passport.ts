@@ -3,7 +3,7 @@ const passport = require('koa-passport');
 const {Strategy} = require('passport-local')
 const GitHubStrategy = require('passport-github2').Strategy;
 
-import { User, DBUser } from '../model';
+import { getUserAccess, User } from '../entities'
 import { errors, uid, ENV_UTILS } from '../utils';
 import { logger } from '../logging'
 
@@ -16,8 +16,13 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (uuid, done) => {
     try {
-        const model = await User.findOnePr({ uuid }, { require: true })
-        done(null, model.toJSON());
+        let access = getUserAccess();
+        const model = await access.findOne({ uuid: uuid })
+        if (model) {
+            done(null, model);
+        } else {
+            done(new Error('no user found for: ' + uuid))
+        }
     } catch (err) {
         done(err)
     }
@@ -66,15 +71,19 @@ if (GITHUB_CLIENT_ID && GITHUB_CLIENT_SECRET) {
     },
         async function (accessToken, refreshToken, profile, done) {
             try {
-                let user = { from: 'github', from_id: profile.id, username: profile.username } as DBUser
-                let dbUser = await User.findOnePr({ from: user.from, from_id: user.from_id });
+                let userAccess = getUserAccess();
+                let user = new User();
+                user.from = 'github';
+                user.fromId = profile.id;
+                user.username = profile.username;
+                let dbUser = await userAccess.findOne({ from: user.from, fromId: user.fromId });
                 if (!dbUser) {
                     // create a dummy email for simplicity
                     user.email = user.username + '@github.com'
-                    user.password = uid(10)
-                    dbUser = await User.addPr(user)
+                    user.password = await User.createHashPr(uid(10));
+                    dbUser = await userAccess.getRespsitory().persist(user);
                 }
-                done(null, dbUser.toJSON())
+                done(null, dbUser)
             } catch (e) {
                 done(e)
             }

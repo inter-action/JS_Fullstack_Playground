@@ -14,3 +14,9 @@ export function cleanDbEachTest() {
         await getConnection().syncSchema(true);
     })
 }
+
+export function initConfiguration() {
+    ava.before(async _ => {
+        await initConfig();
+    });
+}
