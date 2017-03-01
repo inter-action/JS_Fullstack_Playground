@@ -5,15 +5,15 @@ import {
 } from 'typeorm';
 import * as uuidV4 from 'uuid/v4';
 import * as crypto from 'crypto';
-import * as util from 'util';
 import * as assert from 'assert';
+
 
 import * as validator from 'validator';
 import * as _ from 'lodash';
 import * as Bluebird from 'bluebird';
 import * as boom from 'boom';
 
-import { booleanChain, errors, ENV_UTILS } from '../utils';
+import { errors, ENV_UTILS } from '../utils';
 import { Either, Left, Right } from '../extend_type';
 const jwt = require('jsonwebtoken');
 
@@ -131,7 +131,7 @@ export class User {
 
     // return a JWT token
     static async createTokenPr(user: User) {
-        return await jwtSign({ id: user.id }, ENV_UTILS.getEnvConfig('JWT_SIGNED_TOKEN'), {})
+        return await jwtSign({ uuid: user.uuid }, ENV_UTILS.getEnvConfig('JWT_SIGNED_TOKEN'), {})
     }
 
 

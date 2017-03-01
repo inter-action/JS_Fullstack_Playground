@@ -103,10 +103,10 @@ lint:
 readlog:
 	tail -f $(PATH_LOG) | pino -lt
 
-db_migration: compile
+db_migration:
 	node ./build/scripts/bin/db_migration.js -env dev -command migration
 
-db_seed: compile
+db_seed:
 	node ./build/scripts/bin/db_migration.js -env dev -command seed
 
 git_merge_master:

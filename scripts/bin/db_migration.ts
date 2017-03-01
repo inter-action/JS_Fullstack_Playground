@@ -2,13 +2,13 @@ import { getConnection, connect } from '../../server/config/typeorm';
 import { configEnv } from '../../server/config';
 
 // ./migration -command migration | seed
-async function migration() {
+export async function migration() {
     await getConnection().syncSchema(true)
 }
 
-async function seed() {
+export async function seed() {
     await migration();
-    await require(`../typeorm/seed/${process.env.NODE_ENV}`).seed();
+    return await require(`../typeorm/seed/${process.env.NODE_ENV}`).seed();
 }
 
 function parse(args: string[]): any {
@@ -47,8 +47,9 @@ if (require.main === module) {
         configEnv();
 
         connect().then(_ => {
-            return target();
+            return target()
         }).then(_ => {
+            console.log(`done ${argument.command} using env: ${process.env.NODE_ENV}`)
             process.exit(0);
         }, e => {
             console.log('fatal error: ', e.stack)

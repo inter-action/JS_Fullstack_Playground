@@ -10,7 +10,7 @@ const promiseVerify: any = BlueBird.promisify(verify);
 type Next = () => Promise<any>
 
 export async function ensureBearerToken(ctx: Router.IRouterContext, next: Next) {
-    let uid = null;
+    let uuid = null;
     const token = getAuthBearerToken(ctx)
 
     if (!token) {
@@ -23,13 +23,13 @@ export async function ensureBearerToken(ctx: Router.IRouterContext, next: Next) 
     } catch (err) {
         return ctx.throw(401)
     }
-    uid = decoded.id;
+    uuid = decoded.uuid;
 
-    if (uid == null) {
+    if (uuid == null) {
         return ctx.throw(401);
     }
 
-    let user = await getUserAccess().findOne({ uuid: uid });
+    let user = await getUserAccess().findOne({ uuid: uuid });
     if (!user) {
         return ctx.throw(401, 'invalid token')
     }

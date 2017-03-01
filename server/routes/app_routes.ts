@@ -36,11 +36,11 @@ appRouts.post('/login', async (ctx, next) => {
 })
 
 
-appRouts.get('/forget-password', async (ctx, next) => {
+appRouts.get('/forget-password', async (ctx) => {
     await ctx.render('forget_password');
 });
 
-appRouts.post('/forget-password', async (ctx, next) => {
+appRouts.post('/forget-password', async (ctx) => {
     let body = ctx.request.body;
     if (!(_.isString(body.email) && validator.isEmail(body.email))) {
         throw boom.badData('email is required');
@@ -56,7 +56,7 @@ appRouts.post('/forget-password', async (ctx, next) => {
 });
 
 
-appRouts.get('/reset-password', async (ctx, next) => {
+appRouts.get('/reset-password', async (ctx) => {
     let query = ctx.request.query;
     if (!query.token) {
         throw boom.badData('token is required');
@@ -65,7 +65,7 @@ appRouts.get('/reset-password', async (ctx, next) => {
     await ctx.render('reset_password', { token: query.token });
 })
 
-appRouts.post('/reset-password', async (ctx, next) => {
+appRouts.post('/reset-password', async (ctx) => {
     let body = ctx.request.body;
     if (body.token == null || validator.isEmpty(body.token)) {
         throw boom.badData()

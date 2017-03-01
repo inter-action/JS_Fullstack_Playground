@@ -37,6 +37,14 @@ ava.serial(tag + '# update user status', async t => {
     t.is(updated.status, 1)
 })
 
+
+ava.serial(`${tag} find user`, async t => {
+    let user = User.create('alexander_mahone', '243242@qq.com', 'freakingpasswd')
+    await userResp.persist(user);
+    let find = await getUserAccess().findOne({ email: user.email })
+    t.true(find != null)
+});
+
 /*
 ava.serial(TAG + 'should not save user when failing validation: no password', async t => {
     let user: any = <IUser>{ username: 'samewell' };

@@ -1,7 +1,7 @@
 import { KnexInstance } from '../data/db'
 
 function Shows() {
-    return KnexInstance('shows')
+    return KnexInstance('tv_show');
 }
 
 export function getAll() {

@@ -10,7 +10,7 @@ import { logger } from '../logging'
 // any error would propagate with `next(error)` call
 // these two function is current used by passport session strategy
 // also could be used by other strategies.
-passport.serializeUser((user, done) => {
+passport.serializeUser((user: User, done) => {
     done(null, user.uuid)
 })
 
@@ -69,7 +69,7 @@ if (GITHUB_CLIENT_ID && GITHUB_CLIENT_SECRET) {
         clientSecret: GITHUB_CLIENT_SECRET,
         callbackURL: 'http://127.0.0.1:9000/auth/github/callback'
     },
-        async function (accessToken, refreshToken, profile, done) {
+        async function (_accessToken, _refreshToken, profile, done) {
             try {
                 let userAccess = getUserAccess();
                 let user = new User();

@@ -6,9 +6,9 @@ export { typeorm };
 import { logger } from '../logging'
 import { ENV } from '../utils/env';
 
-export function initConfig() {
+export async function initConfig(syncSchema = true) {
     configEnv();
-    return setDB()
+    return await setDB(syncSchema)
 }
 
 export function configEnv() {
@@ -26,9 +26,11 @@ export function configEnv() {
 
 }
 
-async function setDB() {
+async function setDB(syncSchema = true) {
+    await typeorm.connect();
+
     const env = process.env.NODE_ENV;
-    if (env === ENV.dev) {
+    if (syncSchema && env === ENV.dev) {
         await typeorm.getConnection().syncSchema(true);
     }
 }

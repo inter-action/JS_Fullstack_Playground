@@ -3,7 +3,7 @@ import * as pino from 'pino'
 import { ENV_UTILS } from '../utils/env';
 import * as Constants from '../utils/constants';
 
-class LOGGER_LEVELS {
+export class LOGGER_LEVELS {
     static readonly fatal = 'fatal'
     static readonly error = 'error'
     static readonly warn = 'warn'
@@ -43,4 +43,4 @@ function createLogger() {
 
 export const logger = createLogger();
 
-logger.level = LOGGER_LEVELS.debug
+logger.level = process.env.LOG_LEVEL || 'debug'
