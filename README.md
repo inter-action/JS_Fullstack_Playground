@@ -2,7 +2,7 @@
 this project serves a playground for me to experiment JavaScript fullstack techniques.
 
 ### keywords:
-koa2, node, ava, chai, bookshelf, knex, typescript
+koa2, node, ava, chai, typeorm, knex, typescript
 
 ## main checkpoints I planed to implement:
 dev:
@@ -11,7 +11,7 @@ dev:
     * template rendering (ejs) ✓
 * logging ✓
 * mysql with knex ✓
-* orm with bookshelf
+* orm with typeorm ✓
 * unit test all the way ✓
 * functional test (some) ✓
 * docker all the way (from dev to production)
@@ -40,15 +40,13 @@ security:
 
 other low priorities checkpoints:
 * Auth:
-    * register
+    * register ✓
     * Auth ✓
-    * forget password
-    * activate account
-    * deactivate account
+    * forget password ✓
 * JWT ✓
 * OAuth2
     * github ✓
-    * weixin 
+    * weixin ( nah, the register process is way too tedious :(  )
 * Sketch design
 
 all the notes in this process would reside in docs/ directory.

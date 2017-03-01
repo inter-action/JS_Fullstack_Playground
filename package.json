@@ -24,7 +24,6 @@
   "homepage": "https://github.com/inter-action/JS_Fullstack_Playground#readme",
   "dependencies": {
     "bcrypt": "^1.0.2",
-    "bookshelf": "^0.10.3",
     "boom": "^4.2.0",
     "dotenv": "^4.0.0",
     "ejs": "^2.5.6",
@@ -49,7 +48,6 @@
     "validator": "^6.2.1"
   },
   "devDependencies": {
-    "@types/bookshelf": "^0.8.35",
     "@types/boom": "0.0.33",
     "@types/chai": "^3.4.35",
     "@types/chai-http": "0.0.29",

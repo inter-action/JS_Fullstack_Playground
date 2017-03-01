@@ -5,7 +5,6 @@ const glob = require('glob');
 import { server } from '../../server/index'
 import { seed } from '../../scripts/bin/db_migration';
 import { connect } from '../../server/config/typeorm';
-import { KnexInstance, KnexConstants } from '../../server/data/db'
 
 const chaiHttp = require('chai-http')
 const should = chai.should()
@@ -56,4 +55,4 @@ export function runWithFilter(cb: (module: any, key: string, hasSideEffect: bool
     })
 }
 
-export { chai, chaiHttp, server, should, expect, KnexInstance, KnexConstants, connect, seed }
+export { chai, chaiHttp, server, should, expect, connect, seed }
