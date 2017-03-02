@@ -30,6 +30,7 @@ production checkpoints:
 * nodejs memory dump
 * online monitor
 * https
+* load test
 
 security:
 * rate limit

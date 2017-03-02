@@ -46,3 +46,21 @@ this link lists various strategies to map OOP models to SQL models.
     children: Category;
     //many `parent` has one child
     // its type is `Category`, and its props is `parent`
+
+* Update vs Insert:
+    even though these two operation is done via same api. Update would  update corresponding record 
+    with only fields that presented itself in model you passed in, that is to say missing fields would
+    not be updated.
+
+
+    ```
+    let user = User.create('alexfdsfds', 'someemail@qq.com', 'somedumbpasswrod')
+    let model = await getUserAccess().getRespsitory().persist(user);
+    delete model.password
+    model.email = '243242'
+    let updated = await getUserAccess().getRespsitory().persist(model)
+    // this operation would succcess, because no update would be made into database, 
+    // typeorm may include a cache, if update fields has no change compared to pre-existing 
+    // entity, then it sliently pass & no effect is made.
+
+    ```
