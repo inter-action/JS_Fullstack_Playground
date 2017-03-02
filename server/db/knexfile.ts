@@ -1,4 +1,4 @@
-import { ENV, ENV_UTILS } from '../utils'
+import { ENV, ENV_UTILS } from "../utils"
 
 let MYSQL_ENV_CONFIG;
 if (!ENV_UTILS.is_test()) {
@@ -9,14 +9,14 @@ if (!ENV_UTILS.is_test()) {
 module.exports = {
 
     // development: {
-    //   client: 'sqlite3',
+    //   client: "sqlite3",
     //   connection: {
-    //     filename: './blob/db/dev.sqlite3'
+    //     filename: "./blob/db/dev.sqlite3"
     //   }
     // },
 
     [ENV.dev]: {
-        client: 'mysql',
+        client: "mysql",
         connection: MYSQL_ENV_CONFIG && {
             host: MYSQL_ENV_CONFIG.HOST,
             user: MYSQL_ENV_CONFIG.USER,
@@ -28,17 +28,17 @@ module.exports = {
             max: 10
         },
         seeds: {// determine where automatically generated go & from where seed file will be run
-            directory: './seeds/' + ENV.dev
+            directory: "./seeds/" + ENV.dev
         }
     },
 
     [ENV.test]: {
-        client: 'mysql',
+        client: "mysql",
         connection: {
-            host: '127.0.0.1',
-            user: 'root',
-            password: 'jkliop',
-            database: 'myapp_test'
+            host: "127.0.0.1",
+            user: "root",
+            password: "jkliop",
+            database: "myapp_test"
         },
         pool: {
             min: 2,
@@ -48,34 +48,34 @@ module.exports = {
     },
 
     staging: {
-        client: 'postgresql',
+        client: "postgresql",
         connection: {
-            database: 'my_db',
-            user: 'username',
-            password: 'password'
+            database: "my_db",
+            user: "username",
+            password: "password"
         },
         pool: {
             min: 2,
             max: 10
         },
         migrations: {
-            tableName: 'knex_migrations'
+            tableName: "knex_migrations"
         }
     },
 
     production: {
-        client: 'postgresql',
+        client: "postgresql",
         connection: {
-            database: 'my_db',
-            user: 'username',
-            password: 'password'
+            database: "my_db",
+            user: "username",
+            password: "password"
         },
         pool: {
             min: 2,
             max: 10
         },
         migrations: {
-            tableName: 'knex_migrations'
+            tableName: "knex_migrations"
         }
     }
 

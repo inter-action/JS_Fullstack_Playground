@@ -1,4 +1,5 @@
 
+* set LOG_LEVEL=trace to enble SQL logging
 
 
 

@@ -84,3 +84,4 @@ types:
     bar = '789'; // ERROR: Type `string` is not `assignable` to type `number`
     ```
         
+* [! decorators](https://www.typescriptlang.org/docs/handbook/decorators.html)

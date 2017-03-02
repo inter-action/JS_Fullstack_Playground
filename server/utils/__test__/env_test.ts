@@ -1,7 +1,7 @@
-const ava = require('ava');
+const ava = require("ava");
 
-import { ENV_UTILS } from '../env';
-import { configEnv } from '../../config';
+import { ENV_UTILS } from "../env";
+import { configEnv } from "../../config";
 
 let origin_env = process.env;
 
@@ -14,23 +14,23 @@ ava.afterEach(async _ => {
 });
 
 
-ava('dotenv: should get correct mysql config', t => {
+ava("dotenv: should get correct mysql config", t => {
     let MYSQL_ENV = ENV_UTILS.get_mysql_env();
-    t.is(MYSQL_ENV.HOST, '127.0.0.1');
-    t.is(MYSQL_ENV.DB, 'myapp_test');
-    t.is(MYSQL_ENV.USER, 'root');
-    t.is(MYSQL_ENV.PASSWORD, 'jkliop');
+    t.is(MYSQL_ENV.HOST, "127.0.0.1");
+    t.is(MYSQL_ENV.DB, "myapp_test");
+    t.is(MYSQL_ENV.USER, "root");
+    t.is(MYSQL_ENV.PASSWORD, "jkliop");
     t.pass();
 });
 
-ava('dotenv: command line should override .env file', t => {
-    t.is(process.env.TEST_OVERRIDE, 'test');
+ava("dotenv: command line should override .env file", t => {
+    t.is(process.env.TEST_OVERRIDE, "test");
     t.pass();
 });
 
 // Generate a v4 UUID (random)
-const uuidV4 = require('uuid/v4');
+const uuidV4 = require("uuid/v4");
 
-ava.skip('dotenv: command line should override .env file', _ => {
+ava.skip("dotenv: command line should override .env file", _ => {
     console.log(uuidV4())
 });

@@ -1,9 +1,9 @@
-const { verify } = require('jsonwebtoken');
-import * as BlueBird from 'bluebird';
-import * as Router from 'koa-router';
+const { verify } = require("jsonwebtoken");
+import * as BlueBird from "bluebird";
+import * as Router from "koa-router";
 
-import { getAuthBearerToken, ENV_UTILS } from '../utils'
-import { getUserAccess } from '../entities'
+import { getAuthBearerToken, ENV_UTILS } from "../utils"
+import { getUserAccess } from "../entities"
 
 const promiseVerify: any = BlueBird.promisify(verify);
 
@@ -19,7 +19,7 @@ export async function ensureBearerToken(ctx: Router.IRouterContext, next: Next) 
 
     let decoded: any = null
     try {
-        decoded = await promiseVerify(token, ENV_UTILS.getEnvConfig('JWT_SIGNED_TOKEN'));
+        decoded = await promiseVerify(token, ENV_UTILS.getEnvConfig("JWT_SIGNED_TOKEN"));
     } catch (err) {
         return ctx.throw(401)
     }
@@ -31,7 +31,7 @@ export async function ensureBearerToken(ctx: Router.IRouterContext, next: Next) 
 
     let user = await getUserAccess().findOne({ uuid: uuid });
     if (!user) {
-        return ctx.throw(401, 'invalid token')
+        return ctx.throw(401, "invalid token")
     }
     ctx.state.user = user;
     return next()

@@ -1,6 +1,6 @@
-const ava = require('ava');
+const ava = require("ava");
 
-import { seed, connect, runWithFilter } from './func_test_util'
+import { seed, connect, runWithFilter } from "./func_test_util"
 
 ava.before(async _ => {
     await connect()

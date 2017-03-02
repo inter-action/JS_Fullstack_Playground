@@ -1,4 +1,4 @@
-export const APP_NAME = 'js_fullstack_playground'
+export const APP_NAME = "js_fullstack_playground"
 
 const ONE_DAY_SEC = 24 * 3600;
 const ONE_DAY_MILI_SEC = ONE_DAY_SEC * 1000;

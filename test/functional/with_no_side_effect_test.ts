@@ -1,8 +1,8 @@
-const ava = require('ava');
+const ava = require("ava");
 
-import { seed, runWithFilter, connect } from './func_test_util'
-// import { runTvShowTest } from './_tv_shows'
-// import { runRegisterTest } from './_auth';
+import { seed, runWithFilter, connect } from "./func_test_util"
+// import { runTvShowTest } from "./_tv_shows"
+// import { runRegisterTest } from "./_auth";
 
 ava.before(async _ => {
     await connect()

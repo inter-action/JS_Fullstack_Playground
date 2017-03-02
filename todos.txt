@@ -1,3 +1,14 @@
+
+# blah blah blah
+
+killall node
+
+    $2a$10$Me6ee0U0pwsA9QrdmanvjOi1EurxcWltCsOaesoxt4HWFUWKuUhjW
+    fuckyouguys
+
+command + . # quick fix
+
+
 # rename scripts
 
     #!/bin/bash
@@ -11,31 +22,17 @@
 
 
 # Road maps
-
-* npm or yarn?
-
 * how to debug with docker
 
 docker-compose run api npm install cors
 
 add docker proxy
 
-# blah blah blah
-
-    $2a$10$Me6ee0U0pwsA9QrdmanvjOi1EurxcWltCsOaesoxt4HWFUWKuUhjW
-    fuckyouguys
 
 # links:
   aws:
     https://medium.com/trisfera/deploying-an-express-application-to-aws-lambda-the-easy-way-fa5fbef190ba#.vmuhnsx7r
     
-  node:
-    [19 things I learnt reading the NodeJS docs](https://hackernoon.com/19-things-i-learnt-reading-the-nodejs-docs-8a2dcc7f307f#.ibos50cqi)
-    [Node.js at Scale - Understanding the Node.js Event Loop](https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/)
-    https://blog.risingstack.com/nodejs-at-scale-npm-publish-tutorial/
-    https://blog.risingstack.com/finding-a-memory-leak-in-node-js/
-
-
   https://www.tutorialspoint.com/makefile/makefile_dependencies.htm
 
 
@@ -67,6 +64,12 @@ todos:
       https://github.com/rkusa/koa-passport
 
 
+    validation: feel like no much need.
+      how properly handle request validation
+        writer a high order function that return a params validation middleware
+
+      
+
     add status field on user
       0: none activiated
       1: activated
@@ -75,7 +78,11 @@ todos:
 
     es6 symbol - https://www.keithcirkel.co.uk/metaprogramming-in-es6-symbols/
     es6 reflect - https://www.keithcirkel.co.uk/metaprogramming-in-es6-part-2-reflect/
-    es7 decorator - https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841#.m9olqtn41
+    es7 decorator - 
+      https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841#.m9olqtn41
+      https://www.typescriptlang.org/docs/handbook/decorators.html
+      https://github.com/rbuckton/reflect-metadata
+      
     add logger
     process.on(`uncaughtException`, console.error);
     /node_modules/@types/koa-router/index.d.ts
@@ -109,53 +116,47 @@ todos:
 
     add Either type;
     local login should only take email as username
-  
+    
+    replace bookshelf with typeorm
+    clean bookshelf codes
+
+    fix vscode annotation warning
+
+    
+
+
   PENDING :
   --------------------------------------------------------
   
     mongodb 感觉比mysql好用多了，有没有做一版mongo的？
       事物该如何处理
     
+    timezone
+    refactor tests run on sqlite3
+    
+    
     http://apidocjs.com/
       https://github.com/adrianObel/koa2-api-boilerplate
-
     
     clean todo in src code.
     json api versioning
 
     how this `res.body[0].explicit.should.not.be.ok;` is writed in src code
-    http://caolan.github.io/async/
     redis cluster with docker
     https with nodejs: 
       https://medium.com/@nileshsingh/everything-about-creating-an-https-server-using-node-js-2fc5c48a8d4e#.9oz0lax2n
     integrate logrotate, docker with pino logger 
       http://www.nearform.com/nodecrunch/sematext-guest-post-pino-fastest-node-js-logger-production/?utm_source=nodeweekly&utm_medium=email
     
-    
+    add prod env
     add dependence explaination
 
-    how properly handle request validation
-      writer a high order function that return a params validation middleware
-
-    bookshelf:
-      findOnePr should exclude userpassword by default. reset user token.
-        read bookshelf api
-        
-      bookshelf eager load & lazy load
-      filter sensitive out data access api
-      when can bookshelf support es6, it's very unpleasant to work with along with typescript.
-        extend es6 - https://github.com/tgriesser/bookshelf/issues/756
-      
-      add bookshelf plugins, complete bookshelf config as Ghost does.
-
+    orm:
+      filter sensitive data on fetch from db; like user.password
       find all, pagination, sort...etc
+      intercept user password save ? should i implement this ? feel like this may add too much ambiguity
 
-      intercept user password save, after validation is done, trigger hash
-      I should say, the thing that I am not able to type bookshelf is really pain for me.
-
-
-    refactor tests run on sqlite3
-    test db eagerly on start
+    test db eagerly on start, do a select on test db.
 
     security: 
     
@@ -164,13 +165,9 @@ todos:
     tracing:
       https://en.wikipedia.org/wiki/DTrace
 
-    netstat
-    
-    replace bookshelf with typeorm
-
-    fileupload:
-      http://stackoverflow.com/questions/33751203/how-to-parse-multipart-form-data-body-with-koa
-      https://github.com/dlau/koa-body
+    linux: 
+      netstat
+      nc
 
     typeorm:
       https://www.slideshare.net/billkarwin/models-for-hierarchical-data
@@ -179,13 +176,10 @@ todos:
         https://typeorm.github.io/using-service-container.html
         https://github.com/pleerock/typedi
     
-    fix vscode annotation warning
-    rename Nuser
+    redis cache
 
-    refine Either type, remove getLeft, getRight
-    clean bookshelf codes
-    
-
-    killall node
-
-    import * as nodeUtil from 'util';
+    fileupload:
+      http://stackoverflow.com/questions/33751203/how-to-parse-multipart-form-data-body-with-koa
+      https://github.com/dlau/koa-body
+      
+    typescript: Object vs object vs {}

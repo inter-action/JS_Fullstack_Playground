@@ -1,14 +1,14 @@
-const ava = require('ava');
-import { Option, Some, None } from '../option';
+const ava = require("ava");
+import { Option, Some, None } from "../option";
 
-let TAG = '#Option<T>: ';
+let TAG = "#Option<T>: ";
 
-ava.only(`${TAG} type assign should work as expected`, _ => {
+ava(`${TAG} type assign should work as expected`, _ => {
     let opt1: Option<string>;
     opt1 = None.create();
 
     let opt2: Option<string>;
-    opt2 = Some.create('tfds');
+    opt2 = Some.create("tfds");
 
     let opt3 = None.create();
     let optNumber: Option<number>;
@@ -18,24 +18,24 @@ ava.only(`${TAG} type assign should work as expected`, _ => {
     optNumber = opt1.map(_ => 1)
 });
 
-ava.only(`${TAG} Some operations should work as expected`, t => {
-    let opt = Some.create('abc');
+ava(`${TAG} Some operations should work as expected`, t => {
+    let opt = Some.create("abc");
     t.true(opt.exists());
     t.true(!opt.isEmpty());
-    t.is(opt.get(), 'abc');
-    t.is(opt.getOrElse(() => 'def'), 'abc');
-    t.is(opt.map(str => str + 'd').get(), 'abcd');
-    t.is(opt.flatMap(str => Some.create(str + 'd')).get(), 'abcd')
+    t.is(opt.get(), "abc");
+    t.is(opt.getOrElse(() => "def"), "abc");
+    t.is(opt.map(str => str + "d").get(), "abcd");
+    t.is(opt.flatMap(str => Some.create(str + "d")).get(), "abcd")
 });
 
-ava.only(`${TAG} None operations should work as expected`, t => {
+ava(`${TAG} None operations should work as expected`, t => {
     let opt = None.create();
     t.true(!opt.exists());
     t.true(opt.isEmpty());
     let err = t.throws(() => opt.get())
     t.true(err != null);
-    t.is(opt.getOrElse(() => 'def'), 'def');
-    let err1 = t.throws(() => opt.flatMap(str => Some.create(str + 'd')).get())
+    t.is(opt.getOrElse(() => "def"), "def");
+    let err1 = t.throws(() => opt.flatMap(str => Some.create(str + "d")).get())
     t.true(err1 != null);
 });
 

@@ -1,8 +1,8 @@
-import 'reflect-metadata';
+import "reflect-metadata";
 import {
     Entity, Column, PrimaryGeneratedColumn,
     Index
-} from 'typeorm';
+} from "typeorm";
 
 @Entity()
 export class TvShow {
@@ -20,7 +20,7 @@ export class TvShow {
     @Column()
     genre: string;
 
-    @Column('smallint')
+    @Column("smallint")
     rating: number = 0;
 
     @Column()

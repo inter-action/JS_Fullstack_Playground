@@ -1,17 +1,17 @@
-const ava = require('ava');
-import { chai, server } from '../func_test_util';
+const ava = require("ava");
+import { chai, server } from "../func_test_util";
 const {assert} = chai;
 
-let TAG = 'API_TEST:rister&login';
+let TAG = "API_TEST:rister&login";
 
 export function withSideEffect() {
     ava.cb(`${TAG}: register should success`, t => {
         chai.request(server)
-            .post('/api/register')
+            .post("/api/register")
             .send({
-                username: 'alexafdsf',
-                email: '243127392@qq.com',
-                password: 'fuckyouguys'
+                username: "alexafdsf",
+                email: "243127392@qq.com",
+                password: "fuckyouguys"
             })
             .end(function (_, res) {
                 res.should.have.status(200);
@@ -21,10 +21,10 @@ export function withSideEffect() {
 
     ava.cb(`${TAG}: register should fail on no password`, t => {
         chai.request(server)
-            .post('/api/register')
+            .post("/api/register")
             .send({
-                username: 'alexafdsf',
-                email: '243127392@qq.com',
+                username: "alexafdsf",
+                email: "243127392@qq.com",
             })
             .end(function (_, res) {
                 assert(res.status !== 200);
@@ -35,13 +35,13 @@ export function withSideEffect() {
 
     ava.cb(`${TAG}: register should fail when failing validation: username contains illegal character`, t => {
         chai.request(server)
-            .post('/api/register')
+            .post("/api/register")
             .send({
-                username: 'same$%^&*',
-                email: '243127392@qq.com',
+                username: "same$%^&*",
+                email: "243127392@qq.com",
             })
             .end(function (_, res) {
-                assert(res.status === 401, 'register should fail with 401');
+                assert(res.status === 401, "register should fail with 401");
                 t.end();
             });
     })
@@ -56,21 +56,21 @@ export function withSideEffect() {
     // ava.only(`${TAG}: logout should work`, async t => {
     //     let agent = chai.request.agent(server)
     //     let resp1: any = await toPromise(
-    //         agent.post('/api/auth')
+    //         agent.post("/api/auth")
     //             .send({
-    //                 username: 'bran_stark',
-    //                 password: 'fuckyouguys',
+    //                 username: "bran_stark",
+    //                 password: "fuckyouguys",
     //             })
     //     )
     //     assert(resp1.status === 200)
 
     //     let resp2: any = await toPromise(
-    //         agent.post('/api/logout')
+    //         agent.post("/api/logout")
     //     )
     //     assert(resp2.status === 200);
 
     //     let resp3: any = await toPromise(
-    //         agent.get('/api/test_auth')
+    //         agent.get("/api/test_auth")
     //     )
 
     //     assert(resp3.status === 401);
@@ -80,10 +80,10 @@ export function withSideEffect() {
 
     // ava.cb(`${TAG}: login should success`, t => {
     //     chai.request(server)
-    //         .post('/api/login')
+    //         .post("/api/login")
     //         .send({
-    //             email: '243127392@qq.com',
-    //             password: 'fuckyouguys'
+    //             email: "243127392@qq.com",
+    //             password: "fuckyouguys"
     //         })
     //         .end(function (_, res) {
     //             res.should.have.status(200);
@@ -96,32 +96,32 @@ export function withSideEffect() {
 export function noSideEffect() {
     ava.cb(`${TAG}: auth success`, t => {
         chai.request(server)
-            .post('/api/auth')
+            .post("/api/auth")
             .send({
-                email: 'bran_stark@ele.me',
-                password: 'fuckyouguys',
+                email: "bran_stark@ele.me",
+                password: "fuckyouguys",
             })
             .end(function (_, res) {
                 t.is(res.status, 200);
-                t.truthy(typeof res.body.data === 'string' && res.body.data);
+                t.truthy(typeof res.body.data === "string" && res.body.data);
                 t.end();
             });
     })
 
     ava.cb(`${TAG}: ensure user should success`, t => {
         chai.request(server)
-            .post('/api/auth')
+            .post("/api/auth")
             .send({
-                email: 'bran_stark@ele.me',
-                password: 'fuckyouguys',
+                email: "bran_stark@ele.me",
+                password: "fuckyouguys",
             })
             .end(function (_, res) {
                 t.is(res.status, 200);
                 let token = res.body.data;
 
                 chai.request(server)
-                    .get('/api/test_auth')
-                    .set('authorization', `Bearer ${token}`)
+                    .get("/api/test_auth")
+                    .set("authorization", `Bearer ${token}`)
                     .end(function (_, res) {
                         t.is(res.status, 200);
                         t.end();
@@ -132,8 +132,8 @@ export function noSideEffect() {
     ava.cb(`${TAG}: ensure user should fail on wrong authtoken`, t => {
 
         chai.request(server)
-            .get('/api/test_auth')
-            .set('authorization', `Bearer fdsafdsafs`)
+            .get("/api/test_auth")
+            .set("authorization", `Bearer fdsafdsafs`)
             .end(function (_, res) {
                 t.is(res.status, 401);
                 t.end();

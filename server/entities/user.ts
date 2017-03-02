@@ -1,23 +1,26 @@
-import 'reflect-metadata';
+import "reflect-metadata";
+
+import * as uuidV4 from "uuid/v4";
+import * as crypto from "crypto";
+import * as assert from "assert";
+
 import {
     Entity, Column, PrimaryGeneratedColumn,
-    CreateDateColumn, UpdateDateColumn, getConnectionManager
-} from 'typeorm';
-import * as uuidV4 from 'uuid/v4';
-import * as crypto from 'crypto';
-import * as assert from 'assert';
+    CreateDateColumn, UpdateDateColumn, getConnectionManager, BeforeInsert, BeforeUpdate,
+} from "typeorm";
+
+import { validate, Length, IsEmail } from "class-validator";
 
 
-import * as validator from 'validator';
-import * as _ from 'lodash';
-import * as Bluebird from 'bluebird';
-import * as boom from 'boom';
+import * as _ from "lodash";
+import * as Bluebird from "bluebird";
+import * as boom from "boom";
 
-import { errors, ENV_UTILS } from '../utils';
-import { Either, Left, Right } from '../extend_type';
-const jwt = require('jsonwebtoken');
+import { errors, ENV_UTILS, getValidator } from "../utils";
+import { Either, Left, Right, Option, Some, None } from "../extend_type";
+const jwt = require("jsonwebtoken");
 
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const bcryptCreateHash: any = Bluebird.promisify(bcrypt.hash);
 const bcryptCompare: any = Bluebird.promisify(bcrypt.compare);
@@ -44,31 +47,47 @@ add validation
 
 */
 
+/*
+validation: 
+    https://typeorm.github.io/subscribers-and-entity-listeners.html
+    https://github.com/pleerock/class-validator
+*/
+
 @Entity()
 export class User {
 
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Length(36, 36)
     @Column({ length: 36 })
     uuid: string = uuidV4();
 
+    @Length(5, 25)
     @Column({ length: 25 })
     username: string;
 
+    @Length(1, 255)
     @Column()
     password: string;
 
+    @IsEmail()
     @Column({ length: 50 })
     email: string;
 
     @Column({ length: 50 })
-    from: string = 'this_app';
+    from: string = "this_app";
 
     @Column()
-    fromId: string = '';
+    fromId: string = "";
 
-    @Column('smallint')
+    /*
+    0: none activiated
+    1: activated
+    2-5: warning stage
+    6: locked
+    */
+    @Column("smallint")
     status: number = 0;
 
     @CreateDateColumn()
@@ -112,33 +131,33 @@ export class User {
         }
     }
 
-    static validateUserView(user: UserKey): errors.ValidationError | null {
+    static validateUserView(user: UserKey): Option<errors.ValidationError> {
         if (!(_.isString(user.username) &&
-            validator.isLength(user.username, { min: 0 }) &&
-            validator.matches(user.username, /^[a-z-_0-9]+$/i))) {
-            return new errors.ValidationError('username is invalid')
+            getValidator().length(user.username, 5) &&
+            getValidator().matches(user.username, /^[a-z-_0-9]+$/i))) {
+            return Some.create(new errors.ValidationError("username is invalid"));
         }
 
-        if (!(_.isString(user.email) && validator.isEmail(user.email))) {
-            return new errors.ValidationError('email is invalid')
+        if (!(_.isString(user.email) && getValidator().isEmail(user.email))) {
+            return Some.create(new errors.ValidationError("email is invalid"));
         }
 
-        if (!(_.isString(user.password) && validator.isLength(user.password as any, { min: 8 }))) {
-            return new errors.ValidationError('password is invalid')
+        if (!(_.isString(user.password) && getValidator().length(user.password as any, 8))) {
+            return Some.create(new errors.ValidationError("password is invalid"))
         }
 
-        return null
+        return None.create()
     }
 
     // return a JWT token
     static async createTokenPr(user: User) {
-        return await jwtSign({ uuid: user.uuid }, ENV_UTILS.getEnvConfig('JWT_SIGNED_TOKEN'), {})
+        return await jwtSign({ uuid: user.uuid }, ENV_UTILS.getEnvConfig("JWT_SIGNED_TOKEN"), {})
     }
 
 
     static async generateResetToken(expireMili: number, email: string): Promise<Either<Error, string>> {
         let model = await getUserAccess().findOne({ email });
-        if (!model) return new Left<Error, string>(boom.badRequest('invalid email'));
+        if (!model) return new Left<Error, string>(boom.badRequest("invalid email"));
         return new Right<Error, string>(resetToken.generateResetToken(expireMili, email, model.password));
     }
 
@@ -146,7 +165,7 @@ export class User {
         let findUserByEmail = async (email) => {
             // todo: findOnePr should exclude password info by default
             let user = await getUserAccess().findOne({ email });
-            assert(user != null, 'token find user by email return null')
+            assert(user != null, "token find user by email return null")
             return user
         };
 
@@ -163,6 +182,20 @@ export class User {
     }
 
 
+    private async validateDB() {
+        let errors = await validate(this, { validationError: { target: false } })
+        if (errors.length) throw errors[0]
+    }
+
+    @BeforeInsert()
+    async beforeInsert() {
+        return await this.validateDB();
+    }
+
+    @BeforeUpdate()
+    async beforeUpdate() {
+        return await this.validateDB();
+    }
 }
 
 
@@ -184,17 +217,17 @@ export function getUserAccess() {
 
 
 export const resetToken = {
-    generateResetToken(expireMili: number, email: string, password: string, appname = 'app'): string {
+    generateResetToken(expireMili: number, email: string, password: string, appname = "app"): string {
         function sign(expire: number, email: string, salt: string) {
-            let hash = crypto.createHash('sha256');
+            let hash = crypto.createHash("sha256");
             hash.update(String(expire));
             hash.update(email);
             hash.update(salt);
-            return hash.digest('hex');
+            return hash.digest("hex");
         }
 
-        let result = [String(expireMili), email, sign(expireMili, email, password + appname)].join('|');
-        return new Buffer(result).toString('base64');
+        let result = [String(expireMili), email, sign(expireMili, email, password + appname)].join("|");
+        return new Buffer(result).toString("base64");
     },
 
     // the whole generate & valid logic token can be replace with JWT. it would be much easier to do so 
@@ -202,17 +235,17 @@ export const resetToken = {
         token: string,
         findUserByEmail: (email) => Promise<User>): Promise<Either<Error, User>> {
 
-        let result = new Buffer(token, 'base64').toString();
-        let tokens = result.split('|');
-        if (tokens.length !== 3) return new Left<Error, User>(new Error('invalid token'));
+        let result = new Buffer(token, "base64").toString();
+        let tokens = result.split("|");
+        if (tokens.length !== 3) return new Left<Error, User>(new Error("invalid token"));
         let expire = parseInt(tokens[0], 10);
-        if (Date.now() > expire) return new Left<Error, User>(new Error('token expired'));
+        if (Date.now() > expire) return new Left<Error, User>(new Error("token expired"));
 
         let email = tokens[1];
-        if (!validator.isEmail(email)) return new Left<Error, User>(new Error('invalid email: empty'));
+        if (!getValidator().isEmail(email)) return new Left<Error, User>(new Error("invalid email: empty"));
 
         let dbuser = await findUserByEmail(email);
-        if (!dbuser) return new Left<Error, User>(new Error('invalid email: no user'));
+        if (!dbuser) return new Left<Error, User>(new Error("invalid email: no user"));
 
         let createdToken = resetToken.generateResetToken(expire, email, dbuser.password);
         // this implementation is more slower than the simple string comparison
@@ -220,7 +253,7 @@ export const resetToken = {
         // for (let i = createdToken.length - 1; i >= 0; i--) {
         //     diff |= token.charCodeAt(i) ^ createdToken.charCodeAt(i)
         // }
-        if (createdToken !== token) return new Left<Error, User>(new Error('invalid token'));
+        if (createdToken !== token) return new Left<Error, User>(new Error("invalid token"));
         else return new Right<Error, User>(dbuser);
     }
 }

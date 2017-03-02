@@ -1,4 +1,4 @@
-import * as AuthMiddlewares from './auth';
+import * as AuthMiddlewares from "./auth";
 
 export { AuthMiddlewares }
 
@@ -18,7 +18,7 @@ export function createErrMiddleware() {
                 ctx.status = err.status || 500
                 ctx.body = err.message
                 // this line could be replace with a simple throw
-                ctx.app.emit('error', err, ctx)
+                ctx.app.emit("error", err, ctx)
             }
         }
     }

@@ -34,7 +34,7 @@ export class Left<L, R> extends Either<L, R>{
     }
 
     getRight(): never {
-        throw new Error('invalid operation on left value')
+        throw new Error("invalid operation on left value")
     }
 }
 
@@ -62,7 +62,7 @@ export class Right<L, R> extends Either<L, R>{
     }
 
     getLeft(): never {
-        throw new Error('invalid operation on right value')
+        throw new Error("invalid operation on right value")
     }
 
     getRight(): R {
