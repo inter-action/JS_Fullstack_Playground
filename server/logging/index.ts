@@ -1,15 +1,15 @@
-import * as pino from 'pino'
+import * as pino from "pino"
 
-import { ENV_UTILS } from '../utils/env';
-import * as Constants from '../utils/constants';
+import { ENV_UTILS } from "../utils/env";
+import * as Constants from "../utils/constants";
 
 export class LOGGER_LEVELS {
-    static readonly fatal = 'fatal'
-    static readonly error = 'error'
-    static readonly warn = 'warn'
-    static readonly info = 'info'
-    static readonly debug = 'debug'
-    static readonly trace = 'trace'
+    static readonly fatal = "fatal"
+    static readonly error = "error"
+    static readonly warn = "warn"
+    static readonly info = "info"
+    static readonly debug = "debug"
+    static readonly trace = "trace"
 }
 
 
@@ -29,6 +29,6 @@ function createLogger() {
 export const logger = createLogger();
 export function initLogger() {
     console.log(process.env.LOG_LEVEL)
-    logger.level = process.env.LOG_LEVEL || 'debug';
-    logger.info('logging level: ', logger.level);
+    logger.level = process.env.LOG_LEVEL || "debug";
+    logger.info("logging level: ", logger.level);
 }

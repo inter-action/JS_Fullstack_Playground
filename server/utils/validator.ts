@@ -1,4 +1,4 @@
-import { Validator } from 'class-validator';
+import { Validator } from "class-validator";
 
 type BooleanExpression<T> = (t: T) => boolean
 class BooleanNode<T> {

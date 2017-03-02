@@ -1,7 +1,7 @@
-import { KnexInstance } from '../db'
+import { KnexInstance } from "../db"
 
 function Shows() {
-    return KnexInstance('tv_show');
+    return KnexInstance("tv_show");
 }
 
 export function getAll() {
@@ -9,15 +9,15 @@ export function getAll() {
 }
 
 export function getSingle(id: number) {
-    return Shows().where('id', id).first() as Promise<any>
+    return Shows().where("id", id).first() as Promise<any>
 }
 
 export function save(show: any) {
-    return Shows().insert(show, 'id') as Promise<any>
+    return Shows().insert(show, "id") as Promise<any>
 }
 
 export function update(id: number, show: any) {
-    return Shows().where('id', id).update(show) as Promise<any>
+    return Shows().where("id", id).update(show) as Promise<any>
 }
 
 export function del(id: number) {

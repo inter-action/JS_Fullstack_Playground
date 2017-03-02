@@ -1,4 +1,4 @@
-import * as stream from 'stream'
+import * as stream from "stream"
 
 
 // like java BytesReader, read bytes into memory

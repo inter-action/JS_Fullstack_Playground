@@ -1,5 +1,5 @@
-import { EventSubscriber, EntitySubscriberInterface, InsertEvent } from 'typeorm';
-import { User } from '../user';
+import { EventSubscriber, EntitySubscriberInterface, InsertEvent } from "typeorm";
+import { User } from "../user";
 
 @EventSubscriber()
 export class EverythingSubscriber implements EntitySubscriberInterface<User> {

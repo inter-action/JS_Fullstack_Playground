@@ -1,7 +1,7 @@
-const ava = require('ava');
+const ava = require("ava");
 
-import { initConfig } from '../config';
-import { getConnection } from '../db/typeorm';
+import { initConfig } from "../config";
+import { getConnection } from "../db/typeorm";
 
 
 export function cleanDbEachTest() {

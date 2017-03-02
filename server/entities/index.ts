@@ -1,2 +1,2 @@
-export * from './user';
-export * from './tv_shows';
+export * from "./user";
+export * from "./tv_shows";

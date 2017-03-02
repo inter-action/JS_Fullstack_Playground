@@ -1,9 +1,9 @@
 type ENV_MYSQL_KEYS =
-    'MYSQL_CONNECTION_HOST' | 'MYSQL_CONNECTION_DB' | 'MYSQL_CONNECTION_USER' | 'MYSQL_CONNECTION_PASSWORD';
+    "MYSQL_CONNECTION_HOST" | "MYSQL_CONNECTION_DB" | "MYSQL_CONNECTION_USER" | "MYSQL_CONNECTION_PASSWORD";
 
-type GITHUB_OAUTH = 'OAUTH_GITHUB_CLIENT_ID' | 'OAUTH_GITHUB_CLIENT_SECREAT'
+type GITHUB_OAUTH = "OAUTH_GITHUB_CLIENT_ID" | "OAUTH_GITHUB_CLIENT_SECREAT"
 
-type ENV_KEYS = ENV_MYSQL_KEYS | GITHUB_OAUTH | 'JWT_SIGNED_TOKEN' | 'APP_COOKIE_KEY' | 'APP_PORT' | 'LOG_LEVEL';
+type ENV_KEYS = ENV_MYSQL_KEYS | GITHUB_OAUTH | "JWT_SIGNED_TOKEN" | "APP_COOKIE_KEY" | "APP_PORT" | "LOG_LEVEL";
 
 
 function getEnvConfig(key: ENV_KEYS, safe = true): string {
@@ -16,17 +16,17 @@ function getEnvConfig(key: ENV_KEYS, safe = true): string {
 }
 
 export const ENV = {
-    dev: 'dev',
-    test: 'test'
+    dev: "dev",
+    test: "test"
 }
 
 
 function get_mysql_env() {
     return {
-        HOST: getEnvConfig('MYSQL_CONNECTION_HOST'),
-        DB: getEnvConfig('MYSQL_CONNECTION_DB'),
-        USER: getEnvConfig('MYSQL_CONNECTION_USER'),
-        PASSWORD: getEnvConfig('MYSQL_CONNECTION_PASSWORD')
+        HOST: getEnvConfig("MYSQL_CONNECTION_HOST"),
+        DB: getEnvConfig("MYSQL_CONNECTION_DB"),
+        USER: getEnvConfig("MYSQL_CONNECTION_USER"),
+        PASSWORD: getEnvConfig("MYSQL_CONNECTION_PASSWORD")
     }
 }
 

@@ -1,12 +1,12 @@
-import * as chai from 'chai'
-const glob = require('glob');
+import * as chai from "chai"
+const glob = require("glob");
 
 // KnexInstance
-import { server } from '../../server/index'
-import { seed } from '../../scripts/bin/db_migration';
-import { connect } from '../../server/db/typeorm';
+import { server } from "../../server/index"
+import { seed } from "../../scripts/bin/db_migration";
+import { connect } from "../../server/db/typeorm";
 
-const chaiHttp = require('chai-http')
+const chaiHttp = require("chai-http")
 const should = chai.should()
 
 const expect = chai.expect
@@ -28,9 +28,9 @@ export function runWithFilter(cb: (module: any, key: string, hasSideEffect: bool
         else {
             for (let i = 0; i < files.length; i++) {
                 let filepath: string = files[i];
-                let filename = filepath.substring(filepath.lastIndexOf('/') + 1);
-                if (filename.indexOf('test') !== -1) {
-                    console.log('skip test with no test keyword: ', filename);
+                let filename = filepath.substring(filepath.lastIndexOf("/") + 1);
+                if (filename.indexOf("test") !== -1) {
+                    console.log("skip test with no test keyword: ", filename);
                     continue;
                 }
 
@@ -41,7 +41,7 @@ export function runWithFilter(cb: (module: any, key: string, hasSideEffect: bool
 
                 let module = require(filepath);
                 Reflect.ownKeys(module).forEach((k: string) => {
-                    if (typeof module[k] !== 'function') return;
+                    if (typeof module[k] !== "function") return;
 
                     let hasSideEffect = true
                     if (/noSideEffect$/i.test(k)) {

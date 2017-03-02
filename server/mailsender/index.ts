@@ -1,4 +1,4 @@
-import * as mailgun from './mailgun'
+import * as mailgun from "./mailgun"
 
 
 export { mailgun };

@@ -1,10 +1,10 @@
-import * as paths from './paths'
-import * as Constants from './constants'
-import * as errors from './errors';
+import * as paths from "./paths"
+import * as Constants from "./constants"
+import * as errors from "./errors";
 
-export * from './env'
-export * from './io';
-export * from './validator';
+export * from "./env"
+export * from "./io";
+export * from "./validator";
 
 export { Constants, paths, errors }
 
@@ -16,7 +16,7 @@ export function getAuthBearerToken(ctx): null | string {
     if (!header) {
         return null
     }
-    const parts = header.split(' ')
+    const parts = header.split(" ")
     if (parts.length !== 2) {
         return null
     }
@@ -41,7 +41,7 @@ export function getAuthBearerToken(ctx): null | string {
  */
 export function uid(len: number): string {
     let buf: string[] = [],
-        chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
+        chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
         charlen = chars.length,
         i;
 
@@ -50,7 +50,7 @@ export function uid(len: number): string {
         buf.push(t);
     }
 
-    return buf.join('');
+    return buf.join("");
 }
 
 // return a int in range [from, end], inclusive
@@ -58,16 +58,16 @@ function getRandomInt(from: number, end: number): number {
     return Math.floor(Math.random() * ((end + 1) - from)) + from
 }
 
-// The token is encoded URL safe by replacing '+' with '-', '\' with '_' and removing '='
+// The token is encoded URL safe by replacing "+" with "-", "\" with "_" and removing "="
 // NOTE: the token is not encoded using valid base64 anymore
 export function encodeBase64URLsafe(base64String: string) {
-    return base64String.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return base64String.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
-// Decode url safe base64 encoding and add padding ('=')
+// Decode url safe base64 encoding and add padding ("=")
 export function decodeBase64URLsafe(base64String: string) {
-    base64String = base64String.replace(/-/g, '+').replace(/_/g, '/');
+    base64String = base64String.replace(/-/g, "+").replace(/_/g, "/");
     while (base64String.length % 4) {
-        base64String += '=';
+        base64String += "=";
     }
     return base64String;
 }

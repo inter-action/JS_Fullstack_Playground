@@ -1,7 +1,7 @@
-import * as Router from 'koa-router'
-import * as Boom from 'boom';
-import { apiRoutes } from '../api'
-import { appRouts } from './app_routes';
+import * as Router from "koa-router"
+import * as Boom from "boom";
+import { apiRoutes } from "../api"
+import { appRouts } from "./app_routes";
 
 
 export const Routes = {
