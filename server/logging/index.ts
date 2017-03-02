@@ -12,35 +12,23 @@ export class LOGGER_LEVELS {
     static readonly trace = 'trace'
 }
 
-interface LogMock {
-    levelVal: number
-    fatal(msg: string, ...args: any[]): void
-    fatal(obj: {}, msg?: string, ...args: any[]): void
-    error(msg: string, ...args: any[]): void
-    error(obj: {}, msg?: string, ...args: any[]): void
-    warn(msg: string, ...args: any[]): void
-    warn(obj: {}, msg?: string, ...args: any[]): void
-    info(msg: string, ...args: any[]): void
-    info(obj: {}, msg?: string, ...args: any[]): void
-    debug(msg: string, ...args: any[]): void
-    debug(obj: {}, msg?: string, ...args: any[]): void
-    trace(msg: string, ...args: any[]): void
-    trace(obj: {}, msg?: string, ...args: any[]): void
-    LOG_VERSION: number,
-    level: string,
-}
-
 
 function createLogger() {
+    let logger = pino({
+        name: Constants.APP_NAME,
+    });
+    // extract logger type
+    type Logger = typeof logger;
     if (ENV_UTILS.is_test()) {
-        return <LogMock>{ info: console.log, error: console.log, warn: console.log };
+        return { info: console.log, error: console.log, warn: console.log, trace: console.log } as any as Logger;
     } else {
-        return pino({
-            name: Constants.APP_NAME,
-        });
+        return logger
     }
 }
 
 export const logger = createLogger();
-
-logger.level = process.env.LOG_LEVEL || 'debug'
+export function initLogger() {
+    console.log(process.env.LOG_LEVEL)
+    logger.level = process.env.LOG_LEVEL || 'debug';
+    logger.info('logging level: ', logger.level);
+}
