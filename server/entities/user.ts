@@ -46,6 +46,7 @@ add validation
 
 @Entity()
 export class User {
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -67,11 +68,11 @@ export class User {
     @Column()
     fromId: string = '';
 
-    @Column("smallint")
+    @Column('smallint')
     status: number = 0;
 
     @CreateDateColumn()
-    createdAt: Date;;
+    createdAt: Date;
 
     @UpdateDateColumn()
     updatedAt: Date;
