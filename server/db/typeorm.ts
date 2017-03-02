@@ -25,6 +25,9 @@ export async function connect() {
                 path.resolve(__dirname, '../entities/*.js')
             ],
             logging: {
+                logger: (_level, str) => {
+                    logger.trace(str);
+                },
                 logQueries: ENV_UTILS.getEnvConfig('LOG_LEVEL', false) === LOGGER_LEVELS.trace,
                 logFailedQueryError: true,
             }

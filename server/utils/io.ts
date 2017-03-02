@@ -3,12 +3,11 @@ import * as stream from 'stream'
 
 // like java BytesReader, read bytes into memory
 export class BytesReader extends stream.Writable {
-    // todo: optionalize this
     private _buffer;
     private length = 0
     private encoding: null | string = null
 
-    constructor(size: number = 512 * 1024, options?: {}) {
+    constructor(size: number = 512 * 1024, options?: object) {
         super(options);
         this._buffer = new Buffer(size).fill(0);
     }

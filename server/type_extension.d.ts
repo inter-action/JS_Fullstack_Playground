@@ -11,7 +11,7 @@ declare module 'koa-router' {
             },
         },
 
-        render: (tpl_path: string, opts?: {}) => Promise<any>,
+        render: (tpl_path: string, opts?: object) => Promise<any>,
     }
 }
 
@@ -21,7 +21,5 @@ declare module 'http' {
         user?: any
     }
 }
-
-
 
 

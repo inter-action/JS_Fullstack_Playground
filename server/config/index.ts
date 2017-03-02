@@ -3,11 +3,12 @@ import * as path from 'path';
 import * as orm from '../db/typeorm'
 export { orm };
 
-import { logger } from '../logging'
+import { logger, initLogger } from '../logging';
 import { ENV } from '../utils/env';
 
 export async function initConfig(syncSchema = true) {
     configEnv();
+    initLogger();
     return await setDB(syncSchema)
 }
 
