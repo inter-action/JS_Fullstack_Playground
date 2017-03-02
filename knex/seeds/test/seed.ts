@@ -4,9 +4,6 @@ import * as KnexModule from 'knex';
 create seeds:
 
 knex seed:run --env test --knexfile build/server/db/knexfile.js
-
-todo: add db unit test for this
-
 */
 exports.seed = async function (knex: KnexModule) {
     await seed_shows(knex);
