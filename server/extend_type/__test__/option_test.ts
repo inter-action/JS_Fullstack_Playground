@@ -3,7 +3,7 @@ import { Option, Some, None } from '../option';
 
 let TAG = '#Option<T>: ';
 
-ava.only(`${TAG} type assign should work as expected`, _ => {
+ava(`${TAG} type assign should work as expected`, _ => {
     let opt1: Option<string>;
     opt1 = None.create();
 
@@ -18,7 +18,7 @@ ava.only(`${TAG} type assign should work as expected`, _ => {
     optNumber = opt1.map(_ => 1)
 });
 
-ava.only(`${TAG} Some operations should work as expected`, t => {
+ava(`${TAG} Some operations should work as expected`, t => {
     let opt = Some.create('abc');
     t.true(opt.exists());
     t.true(!opt.isEmpty());
@@ -28,7 +28,7 @@ ava.only(`${TAG} Some operations should work as expected`, t => {
     t.is(opt.flatMap(str => Some.create(str + 'd')).get(), 'abcd')
 });
 
-ava.only(`${TAG} None operations should work as expected`, t => {
+ava(`${TAG} None operations should work as expected`, t => {
     let opt = None.create();
     t.true(!opt.exists());
     t.true(opt.isEmpty());

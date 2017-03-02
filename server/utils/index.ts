@@ -4,7 +4,7 @@ import * as errors from './errors';
 
 export * from './env'
 export * from './io';
-export * from './validator'
+export * from './validator';
 
 export { Constants, paths, errors }
 
@@ -71,3 +71,4 @@ export function decodeBase64URLsafe(base64String: string) {
     }
     return base64String;
 }
+

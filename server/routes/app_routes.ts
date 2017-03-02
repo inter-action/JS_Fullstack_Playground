@@ -1,12 +1,11 @@
 import * as Router from 'koa-router';
 import * as boom from 'boom';
-import * as validator from 'validator';
 const passport = require('koa-passport');
 import * as _ from 'lodash';
 
 import { getUserAccess, User } from '../entities';
 
-import { Constants, decodeBase64URLsafe, encodeBase64URLsafe } from '../utils';
+import { Constants, decodeBase64URLsafe, encodeBase64URLsafe, getValidator } from '../utils';
 import { mailgun } from '../mailsender'
 
 export const appRouts = new Router()
@@ -42,7 +41,7 @@ appRouts.get('/forget-password', async (ctx) => {
 
 appRouts.post('/forget-password', async (ctx) => {
     let body = ctx.request.body;
-    if (!(_.isString(body.email) && validator.isEmail(body.email))) {
+    if (!(_.isString(body.email) && getValidator().isEmail(body.email))) {
         throw boom.badData('email is required');
     }
 
@@ -67,7 +66,7 @@ appRouts.get('/reset-password', async (ctx) => {
 
 appRouts.post('/reset-password', async (ctx) => {
     let body = ctx.request.body;
-    if (body.token == null || validator.isEmpty(body.token)) {
+    if (body.token == null || getValidator().isEmpty(body.token)) {
         throw boom.badData()
     }
 
@@ -75,8 +74,8 @@ appRouts.post('/reset-password', async (ctx) => {
     if (
         !body.password ||
         !body.repeatPassword ||
-        validator.isEmpty(body.password) ||
-        validator.isEmpty(body.repeatPassword) ||
+        getValidator().isEmpty(body.password) ||
+        getValidator().isEmpty(body.repeatPassword) ||
         body.password !== body.repeatPassword) {
 
         throw boom.badData()

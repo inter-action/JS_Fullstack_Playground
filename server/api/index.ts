@@ -9,9 +9,9 @@ import { AuthMiddlewares } from '../middleware';
 export const apiRoutes = new Router({ prefix: '/api' })
     .post('/register', async (ctx) => {
         const body = ctx.request.body;
-        let error = User.validateUserView(body)
-        if (error) {
-            throw error;
+        let result = User.validateUserView(body)
+        if (result.exists()) {
+            throw result.get();
         }
         let user = User.convertUser(body)
         user.password = await User.createHashPr(user.password);

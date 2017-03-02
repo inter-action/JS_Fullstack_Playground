@@ -1,20 +1,23 @@
 import 'reflect-metadata';
-import {
-    Entity, Column, PrimaryGeneratedColumn,
-    CreateDateColumn, UpdateDateColumn, getConnectionManager
-} from 'typeorm';
+
 import * as uuidV4 from 'uuid/v4';
 import * as crypto from 'crypto';
 import * as assert from 'assert';
 
+import {
+    Entity, Column, PrimaryGeneratedColumn,
+    CreateDateColumn, UpdateDateColumn, getConnectionManager, BeforeInsert, BeforeUpdate,
+} from 'typeorm';
 
-import * as validator from 'validator';
+import { validate, Length, IsEmail } from 'class-validator';
+
+
 import * as _ from 'lodash';
 import * as Bluebird from 'bluebird';
 import * as boom from 'boom';
 
-import { errors, ENV_UTILS } from '../utils';
-import { Either, Left, Right } from '../extend_type';
+import { errors, ENV_UTILS, getValidator } from '../utils';
+import { Either, Left, Right, Option, Some, None } from '../extend_type';
 const jwt = require('jsonwebtoken');
 
 const bcrypt = require('bcrypt');
@@ -44,21 +47,31 @@ add validation
 
 */
 
+/*
+validation: 
+    https://typeorm.github.io/subscribers-and-entity-listeners.html
+    https://github.com/pleerock/class-validator
+*/
+
 @Entity()
 export class User {
 
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Length(36, 36)
     @Column({ length: 36 })
     uuid: string = uuidV4();
 
+    @Length(5, 25)
     @Column({ length: 25 })
     username: string;
 
+    @Length(1, 255)
     @Column()
     password: string;
 
+    @IsEmail()
     @Column({ length: 50 })
     email: string;
 
@@ -68,6 +81,12 @@ export class User {
     @Column()
     fromId: string = '';
 
+    /*
+    0: none activiated
+    1: activated
+    2-5: warning stage
+    6: locked
+    */
     @Column('smallint')
     status: number = 0;
 
@@ -112,22 +131,22 @@ export class User {
         }
     }
 
-    static validateUserView(user: UserKey): errors.ValidationError | null {
+    static validateUserView(user: UserKey): Option<errors.ValidationError> {
         if (!(_.isString(user.username) &&
-            validator.isLength(user.username, { min: 0 }) &&
-            validator.matches(user.username, /^[a-z-_0-9]+$/i))) {
-            return new errors.ValidationError('username is invalid')
+            getValidator().length(user.username, 5) &&
+            getValidator().matches(user.username, /^[a-z-_0-9]+$/i))) {
+            return Some.create(new errors.ValidationError('username is invalid'));
         }
 
-        if (!(_.isString(user.email) && validator.isEmail(user.email))) {
-            return new errors.ValidationError('email is invalid')
+        if (!(_.isString(user.email) && getValidator().isEmail(user.email))) {
+            return Some.create(new errors.ValidationError('email is invalid'));
         }
 
-        if (!(_.isString(user.password) && validator.isLength(user.password as any, { min: 8 }))) {
-            return new errors.ValidationError('password is invalid')
+        if (!(_.isString(user.password) && getValidator().length(user.password as any, 8))) {
+            return Some.create(new errors.ValidationError('password is invalid'))
         }
 
-        return null
+        return None.create()
     }
 
     // return a JWT token
@@ -163,6 +182,20 @@ export class User {
     }
 
 
+    private async validateDB() {
+        let errors = await validate(this, { validationError: { target: false } })
+        if (errors.length) throw errors[0]
+    }
+
+    @BeforeInsert()
+    async beforeInsert() {
+        return await this.validateDB();
+    }
+
+    @BeforeUpdate()
+    async beforeUpdate() {
+        return await this.validateDB();
+    }
 }
 
 
@@ -209,7 +242,7 @@ export const resetToken = {
         if (Date.now() > expire) return new Left<Error, User>(new Error('token expired'));
 
         let email = tokens[1];
-        if (!validator.isEmail(email)) return new Left<Error, User>(new Error('invalid email: empty'));
+        if (!getValidator().isEmail(email)) return new Left<Error, User>(new Error('invalid email: empty'));
 
         let dbuser = await findUserByEmail(email);
         if (!dbuser) return new Left<Error, User>(new Error('invalid email: no user'));

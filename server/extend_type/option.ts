@@ -43,7 +43,7 @@ export class Some<T> extends Option<T>{
 }
 
 
-export class None extends Option<any>{
+export class None extends Option<any> {
     static create() {
         return new None()
     }
