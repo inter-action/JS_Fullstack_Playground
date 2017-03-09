@@ -131,9 +131,10 @@ todos:
     mongodb 感觉比mysql好用多了，有没有做一版mongo的？
       事物该如何处理
     
-    timezone
-    refactor tests run on sqlite3
     
+    typescript: Object vs object vs {}
+    refactor tests run on sqlite3
+    timezone
     
     http://apidocjs.com/
       https://github.com/adrianObel/koa2-api-boilerplate
@@ -181,5 +182,30 @@ todos:
     fileupload:
       http://stackoverflow.com/questions/33751203/how-to-parse-multipart-form-data-body-with-koa
       https://github.com/dlau/koa-body
+        https://github.com/felixge/node-formidable 
+    
+    reactjs server side rendering:
+      https://github.com/reactjs/react-router-tutorial/tree/master/lessons/13-server-rendering
+      http://crypt.codemancers.com/posts/2016-09-16-react-server-side-rendering/
+      https://github.com/revathskumar/react-server-render
       
-    typescript: Object vs object vs {}
+      next, a reactjs server rendering framework - https://github.com/zeit/next.js/
+
+      problems:
+        * initial state,
+        * (nodejs module resolution)require should work properly
+        * integrate build workflow
+        * 
+
+      
+      
+      place this code `ReactDOMServer.renderToString` into client side, keep server code pure?
+
+
+    https://nodejs.org/api/modules.html#modules_module_caching_caveats
+      does require call has cache inside if not, there some optimization can be done here.
+
+    typescript compiler option:
+      https://github.com/Microsoft/TypeScript/issues/1232#issuecomment-64510362
+
+    https://git-scm.com/book/en/v2/Git-Tools-Submodules
