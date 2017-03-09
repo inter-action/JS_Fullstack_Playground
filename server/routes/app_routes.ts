@@ -2,13 +2,14 @@ import * as Router from "koa-router";
 import * as boom from "boom";
 const passport = require("koa-passport");
 import * as _ from "lodash";
-
+import { logger } from "../logging";
 import { getUserAccess, User } from "../entities";
-
-import { Constants, decodeBase64URLsafe, encodeBase64URLsafe, getValidator } from "../utils";
+import { Constants, decodeBase64URLsafe, encodeBase64URLsafe, getValidator, paths } from "../utils";
 import { mailgun } from "../mailsender"
 
 export const appRouts = new Router()
+
+
 
 appRouts.get("/logout", async ctx => {
     ctx.logout();
@@ -116,11 +117,19 @@ appRouts.get("/auth/github", passport.authenticate("github", { scope: ["user:ema
 appRouts.get("/auth/github/callback",
     passport.authenticate("github", { failureRedirect: "/login", successRedirect: "/" }));
 
+let createReactMiddleware = require(paths.clientPath("routes/server")).default;
+appRouts.get(/\.html$/g, async (ctx, next) => {
+    // pass data down to reatjs component
+    ctx.serverData = { "username": "alexander" };
+    return next();
+}, createReactMiddleware(logger));
+
 // has to be put in the last. Otherwise this route would get matched before others
 appRouts.get("/", async (ctx) => {
-    let option: any = {}
-    if (ctx.req.user) {
-        option.user = ctx.req.user
-    }
-    await ctx.render("index", option);
+    ctx.redirect("/index.html");
+    // let option: any = {}
+    // if (ctx.req.user) {
+    //     option.user = ctx.req.user
+    // }
+    // await ctx.render("index", option);
 })

@@ -2,7 +2,10 @@ if (!process.env.NODE_ENV) {
     process.env.NODE_ENV = "dev";
 }
 import { initConfig } from "./config";
-initConfig().catch(e => { throw e });
+initConfig().catch(e => {
+    console.error("init config failed: ", e);
+    process.exit(1);
+})
 
 import "reflect-metadata";
 import * as http from "http"
@@ -18,6 +21,7 @@ const passport = require("koa-passport");
 require("./auth/passport");
 
 const views = require("koa-views");
+const send = require("koa-send");
 
 
 import { logger } from "./logging"
@@ -36,6 +40,13 @@ koa.use(async (ctx, next) => {
     logger.info(`${ctx.method} ${ctx.url} - ${ms}ms`);
 })
     .use(createErrMiddleware())
+    .use(async function (ctx, next) {
+        if (/\.js$|\.css$/.test(ctx.path)) {
+            await send(ctx, ctx.path, { root: path.resolve(__dirname, "../../client/dist") });
+        } else {
+            await next();
+        }
+    })
     .use(views(path.resolve(__dirname, "../views"), { extension: "ejs", map: { ejs: "ejs" }, }))
     .use(bodyParser({ jsonLimit: "1kb" }))
     .use(convert(session()))
@@ -72,6 +83,12 @@ koa.on("error", function (error: any) {
 // gracefully exit or handle error here
 process.on("uncaughtException", (err) => {
     logger.error(err, "fatal err occurred, ready to shutdown");
+    // todo: in order to let app work more robustly, maybe i should remove the following line.
+    process.exit(1);
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+    logger.error(reason, promise);
     process.exit(1);
 });
 

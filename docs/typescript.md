@@ -50,7 +50,8 @@
     typescript support async es6 runtime, but since 2.1rc es5&es3 is also supported:
     https://blogs.msdn.microsoft.com/typescript/2016/11/08/typescript-2-1-rc-better-inference-async-functions-and-more/
 
-
+* use type `object` over `{}` 
+    doesn't prevent you from passing primitive type to it
 
 ## checkpoints:
 * tslint

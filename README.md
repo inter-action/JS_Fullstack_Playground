@@ -20,7 +20,7 @@ dev:
 * i18n
 * travis ci
 * email sending service ✓
-* reactjs server rendering ?
+* reactjs server rendering ✓
 
 production checkpoints:
 * health checking point

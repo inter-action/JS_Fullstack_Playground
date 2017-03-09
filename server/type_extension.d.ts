@@ -10,7 +10,7 @@ declare module "koa-router" {
                 user: number
             },
         },
-
+        serverData?: any,
         render: (tpl_path: string, opts?: object) => Promise<any>,
     }
 }

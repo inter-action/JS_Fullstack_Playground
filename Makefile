@@ -34,13 +34,17 @@ copy-res:
 
 compile: clean tsc copy-res
 
-run: clean compile
+run: clean compile bare-run
+
+bare-run:
 	@printf "server started on port $(DOCKER_NODE_PORT)\n"
 	nodemon $(PATH_BUILD_ROOT)/index.js > $(PATH_LOG)
 
 run-debug:
 	nodemon --inspect $(PATH_BUILD_ROOT)/index.js
 
+inspect:
+	inspect $(PATH_BUILD_ROOT)/index.js
 
 test: clean compile test-unit test-functional
 	

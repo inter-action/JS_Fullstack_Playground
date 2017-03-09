@@ -32,6 +32,11 @@ async function setDB(syncSchema = true) {
 
     const env = process.env.NODE_ENV;
     if (syncSchema && env === ENV.dev) {
-        await orm.getConnection().syncSchema(true);
+        try {
+            return await orm.getConnection().syncSchema(true);
+        } catch (e) {
+            logger.error("failed to connect with mysql", e);
+            throw e;
+        }
     }
 }
