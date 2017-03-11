@@ -5,12 +5,12 @@ let TAG = "#Option<T>: ";
 
 ava(`${TAG} type assign should work as expected`, _ => {
     let opt1: Option<string>;
-    opt1 = None.create();
+    opt1 = None;
 
     let opt2: Option<string>;
     opt2 = Some.create("tfds");
 
-    let opt3 = None.create();
+    let opt3 = None;
     let optNumber: Option<number>;
     optNumber = opt3;
 
@@ -29,7 +29,7 @@ ava(`${TAG} Some operations should work as expected`, t => {
 });
 
 ava(`${TAG} None operations should work as expected`, t => {
-    let opt = None.create();
+    let opt = None;
     t.true(!opt.exists());
     t.true(opt.isEmpty());
     let err = t.throws(() => opt.get())

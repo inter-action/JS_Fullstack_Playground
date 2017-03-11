@@ -43,11 +43,7 @@ export class Some<T> extends Option<T>{
 }
 
 
-export class None extends Option<any> {
-    static create() {
-        return new None()
-    }
-
+class INone extends Option<any> {
     constructor() { super(); };
 
     get(): never {
@@ -63,4 +59,4 @@ export class None extends Option<any> {
     }
 }
 
-
+export const None = new INone()

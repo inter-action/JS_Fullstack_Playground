@@ -146,7 +146,7 @@ export class User {
             return Some.create(new errors.ValidationError("password is invalid"))
         }
 
-        return None.create()
+        return None
     }
 
     // return a JWT token
