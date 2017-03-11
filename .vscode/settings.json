@@ -3,8 +3,6 @@
   "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
   "files.exclude": {
-    "server/**/*.js": false,
-    "test/**/*.js": false,
     "**/.git": true,
     "**/.svn": true,
     "**/.hg": true,

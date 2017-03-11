@@ -13,6 +13,12 @@
     import * as Koa from 'koa';
     export default xx
     ```
+* isolatedModules: 解析不到对应的typescript module 不报错，不会强制安装types
+* preserveConstEnums: const enum 的声明默认会从代码移除掉，设置这个就不会移除，使用常量判断就不会在运行时候报错
+* suppressImplicitAnyIndexErrors: 
+    --noImplicitAny 这个选项启用后, {[key: string]=any}, 这个feature就用不了了，可以用这个选项来禁用掉index any 的error
+
+
 
 * "target": "es2015"
     this controls what runtime to include when generating js codes.
@@ -51,7 +57,11 @@
     https://blogs.msdn.microsoft.com/typescript/2016/11/08/typescript-2-1-rc-better-inference-async-functions-and-more/
 
 * use type `object` over `{}` 
-    doesn't prevent you from passing primitive type to it
+    {} doesn't prevent you from passing primitive type to it
+    https://blog.mariusschulz.com/2017/02/24/typescript-2-2-the-object-type
+
+    `Object` is quite like `object` i think, i would prefer `object` over `Object`
+
 
 ## checkpoints:
 * tslint
@@ -86,3 +96,5 @@ types:
     ```
         
 * [! decorators](https://www.typescriptlang.org/docs/handbook/decorators.html)
+
+* [! Object vs object vs {}](https://blog.mariusschulz.com/2017/02/24/typescript-2-2-the-object-type)

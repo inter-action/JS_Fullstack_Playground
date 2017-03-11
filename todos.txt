@@ -68,7 +68,29 @@ todos:
       how properly handle request validation
         writer a high order function that return a params validation middleware
 
+    
+    reactjs server side rendering:
+      https://github.com/reactjs/react-router-tutorial/tree/master/lessons/13-server-rendering
+      http://crypt.codemancers.com/posts/2016-09-16-react-server-side-rendering/
+      https://github.com/revathskumar/react-server-render
       
+      next, a reactjs server rendering framework - https://github.com/zeit/next.js/
+
+      problems:
+        * initial state,
+        * (nodejs module resolution)require should work properly
+        * integrate build workflow
+
+      place this code `ReactDOMServer.renderToString` into client side, keep server code pure?
+
+
+    typescript compiler option:
+      https://github.com/Microsoft/TypeScript/issues/1232#issuecomment-64510362
+
+      isolatedModules: 解析不到对应的typescript module 不报错，不会强制安装types
+      preserveConstEnums: const enum 的声明默认会从代码移除掉，设置这个就不会移除，使用常量判断就不会在运行时候报错
+      suppressImplicitAnyIndexErrors: 
+        --noImplicitAny 这个选项启用后, {[key: string]=any}, 这个feature就用不了了，可以用这个选项来禁用掉index any 的error
 
     add status field on user
       0: none activiated
@@ -183,29 +205,10 @@ todos:
       http://stackoverflow.com/questions/33751203/how-to-parse-multipart-form-data-body-with-koa
       https://github.com/dlau/koa-body
         https://github.com/felixge/node-formidable 
-    
-    reactjs server side rendering:
-      https://github.com/reactjs/react-router-tutorial/tree/master/lessons/13-server-rendering
-      http://crypt.codemancers.com/posts/2016-09-16-react-server-side-rendering/
-      https://github.com/revathskumar/react-server-render
-      
-      next, a reactjs server rendering framework - https://github.com/zeit/next.js/
-
-      problems:
-        * initial state,
-        * (nodejs module resolution)require should work properly
-        * integrate build workflow
-        * 
-
-      
-      
-      place this code `ReactDOMServer.renderToString` into client side, keep server code pure?
-
 
     https://nodejs.org/api/modules.html#modules_module_caching_caveats
       does require call has cache inside if not, there some optimization can be done here.
 
-    typescript compiler option:
-      https://github.com/Microsoft/TypeScript/issues/1232#issuecomment-64510362
-
     https://git-scm.com/book/en/v2/Git-Tools-Submodules
+
+    document reactjs server side rendering.

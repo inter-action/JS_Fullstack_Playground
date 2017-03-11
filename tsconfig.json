@@ -16,6 +16,8 @@
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "isolatedModules": true,
+    "suppressImplicitAnyIndexErrors": true,
     "outDir": "./build"
   },
   "include": [
