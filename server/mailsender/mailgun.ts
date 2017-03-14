@@ -43,11 +43,11 @@ export function loadTplPr(filename: string, data: Object) {
 }
 
 /**
- * 
+ *
  * send mail throgh mailgun.
- * 
+ *
  * @export
- * @param {IMailOptions} options 
+ * @param {IMailOptions} options
  * @returns Promise<object>
  */
 export function sendmail(options: IMailOptions) {

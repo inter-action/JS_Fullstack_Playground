@@ -157,7 +157,7 @@ export function doInParellel() {
                 res.body[0].should.have.property("rating");
                 res.body[0].rating.should.equal(3);
                 res.body[0].should.have.property("explicit");
-                res.body[0].explicit.should.not.be.ok; // ok is like , a == truthy 
+                res.body[0].explicit.should.not.be.ok; // ok is like , a == truthy
                 t.end();
             });
     });
