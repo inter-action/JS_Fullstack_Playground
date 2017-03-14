@@ -49,7 +49,7 @@ export function doInSerial() {
 
 
     // todo: cant make this test work, test would throw error
-    // at request2 with return status 400, but there should be no error 
+    // at request2 with return status 400, but there should be no error
     // in this app with status code 400, now I suspect `connection: close`
     // header cause this, i could delay the time between requests.
 

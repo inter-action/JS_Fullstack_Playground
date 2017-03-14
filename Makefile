@@ -102,7 +102,7 @@ docker_mysql_stop:
 # create lint by
 # tslint --init
 lint:
-	tslint --format verbose --project .
+	tslint --type-check --format verbose --project tsconfig.json
 
 readlog:
 	tail -f $(PATH_LOG) | pino -lt

@@ -48,7 +48,7 @@ add validation
 */
 
 /*
-validation: 
+validation:
     https://typeorm.github.io/subscribers-and-entity-listeners.html
     https://github.com/pleerock/class-validator
 */
@@ -230,7 +230,7 @@ export const resetToken = {
         return new Buffer(result).toString("base64");
     },
 
-    // the whole generate & valid logic token can be replace with JWT. it would be much easier to do so 
+    // the whole generate & valid logic token can be replace with JWT. it would be much easier to do so
     async validateResetToken(
         token: string,
         findUserByEmail: (email) => Promise<User>): Promise<Either<Error, User>> {
