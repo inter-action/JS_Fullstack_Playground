@@ -4,7 +4,7 @@ import { chai, server } from "../func_test_util"
 
 let TAG = "API_TEST:TV_SHOWS";
 
-export function tvShows() {
+export function doInSerial() {
     ava.serial.cb(`${TAG}: GET /api/tv_shows/:id, should return a single show `, t => {
         chai.request(server)
             .get("/api/tv_shows/1")
@@ -139,7 +139,7 @@ export function tvShows() {
 }
 
 
-export function tvShowsNoSideEffect() {
+export function doInParellel() {
     ava.cb(`${TAG}: GET /api/tv_shows, should return all shows`, t => {
         chai.request(server)
             .get("/api/tv_shows")

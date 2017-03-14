@@ -11,8 +11,8 @@ ava.beforeEach(async _ => {
 });
 
 
-runWithFilter((module, key, hasSideEffect) => {
-    if (!hasSideEffect) return;
+runWithFilter((module, key, isSerial) => {
+    if (!isSerial) return;
     else module[key]();
 })
 
