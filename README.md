@@ -55,7 +55,7 @@ all the notes in this process would reside in docs/ directory.
 
 # start
 
-dev:
+dev without docker-compose:
 ```shell
 npm install
 make tscw
@@ -65,6 +65,19 @@ make readlog
 
 make db_migration
 make run
+```
+
+
+docker-compose:
+
+```shell
+    cd node_app & make compile
+    cd .. # back up root folder
+    docker-compose up
+    #open your browser @localhost
+
+    docker-compose down
+    #shutdown
 ```
 
 # common make rules

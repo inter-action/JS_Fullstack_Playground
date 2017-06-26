@@ -40,13 +40,6 @@ koa.use(async (ctx, next) => {
     logger.info(`${ctx.method} ${ctx.url} - ${ms}ms`);
 })
     .use(createErrMiddleware())
-    .use(async function (ctx, next) {
-        if (/\.js$|\.css$/.test(ctx.path)) {
-            await send(ctx, ctx.path, { root: path.resolve(__dirname, "../../client/dist") });
-        } else {
-            await next();
-        }
-    })
     .use(views(path.resolve(__dirname, "../views"), { extension: "ejs", map: { ejs: "ejs" }, }))
     .use(bodyParser({ jsonLimit: "1kb" }))
     .use(convert(session()))
@@ -63,7 +56,14 @@ koa.use(async (ctx, next) => {
 
 initRoutes(koa);
 
-
+// use for fallback, if upstream doesnt set a response, naively presume this as a request for as static file
+koa.use(async function (ctx, next) {
+    if (/^\/api/.test(ctx.path)) { // skip protect path
+        await next();
+    } else if (/\.\w+$/.test(ctx.path)) {
+        await send(ctx, ctx.path, { root: path.resolve(__dirname, "../../client/dist") });
+    }
+})
 
 
 // handle uncaught error. replace console with logger
@@ -92,7 +92,7 @@ process.on("unhandledRejection", (reason, promise) => {
     process.exit(1);
 });
 
-let port = ENV_UTILS.getEnvConfig("APP_PORT");
+let port = ENV_UTILS.getEnvConfig("NODE_PORT");
 const server = http.createServer(koa.callback()).listen(port)
 logger.info(`server started at localhost:${port}, with Env: ${process.env.NODE_ENV}`)
 export { koa, server };

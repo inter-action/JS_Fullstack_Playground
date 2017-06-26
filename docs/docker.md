@@ -14,6 +14,13 @@
 
 ## start it up
 
+```shell
+    docker-compose up
+    docker-compose up --build # a rebuild
+    docker-compose down #shutdown
+    # then open browser @ localhost
+```
+
 * start docker regular mode
     ```shell
     make docker_build

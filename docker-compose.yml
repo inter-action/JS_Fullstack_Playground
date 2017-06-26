@@ -1,18 +1,65 @@
 version: '2'
+
 services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: make run
-    ports:
-     - "9000:9000"
+    nginx:
+        build:
+            context: ./docker/nginx
+        volumes_from:
+            - volumes
+        ports:
+            - "80:80"
+            - "443:443"
+
+        depends_on:
+          - node
+
+    node:
+        build:
+          context: ./node_app
+          args:
+              - PROJECT_PATH=/usr/src/app
+        volumes:
+            # dont know if mount volumn using `.:/usr/src ` would cause some wired consequenses
+            # since current dir has some volume already mounted in other kind of form
+            - ./node_app/build/:/usr/src/app/build
+        environment:
+          - NODE_PORT=8080
+          - MYSQL_CONNECTION_HOST=mysql
+          - MYSQL_DATABASE=myapp_dev
+          - MYSQL_USER=node_app_user
+          - MYSQL_PASSWORD=jkliop
+          
+        depends_on:
+          - mysql
+
+
+    mysql:
+        build:
+            context: ./docker/mysql
+            args:
+                - MYSQL_DATABASE=myapp_dev
+                - MYSQL_USER=node_app_user
+                - MYSQL_PASSWORD=jkliop
+                - MYSQL_ROOT_PASSWORD=root
+        volumes_from:
+            - volumes
+        expose:
+            - "3306"
+
+
+    # mongo:
+    #     build: ./docker/mongo
+    #     expose:
+    #         - "27017"
+    #     volumes_from:
+    #         - volumes
+
+    # redis:
+    #   image: redis:3
+
     volumes:
-     - .:/code
-     # exclude node_modules from volumes, for more info view: https://www.youtube.com/watch?v=zcSbOl8DYXM
-     # so that mac node binaries doesnt colide with linux node binaries
-     # create a named volumn
-     - api_deps:/code/node_modules
-    
-volumes:
-  api_deps:
+        image: tianon/true
+        volumes:
+            # - ./data/mongo:/var/lib/mongodb
+            - ./data/logs/nginx/:/var/log/nginx
+            - ./data/mysql:/var/lib/mysql

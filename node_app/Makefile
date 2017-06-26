@@ -73,7 +73,7 @@ tscw:
 tsct:
 	tsc -w --traceResolution
 	
-
+# 此 docker 配置用于本地开发
 docker_build: tsc
 	npm shrinkwrap
 	docker build -t $(DOCKER_APP_NAME) .

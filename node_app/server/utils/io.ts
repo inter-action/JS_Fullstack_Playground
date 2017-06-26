@@ -12,7 +12,7 @@ export class BytesReader extends stream.Writable {
         this._buffer = new Buffer(size).fill(0);
     }
 
-    protected _write(chunk: any, encoding: string, callback: Function): void {
+    _write(chunk: any, encoding: string, callback: Function): void {
         try {
             if (Buffer.isBuffer(chunk)) {
                 const src = chunk as Buffer

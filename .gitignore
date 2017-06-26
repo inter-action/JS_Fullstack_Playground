@@ -1,10 +1,1 @@
-node_modules/
-.DS_STORE
-.idea
-server/**/*.js
-test/**/*.js
-npm-shrinkwrap.json
-blob/
-build/
-quickbash.sh
-client
+data/
